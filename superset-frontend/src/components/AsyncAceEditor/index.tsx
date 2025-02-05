@@ -191,10 +191,13 @@ export default function AsyncAceEditor(
           <>
             <Global
               styles={css`
+                .ace_editor {
+                  border: 1px solid ${supersetTheme.colorBorder} !important;
+                }
                 .ace_tooltip {
                   margin-left: ${supersetTheme.sizeUnit * 2}px;
                   padding: 0px;
-                  border: 1px solid ${supersetTheme.colorBorder};
+                  border: 1px solid ${supersetTheme.colorBorderSecondary};
                 }
 
                 & .tooltip-detail {
@@ -245,7 +248,6 @@ export default function AsyncAceEditor(
               tabSize={tabSize}
               defaultValue={defaultValue}
               setOptions={{ fontFamily }}
-              style={{ border: `1px solid ${supersetTheme.colorBorder}` }}
               {...props}
             />
           </>

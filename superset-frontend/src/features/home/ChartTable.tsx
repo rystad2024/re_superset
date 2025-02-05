@@ -183,6 +183,7 @@ function ChartTable({
       <SubMenu
         activeChild={activeTab}
         tabs={menuTabs}
+        background-color="transparent"
         buttons={[
           {
             name: (

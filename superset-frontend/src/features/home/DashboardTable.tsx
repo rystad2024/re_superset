@@ -185,6 +185,7 @@ function DashboardTable({
     <>
       <SubMenu
         activeChild={activeTab}
+        backgroundColor="transparent"
         tabs={menuTabs}
         buttons={[
           {

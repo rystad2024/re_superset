@@ -246,6 +246,7 @@ const SavedQueries = ({
       )}
       <SubMenu
         activeChild={activeTab}
+        backgroundColor="transparent"
         tabs={[
           {
             name: TableTab.Mine,

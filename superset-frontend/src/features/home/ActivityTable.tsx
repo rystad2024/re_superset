@@ -207,7 +207,11 @@ export default function ActivityTable({
   }
   return (
     <Styles>
-      <SubMenu activeChild={activeChild} tabs={tabs} />
+      <SubMenu
+        activeChild={activeChild}
+        tabs={tabs}
+        backgroundColor="transparent"
+      />
       {Number(activityData[activeChild as keyof ActivityData]?.length) > 0 ||
       (activeChild === TableTab.Edited && editedCards?.length) ? (
         <CardContainer className="recentCards">
