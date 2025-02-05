@@ -135,7 +135,7 @@ const scheduledQueriesConf = bootstrapData?.common?.conf?.SCHEDULED_QUERIES;
 
 const StyledToolbar = styled.div`
   padding: ${({ theme }) => theme.sizeUnit * 2}px;
-  background: ${({ theme }) => theme.colorBgLayout};
+  background: ${({ theme }) => theme.colorBgContainer};
   display: flex;
   justify-content: space-between;
   border: 1px solid ${({ theme }) => theme.colorBorder};
