@@ -30,7 +30,8 @@ import Icons from 'src/components/Icons';
 import { MenuObjectProps } from 'src/types/bootstrapTypes';
 
 const StyledHeader = styled.div<{ backgroundColor?: string }>`
-  background-color: ${({ theme, backgroundColor }) => backgroundColor || theme.colorBgContainer};
+  background-color: ${({ theme, backgroundColor }) =>
+    backgroundColor || theme.colorBgContainer};
   margin-bottom: ${({ theme }) => theme.sizeUnit * 4}px;
   .header {
     font-weight: ${({ theme }) => theme.fontWeightStrong};
