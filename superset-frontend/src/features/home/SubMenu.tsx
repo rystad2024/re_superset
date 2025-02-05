@@ -188,7 +188,7 @@ const SubMenuComponent: FunctionComponent<SubMenuProps> = props => {
   }, [props.buttons]);
 
   return (
-    <StyledHeader>
+    <StyledHeader backgroundColor={props.backgroundColor}>
       <Row className="menu" role="navigation">
         {props.name && <div className="header">{props.name}</div>}
         <Menu mode={showMenu} disabledOverflow>
