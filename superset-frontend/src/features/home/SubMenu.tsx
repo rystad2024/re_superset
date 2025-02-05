@@ -30,9 +30,9 @@ import Icons from 'src/components/Icons';
 import { MenuObjectProps } from 'src/types/bootstrapTypes';
 
 const StyledHeader = styled.div`
+  background-color: ${({ theme, backgroundColor }) => backgroundColor || theme.colorBgContainer};
   margin-bottom: ${({ theme }) => theme.sizeUnit * 4}px;
   .header {
-    background-color: ${({ theme }) => theme.colorBgBase};
     font-weight: ${({ theme }) => theme.fontWeightStrong};
     margin-right: ${({ theme }) => theme.sizeUnit * 3}px;
     text-align: left;
@@ -69,7 +69,7 @@ const StyledHeader = styled.div`
     padding-left: 10px;
   }
   .menu {
-    background-color: ${({ theme }) => theme.colorBgBase};
+    //background-color: ${({ theme }) => theme.colorBgBase};
   }
 
   .menu > .antd5-menu {
@@ -143,6 +143,7 @@ export interface SubMenuProps {
   usesRouter?: boolean;
   color?: string;
   dropDownLinks?: Array<MenuObjectProps>;
+  backgroundColor?: string;
 }
 
 const { SubMenu } = MainNav;
