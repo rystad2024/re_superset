@@ -85,6 +85,7 @@ export const StyledFormHeader = styled.header`
 
 export const antdCollapseStyles = (theme: SupersetTheme) => css`
   .ant-collapse-header {
+    background-color: ${theme.colorBgLayout};
     padding-top: ${theme.sizeUnit * 3.5}px;
     padding-bottom: ${theme.sizeUnit * 2.5}px;
 
@@ -101,8 +102,8 @@ export const antdCollapseStyles = (theme: SupersetTheme) => css`
     margin-bottom: ${theme.sizeUnit}px;
   }
   p.helper {
-    margin-bottom: 0;
-    padding: 0;
+    margin: ${theme.sizeUnit * 3}px ${theme.sizeUnit * 4}px;
+    margin-left: 0px;
   }
 `;
 
@@ -508,7 +509,7 @@ export const StyledStickyHeader = styled.div`
   position: sticky;
   top: 0;
   z-index: ${({ theme }) => theme.zIndexPopupBase};
-  background: ${({ theme }) => theme.colors.grayscale.light5};
+  background: ${({ theme }) => theme.colorBgLayout};
   height: auto;
 `;
 
