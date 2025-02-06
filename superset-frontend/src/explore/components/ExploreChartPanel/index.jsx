@@ -427,10 +427,7 @@ const ExploreChartPanel = ({
   }
 
   return (
-    <Styles
-      className="panel panel-default chart-container"
-      showSplite={showSplite}
-    >
+    <Styles className="chart-container" showSplite={showSplite}>
       <Split
         sizes={splitSizes}
         minSize={MIN_SIZES}
