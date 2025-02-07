@@ -44,6 +44,10 @@ const DatasourceItemContainer = styled.div`
     background-color: ${theme.colorBgLayout};
     border-radius: 4px;
 
+    &:hover {
+      background-color: ${theme.colorPrimaryBgHover};
+    }
+
     > div {
       min-width: 0;
       margin-right: ${theme.sizeUnit * 2}px;
