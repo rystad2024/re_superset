@@ -556,7 +556,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
               css={css`
                 max-width: 242px;
                 padding: 0 ${theme.sizeUnit * 2}px;
-                color: ${theme.colors.grayscale.base};
+                color: ${theme.colorText};
                 font-size: ${theme.fontSizeSM}px;
               `}
             >
@@ -568,7 +568,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
               <Menu.Item key={column.key}>
                 <span
                   css={css`
-                    color: ${theme.colors.grayscale.dark2};
+                    color: ${theme.colorText};
                   `}
                 >
                   {column.label}

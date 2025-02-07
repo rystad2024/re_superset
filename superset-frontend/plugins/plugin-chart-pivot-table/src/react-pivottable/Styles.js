@@ -43,9 +43,8 @@ export const Styles = styled.div`
 
     table.pvtTable thead tr th,
     table.pvtTable tbody tr th {
-      background-color: ${theme.colors.grayscale.light5};
-      border-top: 1px solid ${theme.colors.grayscale.light2};
-      border-left: 1px solid ${theme.colors.grayscale.light2};
+      border-top: 1px solid ${theme.colorSplit};
+      border-left: 1px solid ${theme.colorSplit};
       font-size: ${theme.fontSizeSM}px;
       padding: ${theme.sizeUnit}px;
       font-weight: ${theme.fontWeightNormal};

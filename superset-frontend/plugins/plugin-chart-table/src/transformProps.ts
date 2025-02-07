@@ -33,7 +33,6 @@ import {
   QueryMode,
   t,
   SMART_DATE_ID,
-  useTheme,
   TimeFormats,
   TimeFormatter,
 } from '@superset-ui/core';
@@ -482,8 +481,6 @@ const transformProps = (
     queryMode === QueryMode.Aggregate &&
     comparison_type === ComparisonType.Values;
 
-  const theme = useTheme();
-
   const calculateBasicStyle = (
     percentDifferenceNum: number,
     colorOption: ColorSchemeEnum,
@@ -493,7 +490,7 @@ const transformProps = (
         arrow: '',
         arrowColor: '',
         // eslint-disable-next-line theme-colors/no-literal-colors
-        backgroundColor: theme.colorBgLayout,
+        backgroundColor: 'rgba(0,0,0,0.2)',
       };
     }
     const isPositive = percentDifferenceNum > 0;
