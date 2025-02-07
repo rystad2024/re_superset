@@ -80,6 +80,7 @@ const ErrorAlert: React.FC<ErrorAlertProps> = ({
   };
   const renderDescription = () => (
     <div>
+      {message && <div>{message}</div>}
       {description && (
         <p style={descriptionPre ? preStyle : {}} data-testid="description">
           {description}
@@ -104,19 +105,13 @@ const ErrorAlert: React.FC<ErrorAlertProps> = ({
   );
   const renderAlert = (closable: boolean) => (
     <Alert
+      message={errorType}
       description={renderDescription()}
       type={type}
       showIcon
       closable={closable}
       className={className}
-    >
-      <strong>{errorType}</strong>
-      {message && (
-        <>
-          : <span>{message}</span>
-        </>
-      )}
-    </Alert>
+    />
   );
 
   if (compact) {
