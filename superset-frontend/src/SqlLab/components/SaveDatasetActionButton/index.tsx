@@ -33,19 +33,16 @@ const SaveDatasetActionButton = ({
   const theme = useTheme();
 
   return !overlayMenu ? (
-    <Button onClick={() => setShowSave(true)} buttonStyle="primary">
+    <Button onClick={() => setShowSave(true)} buttonStyle="secondary" buttonSize="small">
       {t('Save')}
     </Button>
   ) : (
     <DropdownButton
+      size="default"
+      style={{ fontSize: `${theme.fontSizeSM}px`, fontWeight: theme.fontWeightBold }}
       onClick={() => setShowSave(true)}
       dropdownRender={() => overlayMenu}
-      icon={
-        <Icons.CaretDown
-          iconColor={theme.colors.grayscale.light5}
-          name="caret-down"
-        />
-      }
+      icon={<Icons.CaretDown name="caret-down" />}
       trigger={['click']}
     >
       {t('Save')}
