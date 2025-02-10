@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { t, useTheme } from '@superset-ui/core';
+import { t, useTheme, styled } from '@superset-ui/core';
 import Icons from 'src/components/Icons';
 import { DropdownButton } from 'src/components/DropdownButton';
 import Button from 'src/components/Button';
@@ -25,6 +25,11 @@ interface SaveDatasetActionButtonProps {
   setShowSave: (arg0: boolean) => void;
   overlayMenu: JSX.Element | null;
 }
+
+const StyledDropdownButton = styled(DropdownButton)`
+  font-size: ${({ theme }) => theme.fontSizeSM}px;
+  font-weight: ${({ theme }) => theme.fontWeightStrong};
+`;
 
 const SaveDatasetActionButton = ({
   setShowSave,
@@ -41,11 +46,7 @@ const SaveDatasetActionButton = ({
       {t('Save')}
     </Button>
   ) : (
-    <DropdownButton
-      styles={{
-        fontSize: `${theme.fontSizeSM}px`,
-        fontWeight: theme.fontWeightStrong,
-      }}
+    <StyledDropdownButton
       onClick={() => setShowSave(true)}
       dropdownRender={() => overlayMenu}
       icon={<Icons.CaretDown name="caret-down" />}
