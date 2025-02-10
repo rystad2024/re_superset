@@ -43,7 +43,7 @@ const SaveDatasetActionButton = ({
   ) : (
     <DropdownButton
       size="default"
-      styles={{
+      style={{
         fontSize: `${theme.fontSizeSM}px`,
         fontWeight: theme.fontWeightStrong,
       }}
