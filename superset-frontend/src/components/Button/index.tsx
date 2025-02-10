@@ -56,25 +56,6 @@ export type ButtonProps = Omit<AntdButtonProps, 'css'> &
     showMarginRight?: boolean;
   };
 
-const decideType = (buttonStyle: ButtonStyle) => {
-  const typeMap: Record<
-    ButtonStyle,
-    'primary' | 'default' | 'dashed' | 'link'
-  > = {
-    primary: 'primary',
-    danger: 'primary',
-    warning: 'primary',
-    success: 'primary',
-    secondary: 'default',
-    default: 'default',
-    tertiary: 'default',
-    dashed: 'dashed',
-    link: 'link',
-  };
-
-  return typeMap[buttonStyle];
-};
-
 export default function Button(props: ButtonProps) {
   const {
     tooltip,

@@ -27,8 +27,10 @@ interface SaveDatasetActionButtonProps {
 }
 
 const StyledDropdownButton = styled(DropdownButton)`
-  font-size: ${({ theme }) => theme.fontSizeSM}px;
-  font-weight: ${({ theme }) => theme.fontWeightStrong};
+  button {
+    font-size: ${({ theme }) => theme.fontSizeSM}px !important;
+    font-weight: ${({ theme }) => theme.fontWeightStrong};
+  }
 `;
 
 const SaveDatasetActionButton = ({
@@ -53,7 +55,7 @@ const SaveDatasetActionButton = ({
       trigger={['click']}
     >
       {t('Save')}
-    </DropdownButton>
+    </StyledDropdownButton>
   );
 };
 
