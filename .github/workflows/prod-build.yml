@@ -57,6 +57,6 @@ jobs:
             echo \"${{ secrets.ACR_PASSWORD }}\" | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u \"${{ secrets.ACR_USERNAME }}\" --password-stdin &&
             docker pull ${{ secrets.ACR_LOGIN_SERVER }}/re-superset:${{ needs.build_core.outputs.version }} &&
             docker pull ${{ secrets.ACR_LOGIN_SERVER }}/re-superset:latest &&
-            cd /home/supersetuser/re-superset && \
+            cd /home/prodsupersetuser/re-superset && \
             docker compose up -d
           "
