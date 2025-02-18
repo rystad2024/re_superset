@@ -392,6 +392,8 @@ class TestDatabaseApi(SupersetTestCase):
             == "A database port is required when connecting via SSH Tunnel."
         )
 
+    @mock.patch("superset.daos.database.Database._get_sqla_engine")
+    @mock.patch("superset.commands.database.sync_permissions.ping", return_value=True)
     @mock.patch(
         "superset.commands.database.test_connection.TestConnectionDatabaseCommand.run",
     )
@@ -406,6 +408,8 @@ class TestDatabaseApi(SupersetTestCase):
         mock_update_is_feature_enabled,
         mock_create_is_feature_enabled,
         mock_test_connection_database_command_run,
+        mock_ping,
+        mock_engine,
     ):
         """
         Database API: Test update Database with SSH Tunnel
@@ -517,6 +521,8 @@ class TestDatabaseApi(SupersetTestCase):
         db.session.delete(model)
         db.session.commit()
 
+    @mock.patch("superset.daos.database.Database._get_sqla_engine")
+    @mock.patch("superset.commands.database.sync_permissions.ping", return_value=True)
     @mock.patch(
         "superset.commands.database.test_connection.TestConnectionDatabaseCommand.run",
     )
@@ -533,6 +539,8 @@ class TestDatabaseApi(SupersetTestCase):
         mock_update_is_feature_enabled,
         mock_create_is_feature_enabled,
         mock_test_connection_database_command_run,
+        mock_ping,
+        mock_engine,
     ):
         """
         Database API: Test deleting a SSH tunnel via Database update
@@ -601,6 +609,8 @@ class TestDatabaseApi(SupersetTestCase):
         db.session.delete(model)
         db.session.commit()
 
+    @mock.patch("superset.daos.database.Database._get_sqla_engine")
+    @mock.patch("superset.commands.database.sync_permissions.ping", return_value=True)
     @mock.patch(
         "superset.commands.database.test_connection.TestConnectionDatabaseCommand.run",
     )
@@ -615,6 +625,8 @@ class TestDatabaseApi(SupersetTestCase):
         mock_update_is_feature_enabled,
         mock_create_is_feature_enabled,
         mock_test_connection_database_command_run,
+        mock_ping,
+        mock_engine,
     ):
         """
         Database API: Test update SSH Tunnel via Database API
