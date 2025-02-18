@@ -4073,10 +4073,7 @@ class TestDatabaseApi(SupersetTestCase):
         db.session.commit()
 
     @with_config({"SYNC_DB_PERMISSIONS_IN_ASYNC_MODE": False})
-    @mock.patch(
-        "superset.commands.database.sync_permissions.SyncPermissionsCommand.run"
-    )
-    def test_sync_db_perms_sync(self, mock_cmmd):
+    def test_sync_db_perms_sync(self):
         """
         Database API: Test sync permissions in sync mode.
         """
@@ -4136,9 +4133,9 @@ class TestDatabaseApi(SupersetTestCase):
 
     @with_config({"SYNC_DB_PERMISSIONS_IN_ASYNC_MODE": True})
     @mock.patch(
-        "superset.commands.database.sync_permissions.SyncPermissionsCommand.run"
+        "superset.commands.database.sync_permissions.sync_database_permissions.delay"
     )
-    def test_sync_db_perms_async(self, mock_cmmd):
+    def test_sync_db_perms_async(self, mock_task):
         """
         Database API: Test sync permissions in async mode.
         """
@@ -4153,6 +4150,9 @@ class TestDatabaseApi(SupersetTestCase):
         assert rv.status_code == 202
         response = json.loads(rv.data.decode("utf-8"))
         assert response == {"message": "Async task created to sync permissions"}
+        mock_task.assert_called_once_with(
+            test_database.id, ADMIN_USERNAME, test_database.database_name
+        )
 
         # Cleanup
         model = db.session.query(Database).get(test_database.id)
