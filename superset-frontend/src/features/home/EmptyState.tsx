@@ -45,7 +45,7 @@ const REDIRECTS = {
   },
   viewAll: {
     [WelcomeTable.Charts]: '/chart/list',
-    [WelcomeTable.Dashboards]: '/dashboard/list/',
+    [WelcomeTable.Dashboards]: '/workspaces/list/',
     [WelcomeTable.SavedQueries]: '/savedqueryview/list/',
   },
 } as const;

@@ -157,9 +157,9 @@ export function Menu({
 
   enum Paths {
     Explore = '/explore',
-    Dashboard = '/dashboard',
+    Dashboard = '/workspace',
     Chart = '/chart',
-    Datasets = '/tablemodelview',
+    Datasets = '/exploredata',
   }
 
   const defaultTabSelection: string[] = [];
@@ -169,14 +169,16 @@ export function Menu({
     const path = location.pathname;
     switch (true) {
       case path.startsWith(Paths.Dashboard):
-        setActiveTabs(['Dashboards']);
+        setActiveTabs(['Workspaces']);
+        break;
+      case path.startsWith(Paths.Datasets):
+        case path.includes('/exploredata'):
+        setActiveTabs(['Explore Data']);
         break;
       case path.startsWith(Paths.Chart) || path.startsWith(Paths.Explore):
         setActiveTabs(['Charts']);
         break;
-      case path.startsWith(Paths.Datasets):
-        setActiveTabs(['Datasets']);
-        break;
+
       default:
         setActiveTabs(defaultTabSelection);
     }
@@ -312,6 +314,19 @@ export default function MenuWrapper({ data, ...rest }: MenuProps) {
   const newMenuData = {
     ...data,
   };
+
+  console.log(data.menu);
+  data.menu.map((x) => {
+    if (x.label === 'Dashboards') {
+      x.label = 'Workspaces';
+      x.name = 'Workspaces';
+    }
+    else if (x.label === 'Datasets') {
+      x.label = 'Explore Data';
+      x.name = 'Explore Data';     
+    }
+  })
+
   // Menu items that should go into settings dropdown
   const settingsMenus = {
     Data: true,
@@ -352,7 +367,9 @@ export default function MenuWrapper({ data, ...rest }: MenuProps) {
     }
   });
 
-  newMenuData.menu = cleanedMenu;
+  const updatedCleanedMenu = cleanedMenu.filter(x => x.label !== 'SQL');
+
+  newMenuData.menu = updatedCleanedMenu;
   newMenuData.settings = settings;
 
   return <Menu data={newMenuData} {...rest} />;

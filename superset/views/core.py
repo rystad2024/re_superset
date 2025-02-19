@@ -797,7 +797,7 @@ class Superset(BaseSupersetView):
                 redirect_url = f"{appbuilder.get_url_for_login}?next={request.url}"
                 warn_msg = "Users must be logged in to view this dashboard."
             else:
-                redirect_url = "/dashboard/list/"
+                redirect_url = "/workspaces/list/"
                 warn_msg = utils.error_msg_from_exception(ex)
             return redirect_with_flash(
                 url=redirect_url,
@@ -831,7 +831,7 @@ class Superset(BaseSupersetView):
         )
 
     @has_access
-    @expose("/dashboard/p/<key>/", methods=("GET",))
+    @expose("/workspaces/p/<key>/", methods=("GET",))
     def dashboard_permalink(
         self,
         key: str,
@@ -840,10 +840,10 @@ class Superset(BaseSupersetView):
             value = GetDashboardPermalinkCommand(key).run()
         except DashboardPermalinkGetFailedError as ex:
             flash(__("Error: %(msg)s", msg=ex.message), "danger")
-            return redirect("/dashboard/list/")
+            return redirect("/workspaces/list/")
         except DashboardAccessDeniedError as ex:
             flash(__("Error: %(msg)s", msg=ex.message), "danger")
-            return redirect("/dashboard/list/")
+            return redirect("/workspaces/list/")
         if not value:
             return json_error_response(_("permalink state not found"), status=404)
         dashboard_id, state = value["dashboardId"], value.get("state", {})

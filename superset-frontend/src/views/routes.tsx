@@ -136,7 +136,7 @@ export const routes: Routes = [
     Component: Home,
   },
   {
-    path: '/dashboard/list/',
+    path: '/workspaces/list/',
     Component: DashboardList,
   },
   {
@@ -152,7 +152,7 @@ export const routes: Routes = [
     Component: ChartList,
   },
   {
-    path: '/tablemodelview/list/',
+    path: '/exploredata/list/',
     Component: DatasetList,
   },
   {

@@ -205,10 +205,10 @@ function DashboardTable({
             onClick: () => {
               const target =
                 activeTab === TableTab.Favorite
-                  ? `/dashboard/list/?filters=(favorite:(label:${t(
-                      'Yes',
-                    )},value:!t))`
-                  : '/dashboard/list/';
+                  ? `/workspaces/list/?filters=(favorite:(label:${t(
+                    'Yes',
+                  )},value:!t))`
+                  : '/workspaces/list/';
               history.push(target);
             },
           },
