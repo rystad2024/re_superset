@@ -702,7 +702,7 @@ function DashboardList(props: DashboardListProps) {
   }
   return (
     <>
-      <SubMenu name={t('Dashboards')} buttons={subMenuButtons} />
+      <SubMenu name={t('Workspaces')} buttons={subMenuButtons} />
       <ConfirmStatusChange
         title={t('Please confirm')}
         description={t(

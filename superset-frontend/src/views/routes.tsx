@@ -136,7 +136,7 @@ export const routes: Routes = [
     Component: Home,
   },
   {
-    path: '/dashboard/list/',
+    path: '/workspaces/list/',
     Component: DashboardList,
   },
   {

@@ -144,7 +144,7 @@ const mockedProps = {
         name: 'Dashboards',
         icon: 'fa-dashboard',
         label: 'Dashboards',
-        url: '/dashboard/list/',
+        url: '/workspaces/list/',
         index: 4,
       },
       {

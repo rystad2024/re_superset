@@ -607,7 +607,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
 
   const menuData: SubMenuProps = {
     activeChild: 'Datasets',
-    name: t('Datasets'),
+    name: t('Explore Data'),
   };
 
   const buttonArr: Array<ButtonProps> = [];

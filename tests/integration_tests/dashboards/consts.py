@@ -26,7 +26,7 @@ EXPORT_DASHBOARDS_API_URL_WITH_QUERY_FORMAT = EXPORT_DASHBOARDS_API_URL + QUERY_
 GET_DASHBOARD_VIEW_URL_FORMAT = "/superset/dashboard/{}/"
 
 DELETE_DASHBOARD_VIEW_URL_FORMAT = "/dashboard/delete/{}"
-GET_DASHBOARDS_LIST_VIEW = "/dashboard/list/"
+GET_DASHBOARDS_LIST_VIEW = "/workspaces/list/"
 NEW_DASHBOARD_URL = "/dashboard/new/"
 GET_CHARTS_API_URL = "/api/v1/chart/"
 
