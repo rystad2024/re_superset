@@ -158,6 +158,7 @@ interface CardProps {
   imgFallbackURL?: string;
   imgPosition?: BackgroundPosition;
   description: string;
+
   loading?: boolean;
   titleRight?: ReactNode;
   coverLeft?: ReactNode;
@@ -179,6 +180,7 @@ function ListViewCard({
   imgURL,
   imgFallbackURL,
   description,
+
   coverLeft,
   coverRight,
   actions,
@@ -191,6 +193,7 @@ function ListViewCard({
 }: CardProps) {
   const Link = url && linkComponent ? linkComponent : AnchorLink;
   const theme = useTheme();
+
   return (
     <ConfigProvider theme={listViewCardTheme}>
       <StyledCard

@@ -42,10 +42,13 @@ interface MenuProps {
 
 const StyledHeader = styled.header`
   ${({ theme }) => `
-      background-color: ${theme.colors.grayscale.light5};
+      background-color: #E8EDF3;
       margin-bottom: 2px;
       z-index: 10;
 
+      .main-nav, .navbar {
+  background-color: #E8EDF3;
+}
       &:nth-last-of-type(2) nav {
         margin-bottom: 2px;
       }
@@ -120,11 +123,7 @@ const StyledHeader = styled.header`
 const { SubMenu } = MainNav;
 
 const StyledSubMenu = styled(SubMenu)`
-  &.antd5-menu-submenu-active {
-    .antd5-menu-title-content {
-      color: ${({ theme }) => theme.colors.primary.base};
-    }
-  }
+  background-color: #e8edf3;
 `;
 
 const { useBreakpoint } = Grid;
@@ -172,7 +171,7 @@ export function Menu({
         setActiveTabs(['Workspaces']);
         break;
       case path.startsWith(Paths.Datasets):
-        case path.includes('/exploredata'):
+      case path.includes('/exploredata'):
         setActiveTabs(['Explore Data']);
         break;
       case path.startsWith(Paths.Chart) || path.startsWith(Paths.Explore):
@@ -316,16 +315,15 @@ export default function MenuWrapper({ data, ...rest }: MenuProps) {
   };
 
   console.log(data.menu);
-  data.menu.map((x) => {
+  data.menu.map(x => {
     if (x.label === 'Dashboards') {
       x.label = 'Workspaces';
       x.name = 'Workspaces';
-    }
-    else if (x.label === 'Datasets') {
+    } else if (x.label === 'Datasets') {
       x.label = 'Explore Data';
-      x.name = 'Explore Data';     
+      x.name = 'Explore Data';
     }
-  })
+  });
 
   // Menu items that should go into settings dropdown
   const settingsMenus = {

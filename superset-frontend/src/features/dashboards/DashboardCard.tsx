@@ -46,6 +46,7 @@ interface DashboardCardProps {
   saveFavoriteStatus: (id: number, isStarred: boolean) => void;
   favoriteStatus: boolean;
   userId?: string | number;
+  userName?: string;
   showThumbnails?: boolean;
   handleBulkDashboardExport: (dashboardsToExport: Dashboard[]) => void;
   onDelete: (dashboard: Dashboard) => void;
@@ -56,6 +57,7 @@ function DashboardCard({
   hasPerm,
   bulkSelectEnabled,
   userId,
+  userName,
   openDashboardEditModal,
   favoriteStatus,
   saveFavoriteStatus,
@@ -141,6 +143,9 @@ function DashboardCard({
       )}
     </Menu>
   );
+
+  console.log(dashboard.thumbnail_url);
+  const formattedDescription = `Modified ${dashboard.changed_on_delta_humanized} by ${dashboard.changed_by_name}`;
   return (
     <CardStyles
       onClick={() => {
@@ -164,8 +169,9 @@ function DashboardCard({
         linkComponent={Link}
         imgURL={dashboard.thumbnail_url}
         imgFallbackURL="/static/assets/images/dashboard-card-fallback.svg"
-        description={t('Modified %s', dashboard.changed_on_delta_humanized)}
+        description={t(formattedDescription)}
         coverLeft={<FacePile users={dashboard.owners || []} />}
+        modifiedBy={t('Modified %s')}
         actions={
           <ListViewCard.Actions
             onClick={e => {
