@@ -171,12 +171,14 @@ export function Menu({
       case path.startsWith(Paths.Dashboard):
         setActiveTabs(['Workspaces']);
         break;
+      case path.startsWith(Paths.Datasets):
+        case path.includes('/exploredata'):
+        setActiveTabs(['Explore Data']);
+        break;
       case path.startsWith(Paths.Chart) || path.startsWith(Paths.Explore):
         setActiveTabs(['Charts']);
         break;
-      case path.startsWith(Paths.Datasets):
-        setActiveTabs(['Explore Data']);
-        break;
+
       default:
         setActiveTabs(defaultTabSelection);
     }
@@ -312,15 +314,16 @@ export default function MenuWrapper({ data, ...rest }: MenuProps) {
   const newMenuData = {
     ...data,
   };
+
+  console.log(data.menu);
   data.menu.map((x) => {
     if (x.label === 'Dashboards') {
       x.label = 'Workspaces';
       x.name = 'Workspaces';
-      x.url = '/workspaces/list/';
     }
-    if (x.label === 'Datasets') {
+    else if (x.label === 'Datasets') {
       x.label = 'Explore Data';
-      x.name = 'Explore Data';
+      x.name = 'Explore Data';     
     }
   })
 

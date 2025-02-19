@@ -40,7 +40,7 @@ from superset.views.dashboard.mixin import DashboardMixin
 
 
 class DashboardModelView(DashboardMixin, SupersetModelView, DeleteMixin):  # pylint: disable=too-many-ancestors
-    route_base = "/dashboard"
+    route_base = "/workspaces"
     datamodel = SQLAInterface(DashboardModel)
     # TODO disable api_read and api_delete (used by cypress)
     # once we move to ChartRestModelApi

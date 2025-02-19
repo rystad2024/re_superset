@@ -152,7 +152,7 @@ export const routes: Routes = [
     Component: ChartList,
   },
   {
-    path: '/tablemodelview/list/',
+    path: '/exploredata/list/',
     Component: DatasetList,
   },
   {
