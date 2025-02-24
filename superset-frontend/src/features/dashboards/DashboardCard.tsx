@@ -144,8 +144,8 @@ function DashboardCard({
     </Menu>
   );
 
-  console.log(dashboard.thumbnail_url);
-  const formattedDescription = `Modified ${dashboard.changed_on_delta_humanized} by ${dashboard.changed_by_name}`;
+  // const formattedDescription = `Modified ${dashboard.changed_on_delta_humanized} by ${dashboard.changed_by_name}`;
+
   return (
     <CardStyles
       onClick={() => {
@@ -169,7 +169,7 @@ function DashboardCard({
         linkComponent={Link}
         imgURL={dashboard.thumbnail_url}
         imgFallbackURL="/static/assets/images/dashboard-fallback.svg"
-        description={t(formattedDescription)}
+        description={t('Modified %s', dashboard.changed_on_delta_humanized)}
         coverLeft={<FacePile users={dashboard.owners || []} />}
         actions={
           <ListViewCard.Actions
