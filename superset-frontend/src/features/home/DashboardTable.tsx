@@ -254,8 +254,9 @@ function DashboardTable({
               dashboard={e}
               hasPerm={hasPerm}
               bulkSelectEnabled={false}
-              showThumbnails={true}
+              showThumbnails={showThumbnails}
               userId={user?.userId}
+              userName={user?.username}
               loading={loading}
               openDashboardEditModal={(dashboard: Dashboard) =>
                 setEditModal(dashboard)

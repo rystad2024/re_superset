@@ -100,7 +100,7 @@ function TagCard({
         }
         url={undefined}
         linkComponent={Link}
-        imgFallbackURL="/static/assets/images/dashboard-card-fallback.svg"
+        imgFallbackURL="/static/assets/images/dashboard-fallback.svg"
         description={t('Modified %s', tag.changed_on_delta_humanized)}
         actions={
           <ListViewCard.Actions

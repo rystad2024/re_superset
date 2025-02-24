@@ -168,10 +168,9 @@ function DashboardCard({
         url={bulkSelectEnabled ? undefined : dashboard.url}
         linkComponent={Link}
         imgURL={dashboard.thumbnail_url}
-        imgFallbackURL="/static/assets/images/dashboard-card-fallback.svg"
+        imgFallbackURL="/static/assets/images/dashboard-fallback.svg"
         description={t(formattedDescription)}
         coverLeft={<FacePile users={dashboard.owners || []} />}
-        modifiedBy={t('Modified %s')}
         actions={
           <ListViewCard.Actions
             onClick={e => {
