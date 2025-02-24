@@ -379,6 +379,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                     setActiveChild={setActiveChild}
                     activityData={activityData}
                     isFetchingActivityData={isFetchingActivityData}
+                    showThumbnails={checked}
                   />
                 ) : (
                   <LoadingCards />

@@ -73,6 +73,7 @@ interface ActivityProps {
   setActiveChild: (arg0: string) => void;
   activityData: ActivityData;
   isFetchingActivityData: boolean;
+  showThumbnails?: boolean;
 }
 
 const Styles = styled.div`
@@ -130,6 +131,7 @@ export default function ActivityTable({
   activityData,
   user,
   isFetchingActivityData,
+  showThumbnails,
 }: ActivityProps) {
   const [editedCards, setEditedCards] = useState<ActivityData[]>();
   const [isFetchingEditedCards, setIsFetchingEditedCards] = useState(false);
@@ -185,17 +187,25 @@ export default function ActivityTable({
     return activities.map((entity: ActivityObject) => {
       const url = getEntityUrl(entity);
       const lastActionOn = getEntityLastActionOn(entity);
+
+      // When showThumbnails is false, we show empty cover
+      // When true, we don't pass cover prop and let imgFallbackURL handle it
+      const cardProps = showThumbnails
+        ? {
+            imgFallbackURL: url?.includes('dashboard')
+              ? '/static/assets/images/dashboard-fallback.svg'
+              : '/static/assets/images/chart-fallback.svg',
+          }
+        : {
+            cover: <></>, // Empty cover when thumbnails are disabled
+          };
+
       return (
         <CardStyles key={url}>
           <Link to={url}>
             <ListViewCard
-              // cover={<></>}
               url={url}
-              imgFallbackURL={
-                url?.includes('dashboard')
-                  ? '/static/assets/images/dashboard-fallback.svg'
-                  : '/static/assets/images/chart-fallback.svg'
-              }
+              {...cardProps}
               title={getEntityTitle(entity)}
               description={lastActionOn}
               avatar={getEntityIcon(entity)}
@@ -208,14 +218,14 @@ export default function ActivityTable({
   };
 
   if ((isFetchingEditedCards && !editedCards) || isFetchingActivityData) {
-    return <LoadingCards />;
+    return <LoadingCards cover={showThumbnails} />;
   }
   return (
     <Styles>
       <SubMenu activeChild={activeChild} tabs={tabs} />
       {Number(activityData[activeChild as keyof ActivityData]?.length) > 0 ||
       (activeChild === TableTab.Edited && editedCards?.length) ? (
-        <CardContainer className="recentCards">
+        <CardContainer className="recentCards" showThumbnails={showThumbnails}>
           {renderActivity()}
         </CardContainer>
       ) : (
