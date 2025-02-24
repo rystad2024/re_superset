@@ -189,8 +189,13 @@ export default function ActivityTable({
         <CardStyles key={url}>
           <Link to={url}>
             <ListViewCard
-              cover={<></>}
+              // cover={<></>}
               url={url}
+              imgFallbackURL={
+                url?.includes('dashboard')
+                  ? '/static/assets/images/dashboard-fallback.svg'
+                  : '/static/assets/images/chart-fallback.svg'
+              }
               title={getEntityTitle(entity)}
               description={lastActionOn}
               avatar={getEntityIcon(entity)}
