@@ -23,7 +23,6 @@ import { t } from '@superset-ui/core';
 import { isEmpty } from 'lodash';
 import { URL_PARAMS } from 'src/constants';
 import ShareMenuItems from 'src/dashboard/components/menu/ShareMenuItems';
-import DownloadMenuItems from 'src/dashboard/components/menu/DownloadMenuItems';
 import CssEditor from 'src/dashboard/components/CssEditor';
 import RefreshIntervalModal from 'src/dashboard/components/RefreshIntervalModal';
 import SaveModal from 'src/dashboard/components/SaveModal';
@@ -226,7 +225,7 @@ export const useHeaderActionsMenu = ({
             />
           </Menu.Item>
         )}
-        <DownloadMenuItems
+        {/* <DownloadMenuItems
           submenuKey={MenuKeys.Download}
           disabled={isLoading}
           title={t('Download')}
@@ -235,7 +234,7 @@ export const useHeaderActionsMenu = ({
           dashboardTitle={dashboardTitle}
           dashboardId={dashboardId}
           logEvent={logEvent}
-        />
+        /> */}
         {userCanShare && (
           <ShareMenuItems
             disabled={isLoading}
