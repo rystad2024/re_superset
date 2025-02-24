@@ -120,7 +120,7 @@ export default function Button(props: ButtonProps) {
     backgroundColor = grayscale.light5;
     backgroundColorHover = grayscale.light5;
     backgroundColorActive = grayscale.light5;
-    backgroundColorDisabled = grayscale.light5;
+    backgroundColorDisabled = grayscale.light5;;
     borderWidth = 1;
     borderStyle = buttonStyle === 'dashed' ? 'dashed' : 'solid';
     borderColor = primary.dark1;
@@ -146,6 +146,7 @@ export default function Button(props: ButtonProps) {
     backgroundColorActive = 'transparent';
     color = primary.dark1;
   }
+
 
   const element = children as ReactElement;
 

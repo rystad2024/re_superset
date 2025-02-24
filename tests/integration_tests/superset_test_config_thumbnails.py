@@ -75,7 +75,7 @@ CELERY_CONFIG = CeleryConfig
 FEATURE_FLAGS = {
     "foo": "bar",
     "THUMBNAILS": True,
-    "THUMBNAILS_SQLA_LISTENERS": False,
+    "THUMBNAILS_SQLA_LISTENERS": True,
 }
 
 THUMBNAIL_CACHE_CONFIG = {

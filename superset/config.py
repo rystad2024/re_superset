@@ -473,7 +473,7 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     # and doesn't work with all nested types.
     "PRESTO_EXPAND_DATA": False,
     # Exposes API endpoint to compute thumbnails
-    "THUMBNAILS": False,
+    "THUMBNAILS": True,
     # Enable the endpoints to cache and retrieve dashboard screenshots via webdriver.
     # Requires configuring Celery and a cache using THUMBNAIL_CACHE_CONFIG.
     "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS": False,
@@ -653,22 +653,22 @@ EXTRA_CATEGORICAL_COLOR_SCHEMES: list[dict[str, Any]] = []
 
 # THEME_OVERRIDES is used for adding custom theme to superset
 # example code for "My theme" custom scheme
-# THEME_OVERRIDES = {
-#   "borderRadius": 4,
-#   "colors": {
-#     "primary": {
-#       "base": 'red',
-#     },
-#     "secondary": {
-#       "base": 'green',
-#     },
-#     "grayscale": {
-#       "base": 'orange',
-#     }
-#   }
-# }
+THEME_OVERRIDES = {
+  "borderRadius": 4,
+  "colors": {
+    "primary": {
+      "base": 'red',
+    },
+    "secondary": {
+      "base": 'green',
+    },
+    "grayscale": {
+      "base": 'blue',
+    }
+  }
+}
 
-THEME_OVERRIDES: dict[str, Any] = {}
+#THEME_OVERRIDES: dict[str, Any] = {}
 
 # EXTRA_SEQUENTIAL_COLOR_SCHEMES is used for adding custom sequential color schemes
 # EXTRA_SEQUENTIAL_COLOR_SCHEMES =  [
@@ -707,8 +707,9 @@ CACHE_WARMUP_EXECUTORS = [ExecutorType.OWNER]
 #
 # from superset.tasks.types import ExecutorType, FixedExecutor
 #
-# THUMBNAIL_EXECUTORS = [FixedExecutor("admin")]
-THUMBNAIL_EXECUTORS = [ExecutorType.CURRENT_USER]
+from superset.tasks.types import FixedExecutor
+THUMBNAIL_EXECUTORS = [FixedExecutor("admin")]
+# THUMBNAIL_EXECUTORS = [ExecutorType.CURRENT_USER]
 
 # By default, thumbnail digests are calculated based on various parameters in the
 # chart/dashboard metadata, and in the case of user-specific thumbnails, the
@@ -728,9 +729,10 @@ THUMBNAIL_CHART_DIGEST_FUNC: Callable[[Slice, ExecutorType, str], str | None] | 
 )
 
 THUMBNAIL_CACHE_CONFIG: CacheConfig = {
-    "CACHE_TYPE": "NullCache",
-    "CACHE_DEFAULT_TIMEOUT": int(timedelta(days=7).total_seconds()),
-    "CACHE_NO_NULL_WARNING": True,
+    "CACHE_TYPE": "redis",
+    "CACHE_DEFAULT_TIMEOUT": 300,
+    "CACHE_KEY_PREFIX": "superset_thumb_",
+    "CACHE_REDIS_URL": "redis://superset_cache:6379/0",
 }
 THUMBNAIL_ERROR_CACHE_TTL = int(timedelta(days=1).total_seconds())
 
@@ -995,6 +997,13 @@ DASHBOARD_AUTO_REFRESH_INTERVALS = [
     [86400, "24 hours"],
 ]
 
+THUMBNAIL_CACHE_CONFIG = {
+    "CACHE_TYPE": "redis",
+    "CACHE_DEFAULT_TIMEOUT": 300,
+    "CACHE_KEY_PREFIX": "superset_thumb_",
+    "CACHE_REDIS_URL": "redis://localhost:6379/0",
+}
+
 # This is used as a workaround for the alerts & reports scheduler task to get the time
 # celery beat triggered it, see https://github.com/celery/celery/issues/6974 for details
 CELERY_BEAT_SCHEDULER_EXPIRES = timedelta(weeks=1)
@@ -1005,14 +1014,14 @@ CELERY_BEAT_SCHEDULER_EXPIRES = timedelta(weeks=1)
 
 
 class CeleryConfig:  # pylint: disable=too-few-public-methods
-    broker_url = "sqla+sqlite:///celerydb.sqlite"
+    broker_url = "redis://superset_cache:6379/0"
     imports = (
         "superset.sql_lab",
         "superset.tasks.scheduler",
         "superset.tasks.thumbnails",
         "superset.tasks.cache",
     )
-    result_backend = "db+sqlite:///celery_results.sqlite"
+    result_backend = "redis://superset_cache:6379/0"
     worker_prefetch_multiplier = 1
     task_acks_late = False
     task_annotations = {

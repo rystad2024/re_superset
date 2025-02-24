@@ -380,6 +380,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                     activityData={activityData}
                     isFetchingActivityData={isFetchingActivityData}
                   />
+                  
                 ) : (
                   <LoadingCards />
                 )}

@@ -686,7 +686,7 @@ const DashboardBuilder = () => {
                 <div
                   css={css`
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: column;
                     align-items: center;
                     justify-content: center;
                     flex: 1;
@@ -706,7 +706,8 @@ const DashboardBuilder = () => {
                   />
                 </div>
               ) : (
-                <DashboardContainer topLevelTabs={topLevelTabs} />
+                <DashboardContainer topLevelTabs={topLevelTabs} /> // Drag and Drop portion
+                
               )
             ) : (
               <Loading />

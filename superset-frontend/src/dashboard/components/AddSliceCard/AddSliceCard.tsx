@@ -276,6 +276,7 @@ const AddSliceCard: FC<{
                 display: flex;
                 flex-direction: column;
               `}
+              // Have to look into this
             >
               <MetadataItem label={t('Viz type')} value={vizName} />
               <MetadataItem

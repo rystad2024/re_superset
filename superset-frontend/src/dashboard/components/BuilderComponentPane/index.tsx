@@ -68,7 +68,8 @@ const BuilderComponentPane = ({ topOffset = 0 }) => (
           }
         `}
       >
-        <Tabs.TabPane
+        {/* Tab section on the left right side panel */}
+        <Tabs.TabPane  
           key={1}
           tab={t('Charts')}
           css={css`
