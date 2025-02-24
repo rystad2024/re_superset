@@ -256,7 +256,6 @@ function DashboardTable({
               bulkSelectEnabled={false}
               showThumbnails={showThumbnails}
               userId={user?.userId}
-              userName={user?.username}
               loading={loading}
               openDashboardEditModal={(dashboard: Dashboard) =>
                 setEditModal(dashboard)

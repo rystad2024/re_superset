@@ -46,7 +46,6 @@ interface DashboardCardProps {
   saveFavoriteStatus: (id: number, isStarred: boolean) => void;
   favoriteStatus: boolean;
   userId?: string | number;
-  userName?: string;
   showThumbnails?: boolean;
   handleBulkDashboardExport: (dashboardsToExport: Dashboard[]) => void;
   onDelete: (dashboard: Dashboard) => void;
@@ -57,7 +56,6 @@ function DashboardCard({
   hasPerm,
   bulkSelectEnabled,
   userId,
-  userName,
   openDashboardEditModal,
   favoriteStatus,
   saveFavoriteStatus,
