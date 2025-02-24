@@ -91,6 +91,14 @@ import isDashboardLoading from '../../util/isDashboardLoading';
 import { useChartIds } from '../../util/charts/useChartIds';
 import { useDashboardMetadataBar } from './useDashboardMetadataBar';
 import { useHeaderActionsMenu } from './useHeaderActionsDropdownMenu';
+import { Dropdown } from 'src/components/Dropdown';
+import { DownloadOutlined, DownOutlined } from '@ant-design/icons';
+import DownloadMenuItems from '../menu/DownloadMenuItems';
+import SubMenuComponent from 'src/features/home/SubMenu';
+import DashboardsSubMenu from 'src/explore/components/useExploreAdditionalActionsMenu/DashboardsSubMenu';
+import { Menu } from 'src/components/Menu';
+import DownloadAsPdf from '../menu/DownloadMenuItems/DownloadAsPdf';
+import DownloadAsImage from '../menu/DownloadMenuItems/DownloadAsImage';
 
 const extensionsRegistry = getExtensionsRegistry();
 
@@ -579,9 +587,34 @@ const Header = () => {
     ],
   );
 
+  const DashboardDownloadButton = ({}) => {
+    const downloadMenu = (
+      <Menu>
+        <DownloadAsPdf
+          text={t('Download as PDF')}
+          dashboardTitle={dashboardTitle}
+          dashboardId={dashboardInfo.id}
+        />
+        <DownloadAsImage
+          text={t('Download as Image')}
+          dashboardTitle={dashboardTitle}
+          dashboardId={dashboardInfo.id}
+        />
+      </Menu>
+    );
+
+    return (
+      <Dropdown overlay={downloadMenu} trigger={['click']}>
+        <div role="button" className="btn btn-primary btn-sm">
+          {t('Download')} <DownloadOutlined />
+        </div>
+      </Dropdown>
+    );
+  };
+
   const rightPanelAdditionalItems = useMemo(
     () => (
-      <div className="button-container">
+      <div style={{ display: 'flex', gap: '8px' }}>
         {userCanSaveAs && (
           <div className="button-container" data-test="dashboard-edit-actions">
             {editMode && (
@@ -675,6 +708,7 @@ const Header = () => {
             )}
           </div>
         )}
+        <DashboardDownloadButton />
       </div>
     ),
     [

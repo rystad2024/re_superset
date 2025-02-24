@@ -36,7 +36,7 @@ import { Tooltip } from 'src/components/Tooltip';
 import { GenericLink } from 'src/components/GenericLink/GenericLink';
 import { Theme } from '@emotion/react';
 
-const FALLBACK_THUMBNAIL_URL = '/static/assets/images/chart-card-fallback.svg';
+const FALLBACK_THUMBNAIL_URL = '/static/assets/images/chart-fallback.svg';
 
 const TruncatedTextWithTooltip = ({
   children,
