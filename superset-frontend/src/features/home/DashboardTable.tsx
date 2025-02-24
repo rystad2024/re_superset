@@ -206,8 +206,8 @@ function DashboardTable({
               const target =
                 activeTab === TableTab.Favorite
                   ? `/workspaces/list/?filters=(favorite:(label:${t(
-                    'Yes',
-                  )},value:!t))`
+                      'Yes',
+                    )},value:!t))`
                   : '/workspaces/list/';
               history.push(target);
             },

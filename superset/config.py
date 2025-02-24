@@ -473,7 +473,7 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     # and doesn't work with all nested types.
     "PRESTO_EXPAND_DATA": False,
     # Exposes API endpoint to compute thumbnails
-    "THUMBNAILS": False,
+    "THUMBNAILS": True,
     # Enable the endpoints to cache and retrieve dashboard screenshots via webdriver.
     # Requires configuring Celery and a cache using THUMBNAIL_CACHE_CONFIG.
     "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS": False,

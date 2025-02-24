@@ -41,6 +41,7 @@ export type AntdMenuItemType = ReactElement & {
 export type MenuItemChildType = AntdMenuItemType;
 
 const StyledMenuItem = styled(AntdMenu.Item)`
+  background-color: #e8edf3;
   a {
     text-decoration: none;
   }
