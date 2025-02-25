@@ -87,7 +87,7 @@ const defaultTheme = {
       light2: '#EDBA8D',
     },
     grayscale: {
-      base: 'black', // Default text color
+      base: '#051938', // Default text color
       dark1: '#192C47', // Darker backgrounds for contrast
       dark2: '#051938', // Even darker for depth
       light1: '#A8B3C1', // Muted text color
