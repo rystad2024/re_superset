@@ -605,9 +605,9 @@ const Header = () => {
 
     return (
       <Dropdown overlay={downloadMenu} trigger={['click']}>
-        <div role="button" className="btn btn-primary btn-sm">
+        <Button type="primary">
           {t('Download')} <DownloadOutlined />
-        </div>
+        </Button>
       </Dropdown>
     );
   };
@@ -708,7 +708,7 @@ const Header = () => {
             )}
           </div>
         )}
-        <DashboardDownloadButton />
+        {!editMode && <DashboardDownloadButton />}
       </div>
     ),
     [
