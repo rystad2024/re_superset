@@ -41,7 +41,6 @@ export type AntdMenuItemType = ReactElement & {
 export type MenuItemChildType = AntdMenuItemType;
 
 const StyledMenuItem = styled(AntdMenu.Item)`
-  background-color: #e8edf3;
   a {
     text-decoration: none;
   }
@@ -67,7 +66,7 @@ const StyledMenuItem = styled(AntdMenu.Item)`
       }
       &:focus {
         @media (max-width: 767px) {
-          background-color: ${({ theme }) => theme.colors.primary.light5};
+          background-color: ${({ theme }) => theme.colors.primary.light1};
         }
       }
     }

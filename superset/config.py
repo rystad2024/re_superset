@@ -653,22 +653,60 @@ EXTRA_CATEGORICAL_COLOR_SCHEMES: list[dict[str, Any]] = []
 
 # THEME_OVERRIDES is used for adding custom theme to superset
 # example code for "My theme" custom scheme
-# THEME_OVERRIDES = {
-#   "borderRadius": 4,
-#   "colors": {
-#     "primary": {
-#       "base": 'red',
-#     },
-#     "secondary": {
-#       "base": 'green',
-#     },
-#     "grayscale": {
-#       "base": 'orange',
-#     }
-#   }
-# }
+THEME_OVERRIDES = {
+    "colors": {
+        "primary": {
+            "base": "#3B3A84",  # Dark primary color
+        },
+        "secondary": {
+            "base": "#E58843",  # Secondary color
+        },
+        "grayscale": {
+            "base": "#495B6D",  # Darker background elements
+            "light1": "#E1E5F8",  #lighter than before (for inactive elements)
+            "light2": "#798899",  # More contrast for readability
+            "dark1": "#495B6D",  # Even darker for better contrast
+            "dark2": "#2E435F",  # Almost black for maximum contrast
+        },
+        "orange": {
+            "base": '#FFF7E9',
+            "light1": '#EAA776',
+            "light2": '#EDBA8D',
+        },
+        "disabled": {
+            "base": "#A8B3C1",  # Make disabled elements slightly darker
+            "border": "#798899",  # Stronger border contrast
+            "text": "#495B6D",  # Darker text for visibility
+        },
+    },
+    "overrides": {
+        "Button": {
+            "default": {
+                "backgroundColor": "#495B6D",
+                "color": "#FFFFFF",
+                "borderColor": "#2E435F",
+            },
+            "hover": {
+                "backgroundColor": "#2E435F",
+                "color": "#FFFFFF",
+            },
+            "disabled": {
+                "backgroundColor": "#A8B3C1",
+                "color": "#495B6D",
+                "borderColor": "#798899",
+            },
+        },
+        "Input": {
+            "backgroundColor": "#E6ECF2",
+            "borderColor": "#798899",
+            "color": "#495B6D",
+        },
+    },
+}
 
-THEME_OVERRIDES: dict[str, Any] = {}
+
+
+# THEME_OVERRIDES: dict[str, Any] = {}
 
 # EXTRA_SEQUENTIAL_COLOR_SCHEMES is used for adding custom sequential color schemes
 # EXTRA_SEQUENTIAL_COLOR_SCHEMES =  [

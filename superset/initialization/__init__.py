@@ -256,7 +256,11 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
             category_icon="",
         )
 
-        appbuilder.add_link(
+       
+
+
+        appbuilder.add_view(
+            DatasetEditor,
             "Datasets",
             label=__("Datasets"),
             href="/exploredata/list/",

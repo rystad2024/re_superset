@@ -191,10 +191,10 @@ function DashboardTable({
             name: (
               <>
                 <i className="fa fa-plus" />
-                {t('Dashboard')}
+                {t('Workspace')}
               </>
             ),
-            buttonStyle: 'tertiary',
+            buttonStyle: 'primary',
             onClick: () => {
               window.location.assign('/dashboard/new');
             },

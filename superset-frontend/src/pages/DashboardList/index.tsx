@@ -677,7 +677,7 @@ function DashboardList(props: DashboardListProps) {
     subMenuButtons.push({
       name: (
         <>
-          <i className="fa fa-plus" /> {t('Dashboard')}
+          <i className="fa fa-plus" /> {t('Workspace')}
         </>
       ),
       buttonStyle: 'primary',

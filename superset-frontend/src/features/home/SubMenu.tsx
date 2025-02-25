@@ -72,25 +72,26 @@ const StyledHeader = styled.div`
   }
 
   .menu > .antd5-menu {
-    padding: ${({ theme }) => theme.gridUnit * 5}px
+    padding: ${({ theme }) => theme.gridUnit * 4}px
       ${({ theme }) => theme.gridUnit * 8}px;
 
+    background-color: ${({ theme }) => theme.colors.grayscale.light5};
     .antd5-menu-item {
       border-radius: ${({ theme }) => theme.borderRadius}px;
       font-size: ${({ theme }) => theme.typography.sizes.s}px;
-      padding: ${({ theme }) => theme.gridUnit}px
+      padding: ${({ theme }) => theme.gridUnit * 2}px
         ${({ theme }) => theme.gridUnit * 4}px;
       margin-right: ${({ theme }) => theme.gridUnit}px;
     }
-    .antd5-menu-item:hover,
     .antd5-menu-item:has(> span > .active) {
-      background-color: ${({ theme }) => theme.colors.secondary.light4};
+      background-color: ${({ theme }) => theme.colors.orange.light2};
+      color: ${({ theme }) => theme.colors.primary.base};
+    }
+    .antd5-menu-item:hover {
+      background-color: ${({ theme }) => theme.colors.orange.base};
     }
   }
 
-  .btn-link {
-    padding: 10px 0;
-  }
   @media (max-width: 767px) {
     .header,
     .nav-right {

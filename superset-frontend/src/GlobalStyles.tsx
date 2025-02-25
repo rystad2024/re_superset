@@ -54,6 +54,10 @@ export const GlobalStyles = () => (
         z-index: ${theme.zIndex.max} !important;
       }
 
+      // [class*='menu'] {
+      //   background-color: ${theme.colors.primary.light4} !important;
+      // }
+
       // TODO: Remove when buttons have been upgraded to Ant Design 5.
       // Check src/components/Modal for more info.
       .ant-modal-confirm {

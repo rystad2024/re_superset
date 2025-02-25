@@ -57,7 +57,6 @@ from superset.views.datasource.utils import get_samples
 from superset.views.error_handling import handle_api_exception
 from superset.views.utils import sanitize_datasource_data
 
-
 class Datasource(BaseSupersetView):
     """Datasource-related views"""
 
@@ -210,23 +209,29 @@ class Datasource(BaseSupersetView):
         )
         return self.json_response({"result": rv})
 
-
 class DatasetEditor(BaseSupersetView):
-    route_base = "/dataset"
+    route_base = "/exploredata"
     class_permission_name = "Dataset"
+
+    @expose("/list/")
+    @has_access
+    @permission_name("read")  # ✅ Ensure "read" permission
+    def list(self) -> FlaskResponse:
+        """Ensure the list page is accessible"""
+        return self.render_app_template()
 
     @expose("/add/")
     @has_access
     @permission_name("read")
     def root(self) -> FlaskResponse:
-        return super().render_app_template()
+        return self.render_app_template()
 
     @expose("/<pk>", methods=("GET",))
     @has_access
     @permission_name("read")
-    # pylint: disable=unused-argument
     def show(self, pk: int) -> FlaskResponse:
         dev = request.args.get("testing")
         if dev is not None:
-            return super().render_app_template()
-        return redirect("/")
+            return self.render_app_template()
+        return self.render_app_template()
+

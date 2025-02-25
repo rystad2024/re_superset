@@ -57,67 +57,77 @@ const defaultTheme = {
   borderRadius: 4,
   colors: {
     text: {
-      label: '#879399',
-      help: '#737373',
+      label: '#798899', // Darker for better readability
+      help: '#798899',
     },
     primary: {
-      base: '#20A7C9',
-      dark1: '#1A85A0',
-      dark2: '#156378',
-      light1: '#79CADE',
-      light2: '#A5DAE9',
-      light3: '#D2EDF4',
-      light4: '#E9F6F9',
-      light5: '#F3F8FA',
+      base: '#495B6D', // Your main brand blue
+      dark1: '#5B67D6', // Darker for hover/active states
+      dark2: '#192C47',
+      light1: '#798899', // Lighter for subtle interactions
+      light2: '#A8B3C1',
+      light3: '#CBD5E1',
+      light4: '#E6ECF2',
+      light5: '#F1F5F9',
     },
     secondary: {
       base: '#444E7C',
       dark1: '#363E63',
       dark2: '#282E4A',
       dark3: '#1B1F31',
-      light1: '#8E94B0',
+      light1: '#E1E5F8',
       light2: '#B4B8CA',
       light3: '#D9DBE4',
       light4: '#ECEEF2',
-      light5: '#F5F5F8',
+      light5: '#F8FAFC',
+    },
+    orange: {
+      base: '#FFF7E9',
+      light1: '#EAA776',
+      light2: '#EDBA8D',
     },
     grayscale: {
-      base: '#666666',
-      dark1: '#323232',
-      dark2: '#000000',
-      light1: '#B2B2B2',
-      light2: '#E0E0E0',
-      light3: '#F0F0F0',
-      light4: '#F7F7F7',
-      light5: '#FFFFFF',
+      base: '#051938', // Default text color
+      dark1: '#192C47', // Darker backgrounds for contrast
+      dark2: '#051938', // Even darker for depth
+      light1: '#A8B3C1', // Muted text color
+      light2: '#CBD5E1', // Disabled element background
+      light3: '#E6ECF2', // Inputs & dropdowns
+      light4: '#F1F5F9', // Lighter backgrounds
+      light5: '#FFFFFF', // White
+    },
+    disabled: {
+      base: '#CBD5E1', // Better contrast for disabled buttons
+      text: 'black', // Darker for readability
+      border: '#A8B3C1',
     },
     error: {
-      base: '#E04355',
+      base: '#E63946',
       dark1: '#A7323F',
       dark2: '#6F212A',
       light1: '#EFA1AA',
       light2: '#FAEDEE',
     },
     warning: {
-      base: '#FCC700',
+      base: '#E9C46A',
       dark1: '#BC9501',
       dark2: '#7D6300',
       light1: '#FDE380',
       light2: '#FEF9E6',
     },
     success: {
-      base: '#5AC189',
-      dark1: '#439066',
-      dark2: '#2B6144',
+      base: '#2A9D8F',
+      dark1: '#1B6F64',
+      dark2: '#134D45',
       light1: '#ACE1C4',
       light2: '#EEF8F3',
     },
     info: {
-      base: '#66BCFE',
-      dark1: '#4D8CBE',
-      dark2: '#315E7E',
-      light1: '#B3DEFE',
-      light2: '#EFF8FE',
+      base: '#457B9D',
+      dark1: '#2E5671',
+      dark2: '#1E3A4B',
+      light1: '#A5CBE5',
+      light2: '#E5F3FA',
     },
   },
   opacity: {

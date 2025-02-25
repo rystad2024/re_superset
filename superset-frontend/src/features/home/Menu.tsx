@@ -42,12 +42,12 @@ interface MenuProps {
 
 const StyledHeader = styled.header`
   ${({ theme }) => `
-      background-color: #E8EDF3;
+      background-color: white;
       margin-bottom: 2px;
       z-index: 10;
 
       .main-nav, .navbar {
-  background-color: #E8EDF3;
+  background-color: white;
 }
       &:nth-last-of-type(2) nav {
         margin-bottom: 2px;
