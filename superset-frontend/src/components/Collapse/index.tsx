@@ -74,7 +74,7 @@ const Collapse = Object.assign(
       .ant-collapse-content {
         .ant-collapse-content-box {
           .loading.inline {
-            margin: ${({ theme }) => theme.gridUnit * 12}px auto;
+            margin: ${({ theme }) => theme.gridUnit * 2}px auto;
             display: block;
           }
         }

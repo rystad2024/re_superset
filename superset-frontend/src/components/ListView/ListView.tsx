@@ -91,7 +91,7 @@ const BulkSelectWrapper = styled(Alert)`
   ${({ theme }) => `
     border-radius: 0;
     margin-bottom: 0;
-    color: ${theme.colors.grayscale.dark1};
+    color: ${theme.colors.grayscale.base};
     background-color: ${theme.colors.primary.light4};
 
     .selectedCopy {
@@ -155,10 +155,7 @@ const ViewModeContainer = styled.div`
   }
 
   .active {
-    background-color: ${({ theme }) => theme.colors.grayscale.base};
-    svg {
-      color: ${({ theme }) => theme.colors.grayscale.light5};
-    }
+    background-color: ${({ theme }) => theme.colors.grayscale.light1};
   }
 `;
 

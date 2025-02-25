@@ -191,7 +191,7 @@ function ChartTable({
                 {t('Chart')}
               </>
             ),
-            buttonStyle: 'tertiary',
+            buttonStyle: 'primary',
             onClick: () => {
               window.location.assign('/chart/add');
             },

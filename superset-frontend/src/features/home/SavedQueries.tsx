@@ -262,7 +262,7 @@ const SavedQueries = ({
                 {t('SQL Query')}
               </Link>
             ),
-            buttonStyle: 'tertiary',
+            buttonStyle: 'primary',
           },
           {
             name: t('View All »'),
