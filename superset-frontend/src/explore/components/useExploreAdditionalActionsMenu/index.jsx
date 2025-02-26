@@ -320,7 +320,7 @@ export const useExploreAdditionalActionsMenu = (
           </Menu.SubMenu>
           <Menu.Divider />
         </>
-        <Menu.SubMenu title={t('Download')} key={MENU_KEYS.DOWNLOAD_SUBMENU}>
+        {/* <Menu.SubMenu title={t('Download')} key={MENU_KEYS.DOWNLOAD_SUBMENU}>
           {VIZ_TYPES_PIVOTABLE.includes(latestQueryFormData.viz_type) ? (
             <>
               <Menu.Item
@@ -367,7 +367,7 @@ export const useExploreAdditionalActionsMenu = (
           >
             {t('Export to Excel')}
           </Menu.Item>
-        </Menu.SubMenu>
+        </Menu.SubMenu> */}
         <Menu.SubMenu title={t('Share')} key={MENU_KEYS.SHARE_SUBMENU}>
           <Menu.Item key={MENU_KEYS.COPY_PERMALINK}>
             {t('Copy permalink to clipboard')}
@@ -452,5 +452,12 @@ export const useExploreAdditionalActionsMenu = (
       theme.gridUnit,
     ],
   );
-  return [menu, isDropdownVisible, setIsDropdownVisible];
+  return [
+    menu,
+    isDropdownVisible,
+    setIsDropdownVisible,
+    canDownloadCSV,
+    handleMenuClick,
+    MENU_KEYS,
+  ];
 };
