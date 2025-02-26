@@ -22,7 +22,7 @@ from superset.views.base import BaseSupersetView
 
 
 class SliceModelView(BaseSupersetView):
-    route_base = "/chart"
+    route_base = "/widgets"
     class_permission_name = "Chart"
     method_permission_name = MODEL_VIEW_RW_METHOD_PERMISSION_MAP
 

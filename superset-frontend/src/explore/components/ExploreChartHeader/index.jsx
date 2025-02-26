@@ -21,7 +21,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'src/components/Tooltip';
-import { css, logging, SupersetClient, t } from '@superset-ui/core';
+import { css, logging, SupersetClient, t, VizType } from '@superset-ui/core';
 import { chartPropShape } from 'src/dashboard/util/propShapes';
 import AlteredSliceTag from 'src/components/AlteredSliceTag';
 import Button from 'src/components/Button';
@@ -36,8 +36,11 @@ import DeleteModal from 'src/components/DeleteModal';
 import { deleteActiveReport } from 'src/features/reports/ReportModal/actions';
 import { useExploreAdditionalActionsMenu } from '../useExploreAdditionalActionsMenu';
 import { useExploreMetadataBar } from './useExploreMetadataBar';
-
+import { Menu } from 'src/components/Menu';
+import { Dropdown } from 'antd-v5';
+import { DownloadOutlined } from '@ant-design/icons';
 const propTypes = {
+  handleMenuClick: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   canOverwrite: PropTypes.bool.isRequired,
   canDownload: PropTypes.bool.isRequired,
@@ -69,6 +72,7 @@ const additionalItemsStyles = theme => css`
     margin-right: ${theme.gridUnit * 3}px;
   }
 `;
+const VIZ_TYPES_PIVOTABLE = [VizType.PivotTable];
 
 export const ExploreChartHeader = ({
   dashboardId,
@@ -167,22 +171,89 @@ export const ExploreChartHeader = ({
     [redirectSQLLab, history],
   );
 
-  const [menu, isDropdownVisible, setIsDropdownVisible] =
-    useExploreAdditionalActionsMenu(
-      latestQueryFormData,
-      canDownload,
-      slice,
-      redirectToSQLLab,
-      openPropertiesModal,
-      ownState,
-      metadata?.dashboards,
-      showReportModal,
-      setCurrentReportDeleting,
-    );
+  const [
+    menu,
+    isDropdownVisible,
+    setIsDropdownVisible,
+    canDownloadCSV,
+    handleMenuClick,
+    MENU_KEYS,
+  ] = useExploreAdditionalActionsMenu(
+    latestQueryFormData,
+    canDownload,
+    slice,
+    redirectToSQLLab,
+    openPropertiesModal,
+    ownState,
+    metadata?.dashboards,
+    showReportModal,
+    setCurrentReportDeleting,
+  );
 
   const metadataBar = useExploreMetadataBar(metadata, slice);
-
   const oldSliceName = slice?.slice_name;
+
+  const DownloadButton = () => {
+    const downloadMenu = (
+      <Menu onClick={handleMenuClick} key={MENU_KEYS.DOWNLOAD_SUBMENU}>
+        {VIZ_TYPES_PIVOTABLE.includes(latestQueryFormData.viz_type) ? (
+          <>
+            <Menu.Item
+              key={MENU_KEYS.EXPORT_TO_CSV}
+              icon={<Icons.FileOutlined />}
+              disabled={!canDownloadCSV}
+            >
+              {t('Export to original .CSV')}
+            </Menu.Item>
+            <Menu.Item
+              key={MENU_KEYS.EXPORT_TO_CSV_PIVOTED}
+              icon={<Icons.FileOutlined />}
+              disabled={!canDownloadCSV}
+            >
+              {t('Export to pivoted .CSV')}
+            </Menu.Item>
+          </>
+        ) : (
+          <Menu.Item
+            key={MENU_KEYS.EXPORT_TO_CSV}
+            icon={<Icons.FileOutlined />}
+            disabled={!canDownloadCSV}
+          >
+            {t('Export to .CSV')}
+          </Menu.Item>
+        )}
+        <Menu.Item
+          key={MENU_KEYS.EXPORT_TO_JSON}
+          icon={<Icons.FileOutlined />}
+          disabled={!canDownloadCSV}
+        >
+          {t('Export to .JSON')}
+        </Menu.Item>
+        <Menu.Item
+          key={MENU_KEYS.DOWNLOAD_AS_IMAGE}
+          icon={<Icons.FileImageOutlined />}
+        >
+          {t('Download as image')}
+        </Menu.Item>
+        <Menu.Item
+          key={MENU_KEYS.EXPORT_TO_XLSX}
+          icon={<Icons.FileOutlined />}
+          disabled={!canDownloadCSV}
+        >
+          {t('Export to Excel')}
+        </Menu.Item>
+      </Menu>
+    );
+
+    return (
+      <Dropdown overlay={downloadMenu} trigger={['click']}>
+        <Button type="primary">
+          {t('Download')} <DownloadOutlined />
+        </Button>
+      </Dropdown>
+    );
+  };
+
   return (
     <>
       <PageHeaderWithActions
@@ -225,27 +296,30 @@ export const ExploreChartHeader = ({
           </div>
         }
         rightPanelAdditionalItems={
-          <Tooltip
-            title={
-              saveDisabled
-                ? t('Add required control values to save chart')
-                : null
-            }
-          >
-            {/* needed to wrap button in a div - antd tooltip doesn't work with disabled button */}
-            <div>
-              <Button
-                buttonStyle="secondary"
-                onClick={showModal}
-                disabled={saveDisabled}
-                data-test="query-save-button"
-                css={saveButtonStyles}
-              >
-                <Icons.SaveOutlined iconSize="l" />
-                {t('Save')}
-              </Button>
-            </div>
-          </Tooltip>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <Tooltip
+              title={
+                saveDisabled
+                  ? t('Add required control values to save chart')
+                  : null
+              }
+            >
+              {/* needed to wrap button in a div - antd tooltip doesn't work with disabled button */}
+              <div>
+                <Button
+                  buttonStyle="secondary"
+                  onClick={showModal}
+                  disabled={saveDisabled}
+                  data-test="query-save-button"
+                  css={saveButtonStyles}
+                >
+                  {t('Save')}
+                  <Icons.SaveOutlined iconSize="l" />
+                </Button>
+              </div>
+            </Tooltip>
+            <DownloadButton />
+          </div>
         }
         additionalActionsMenu={menu}
         menuDropdownProps={{

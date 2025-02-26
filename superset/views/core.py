@@ -421,7 +421,7 @@ class Superset(BaseSupersetView):
                     )
             except (ChartNotFoundError, ExplorePermalinkGetFailedError) as ex:
                 flash(__("Error: %(msg)s", msg=ex.message), "danger")
-                return redirect("/chart/list/")
+                return redirect("/widgets/list/")
         elif form_data_key:
             parameters = CommandParameters(key=form_data_key)
             value = GetFormDataCommand(parameters).run()

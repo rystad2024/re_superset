@@ -157,7 +157,7 @@ export function Menu({
   enum Paths {
     Explore = '/explore',
     Dashboard = '/workspace',
-    Chart = '/chart',
+    Chart = '/widgets',
     Datasets = '/exploredata',
   }
 
@@ -175,7 +175,7 @@ export function Menu({
         setActiveTabs(['Explore Data']);
         break;
       case path.startsWith(Paths.Chart) || path.startsWith(Paths.Explore):
-        setActiveTabs(['Charts']);
+        setActiveTabs(['Widgets']);
         break;
 
       default:
@@ -322,6 +322,9 @@ export default function MenuWrapper({ data, ...rest }: MenuProps) {
     } else if (x.label === 'Datasets') {
       x.label = 'Explore Data';
       x.name = 'Explore Data';
+    } else if (x.label === 'Charts') {
+      x.label = 'Widgets';
+      x.name = 'Widgets';
     }
   });
 
