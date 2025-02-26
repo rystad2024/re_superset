@@ -760,7 +760,7 @@ function ChartList(props: ChartListProps) {
     subMenuButtons.push({
       name: (
         <>
-          <i className="fa fa-plus" /> {t('Chart')}
+          <i className="fa fa-plus" /> {t('Widget')}
         </>
       ),
       buttonStyle: 'primary',
@@ -773,7 +773,7 @@ function ChartList(props: ChartListProps) {
       name: (
         <Tooltip
           id="import-tooltip"
-          title={t('Import charts')}
+          title={t('Import widget')}
           placement="bottomRight"
         >
           <Icons.Import data-test="import-button" />
@@ -786,7 +786,7 @@ function ChartList(props: ChartListProps) {
 
   return (
     <>
-      <SubMenu name={t('Charts')} buttons={subMenuButtons} />
+      <SubMenu name={t('Widgets')} buttons={subMenuButtons} />
       {sliceCurrentlyEditing && (
         <PropertiesModal
           onHide={closeChartEditModal}
