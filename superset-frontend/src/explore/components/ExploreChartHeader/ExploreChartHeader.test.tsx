@@ -62,6 +62,7 @@ const createProps = (additionalProps = {}) => ({
     },
     chartStatus: 'rendered',
   },
+  handleMenuClick: jest.fn(), // ✅ Add this line
   slice: {
     cache_timeout: null,
     changed_on: '2021-03-19T16:30:56.750230',
