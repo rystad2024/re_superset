@@ -22,8 +22,8 @@
 # unique random secure passwords and SECRET_KEY.
 # -----------------------------------------------------------------------
 x-superset-user: &superset-user root
-x-superset-volumes: &superset-volumes
-  # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
+x-superset-volumes:
+  &superset-volumes # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
   - ./docker:/app/docker
   - ./superset:/app/superset
   - ./superset-frontend:/app/superset-frontend
@@ -37,7 +37,7 @@ x-common-build: &common-build
     - apache/superset-cache:3.10-slim-bookworm
   args:
     DEV_MODE: "true"
-    INCLUDE_CHROMIUM: ${INCLUDE_CHROMIUM:-false}
+    INCLUDE_CHROMIUM: "true"
     INCLUDE_FIREFOX: ${INCLUDE_FIREFOX:-false}
     BUILD_TRANSLATIONS: ${BUILD_TRANSLATIONS:-false}
 
@@ -57,7 +57,7 @@ services:
     container_name: superset_cache
     restart: unless-stopped
     ports:
-      - "127.0.0.1:6379:6379"
+      - "6379:6379"
     volumes:
       - redis:/data
 
@@ -101,6 +101,8 @@ services:
     environment:
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
 
   superset-websocket:
     container_name: superset_websocket
@@ -178,7 +180,7 @@ services:
       # configuring the dev-server to use the host.docker.internal to connect to the backend
       superset: "http://host.docker.internal:8088"
     ports:
-      - "127.0.0.1:9000:9000"  # exposing the dynamic webpack dev server
+      - "127.0.0.1:9000:9000" # exposing the dynamic webpack dev server
     container_name: superset_node
     command: ["/app/docker/docker-frontend.sh"]
     env_file:
@@ -202,6 +204,7 @@ services:
       CELERYD_CONCURRENCY: 2
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
+      ENABLE_PLAYWRIGHT: true
     restart: unless-stopped
     depends_on:
       superset-init:
@@ -211,10 +214,14 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ["CMD-SHELL", "celery -A superset.tasks.celery_app:app inspect ping -d celery@$$HOSTNAME"]
+      test:
+        [
+          "CMD-SHELL",
+          "celery -A superset.tasks.celery_app:app inspect ping -d celery@$$HOSTNAME",
+        ]
     # Bump memory limit if processing selenium / thumbnails on superset-worker
-    # mem_limit: 2038m
-    # mem_reservation: 128M
+    mem_limit: 2038m
+    mem_reservation: 128M
 
   superset-worker-beat:
     build:
@@ -264,7 +271,11 @@ services:
     user: *superset-user
     volumes: *superset-volumes
     healthcheck:
-      test: ["CMD-SHELL", "celery inspect ping -A superset.tasks.celery_app:app -d celery@$$HOSTNAME"]
+      test:
+        [
+          "CMD-SHELL",
+          "celery inspect ping -A superset.tasks.celery_app:app -d celery@$$HOSTNAME",
+        ]
 
 volumes:
   superset_home:

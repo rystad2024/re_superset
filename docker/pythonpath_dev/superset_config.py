@@ -26,6 +26,7 @@ import sys
 
 from celery.schedules import crontab
 from flask_caching.backends.filesystemcache import FileSystemCache
+from datetime import timedelta
 
 logger = logging.getLogger()
 
@@ -41,6 +42,11 @@ EXAMPLES_PASSWORD = os.getenv("EXAMPLES_PASSWORD")
 EXAMPLES_HOST = os.getenv("EXAMPLES_HOST")
 EXAMPLES_PORT = os.getenv("EXAMPLES_PORT")
 EXAMPLES_DB = os.getenv("EXAMPLES_DB")
+
+AUTH_ROLE_PUBLIC = 'Public'
+PUBLIC_ROLE_LIKE = 'Gamma'
+# The default user self registration role
+AUTH_USER_REGISTRATION_ROLE = "Public"
 
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = (
@@ -68,7 +74,7 @@ CACHE_CONFIG = {
     "CACHE_KEY_PREFIX": "superset_",
     "CACHE_REDIS_HOST": REDIS_HOST,
     "CACHE_REDIS_PORT": REDIS_PORT,
-    "CACHE_REDIS_DB": REDIS_RESULTS_DB,
+    "CACHE_REDIS_URL": "redis://redis:6379/0",  # Use "redis" as the hostname
 }
 DATA_CACHE_CONFIG = CACHE_CONFIG
 
@@ -94,15 +100,59 @@ class CeleryConfig:
             "schedule": crontab(minute=10, hour=0),
         },
     }
+THUMBNAIL_DRIVER_TYPE = "playwright"
+THUMBNAIL_SELENIUM_USER = "admin"  # Despite the name, this is used for Playwright too
+THUMBNAIL_SELENIUM_PASSWORD = "admin"
 
 
+# THUMBNAIL_CACHE_CONFIG = {
+#     "CACHE_TYPE": "RedisCache",
+#     "CACHE_DEFAULT_TIMEOUT": 300,
+#     "CACHE_KEY_PREFIX": "superset_thumbnails_",
+#     "CACHE_REDIS_URL": "redis://redis:6379/0",
+# }
+
+THUMBNAIL_CACHE_CONFIG = {
+    "CACHE_TYPE": "RedisCache",
+    "CACHE_DEFAULT_TIMEOUT": 10000,
+    "CACHE_KEY_PREFIX": "superset_thumbnails_",
+    "CACHE_REDIS_URL": "redis://redis:6379/0",  # Adjust the URL as needed
+}
+
+THUMBNAIL_SELENIUM_LOAD_TIME = 120
 CELERY_CONFIG = CeleryConfig
 
-FEATURE_FLAGS = {"ALERT_REPORTS": True}
+FEATURE_FLAGS = {
+    "ENABLE_TEMPLATE_PROCESSING": True,
+    "DRILL_BY": True,
+    "HORIZONTAL_FILTER_BAR": True,
+    "THUMBNAILS": True,
+    "THUMBNAILS_SQLA_LISTENERS": True,
+    "LISTVIEWS_DEFAULT_CARD_VIEW": True,
+    "ALERT_REPORTS": True,
+    "PLAYWRIGHT_REPORTS_AND_THUMBNAILS": True,
+    "USE_ANALAGOUS_COLORS": True,
+    "TAGGING_SYSTEM": False,
+    "ALLOW_PUBLIC_DASHBOARDS": True,  # Enable public dashboards
+    "ALLOW_PUBLIC_CHARTS": True,
+}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
-WEBDRIVER_BASEURL = "http://superset:8088/"  # When using docker compose baseurl should be http://superset_app:8088/  # noqa: E501
+WEBDRIVER_BASEURL = "http://superset_app:8088/"  # When using docker compose baseurl should be http://superset_app:8088/  # noqa: E501
 # The base URL for the email report hyperlinks.
 WEBDRIVER_BASEURL_USER_FRIENDLY = WEBDRIVER_BASEURL
+WEBDRIVER_TYPE = "playwright"
+
+WEBDRIVER_OPTION_ARGS = [
+    "--ignore-certificate-errors"
+]
+
+SCREENSHOT_LOCATE_WAIT = 1000
+SCREENSHOT_LOAD_WAIT = 5000
+SCREENSHOT_SELENIUM_RETRIES = 1
+
+SCREENSHOT_PLAYWRIGHT_WAIT_EVENT = "load"
+SCREENSHOT_PLAYWRIGHT_DEFAULT_TIMEOUT = 120000
+
 SQLLAB_CTAS_NO_LIMIT = True
 
 log_level_text = os.getenv("SUPERSET_LOG_LEVEL", "INFO")
@@ -129,7 +179,7 @@ try:
     from superset_config_docker import *  # noqa
 
     logger.info(
-        f"Loaded your Docker configuration at " f"[{superset_config_docker.__file__}]"
+        f"Loaded your Docker configuration at [{superset_config_docker.__file__}]"
     )
 except ImportError:
     logger.info("Using default Docker config...")
