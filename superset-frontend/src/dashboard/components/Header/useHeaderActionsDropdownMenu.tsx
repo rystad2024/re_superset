@@ -174,7 +174,7 @@ export const useHeaderActionsMenu = ({
             data-test="refresh-dashboard-menu-item"
             disabled={isLoading}
           >
-            {t('Refresh dashboard')}
+            {t('Refresh workspace')}
           </Menu.Item>
         )}
         {!editMode && !isEmbedded && (

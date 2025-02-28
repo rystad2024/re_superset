@@ -367,15 +367,15 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
             }
           >
             <Icons.PlusSmall />
-            {t('Create new chart')}
+            {t('Create new widget')}
           </NewChartButton>
         </NewChartButtonContainer>
         <Controls>
           <Input
             placeholder={
               this.state.showOnlyMyCharts
-                ? t('Filter your charts')
-                : t('Filter charts')
+                ? t('Filter your widgets')
+                : t('Filter widgets')
             }
             className="search-input"
             onChange={ev => this.handleChange(ev.target.value)}
@@ -407,11 +407,11 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
             onChange={this.onShowOnlyMyCharts}
             checked={this.state.showOnlyMyCharts}
           />
-          {t('Show only my charts')}
+          {t('Show only my widgets')}
           <InfoTooltipWithTrigger
             placement="top"
             tooltip={t(
-              `You can choose to display all charts that you have access to or only the ones you own.
+              `You can choose to display all widgets that you have access to or only the ones you own.
               Your filter selection will be saved and remain active until you choose to change it.`,
             )}
           />

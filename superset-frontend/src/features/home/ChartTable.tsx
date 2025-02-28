@@ -188,12 +188,12 @@ function ChartTable({
             name: (
               <>
                 <i className="fa fa-plus" />
-                {t('Chart')}
+                {t('Widget')}
               </>
             ),
             buttonStyle: 'primary',
             onClick: () => {
-              window.location.assign('/chart/add');
+              history.push('/chart/add');
             },
           },
           {

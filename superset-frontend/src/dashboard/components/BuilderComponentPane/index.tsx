@@ -70,7 +70,7 @@ const BuilderComponentPane = ({ topOffset = 0 }) => (
       >
         <Tabs.TabPane
           key={1}
-          tab={t('Charts')}
+          tab={t('Widgets')}
           css={css`
             height: 100%;
           `}
