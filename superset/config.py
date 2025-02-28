@@ -548,7 +548,7 @@ DEFAULT_FEATURE_FLAGS: dict[str, bool] = {
     # Set to True to replace Selenium with Playwright to execute reports and thumbnails.
     # Unlike Selenium, Playwright reports support deck.gl visualizations
     # Enabling this feature flag requires installing "playwright" pip package
-    "PLAYWRIGHT_REPORTS_AND_THUMBNAILS": False,
+    "PLAYWRIGHT_REPORTS_AND_THUMBNAILS": True,
     # Set to True to enable experimental chart plugins
     "CHART_PLUGINS_EXPERIMENTAL": False,
     # Regardless of database configuration settings, force SQLLAB to run async using Celery  # noqa: E501
@@ -1549,7 +1549,8 @@ WEBDRIVER_CONFIGURATION = {
 WEBDRIVER_OPTION_ARGS = ["--headless"]
 
 # The base URL to query for accessing the user interface
-WEBDRIVER_BASEURL = "http://0.0.0.0:8080/"
+WEBDRIVER_BASEURL = "http://superset_app:8088/"  
+WEBDRIVER_TYPE = "chrome"
 # The base URL for the email report hyperlinks.
 WEBDRIVER_BASEURL_USER_FRIENDLY = WEBDRIVER_BASEURL
 # Time selenium will wait for the page to load and render for the email report.
