@@ -17,6 +17,8 @@
  * under the License.
  */
 import {
+  isFeatureEnabled,
+  FeatureFlag,
   getExtensionsRegistry,
   styled,
   SupersetClient,
@@ -58,7 +60,6 @@ import { GenericLink } from 'src/components/GenericLink/GenericLink';
 
 import {
   PAGE_SIZE,
-  SORT_BY,
   PASSWORDS_NEEDED_MESSAGE,
   CONFIRM_OVERWRITE_MESSAGE,
 } from 'src/features/datasets/constants';
@@ -66,6 +67,7 @@ import DuplicateDatasetModal from 'src/features/datasets/DuplicateDatasetModal';
 import { useSelector } from 'react-redux';
 import { ModifiedInfo } from 'src/components/AuditInfo';
 import { QueryObjectColumns } from 'src/views/CRUD/types';
+import DatasetCard from 'src/features/datasets/DatasetCard';
 
 const extensionsRegistry = getExtensionsRegistry();
 const DatasetDeleteRelatedExtension = extensionsRegistry.get(
@@ -103,7 +105,7 @@ const Actions = styled.div`
   }
 `;
 
-type Dataset = {
+export type Dataset = {
   changed_by_name: string;
   changed_by: string;
   changed_on_delta_humanized: string;
@@ -117,6 +119,8 @@ type Dataset = {
   owners: Array<Owner>;
   schema: string;
   table_name: string;
+  certified_by?: string;
+  certification_details?: string;
 };
 
 interface VirtualDataset extends Dataset {
@@ -206,7 +210,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
   const canDuplicate = hasPerm('can_duplicate');
   const canExport = hasPerm('can_export');
 
-  const initialSort = SORT_BY;
+  const initialSort = [{ id: 'changed_on_delta_humanized', desc: true }];
 
   const openDatasetEditModal = useCallback(
     ({ id }: Dataset) => {
@@ -648,6 +652,25 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     });
   }
 
+  const renderCard = useCallback(
+    (dataset: Dataset) => (
+      <DatasetCard
+        dataset={dataset}
+        hasPerm={hasPerm}
+        openDatasetEditModal={openDatasetEditModal}
+        openDatasetDeleteModal={openDatasetDeleteModal}
+        bulkSelectEnabled={bulkSelectEnabled}
+        addDangerToast={addDangerToast}
+        addSuccessToast={addSuccessToast}
+        refreshData={refreshData}
+        userId={user.userId}
+        loading={loading}
+        handleBulkDatasetExport={handleBulkDatasetExport}
+      />
+    ),
+    [addDangerToast, addSuccessToast, bulkSelectEnabled, hasPerm, loading],
+  );
+
   menuData.buttons = buttonArr;
 
   const closeDatasetDeleteModal = () => {
@@ -661,6 +684,27 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
   const closeDatasetDuplicateModal = () => {
     setDatasetCurrentlyDuplicating(null);
   };
+
+  const sortTypes = [
+    {
+      desc: false,
+      id: 'table_name',
+      label: t('Alphabetical'),
+      value: 'alphabetical',
+    },
+    {
+      desc: true,
+      id: 'changed_on_delta_humanized',
+      label: t('Recently modified'),
+      value: 'recently_modified',
+    },
+    {
+      desc: false,
+      id: 'changed_on_delta_humanized',
+      label: t('Least recently modified'),
+      value: 'least_recently_modified',
+    },
+  ];
 
   const handleDatasetDelete = ({ id, table_name: tableName }: Dataset) => {
     SupersetClient.delete({
@@ -862,6 +906,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
             <ListView<Dataset>
               className="dataset-list-view"
               columns={columns}
+              cardSortSelectOptions={sortTypes}
               data={datasets}
               count={datasetCount}
               pageSize={PAGE_SIZE}
@@ -875,6 +920,12 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
               addDangerToast={addDangerToast}
               addSuccessToast={addSuccessToast}
               refreshData={refreshData}
+              defaultViewMode={
+                isFeatureEnabled(FeatureFlag.ListviewsDefaultCardView)
+                  ? 'card'
+                  : 'table'
+              }
+              renderCard={renderCard}
               renderBulkSelectCopy={selected => {
                 const { virtualCount, physicalCount } = selected.reduce(
                   (acc, e) => {

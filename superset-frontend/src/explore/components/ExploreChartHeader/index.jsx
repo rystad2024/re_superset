@@ -264,8 +264,8 @@ export const ExploreChartHeader = ({
             canOverwrite ||
             (slice?.owners || []).includes(user?.userId),
           onSave: actions.updateChartTitle,
-          placeholder: t('Add the name of the chart'),
-          label: t('Chart title'),
+          placeholder: t('Add the name of the widget'),
+          label: t('Widget title'),
         }}
         showTitlePanelItems={!!slice}
         certificatiedBadgeProps={{
@@ -300,7 +300,7 @@ export const ExploreChartHeader = ({
             <Tooltip
               title={
                 saveDisabled
-                  ? t('Add required control values to save chart')
+                  ? t('Add required control values to save widget')
                   : null
               }
             >

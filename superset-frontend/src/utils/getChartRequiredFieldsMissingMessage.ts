@@ -19,8 +19,8 @@
 
 import { t } from '@superset-ui/core';
 
-const CREATE_CHART_TEXT = t('Create chart');
-const UPDATE_CHART_TEXT = t('Update chart');
+const CREATE_CHART_TEXT = t('Create widget');
+const UPDATE_CHART_TEXT = t('Update widget');
 
 export const getChartRequiredFieldsMissingMessage = (isCreating: boolean) =>
   t(

@@ -116,7 +116,7 @@ const VizTypeControl = ({
         `}
       >
         <span role="button" tabIndex={0} onClick={openModal}>
-          {t('View all charts')}
+          {t('View all widgets')}
         </span>
       </div>
       <UnpaddedModal
