@@ -137,7 +137,7 @@ const mockedProps = {
         name: 'Charts',
         icon: 'fa-bar-chart',
         label: 'Charts',
-        url: '/widgets/list/',
+        url: '/chart/list/',
         index: 3,
       },
       {
