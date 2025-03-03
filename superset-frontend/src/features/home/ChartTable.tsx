@@ -188,12 +188,12 @@ function ChartTable({
             name: (
               <>
                 <i className="fa fa-plus" />
-                {t('Chart')}
+                {t('Widget')}
               </>
             ),
             buttonStyle: 'primary',
             onClick: () => {
-              window.location.assign('/chart/add');
+              history.push('/chart/add');
             },
           },
           {
@@ -202,10 +202,10 @@ function ChartTable({
             onClick: () => {
               const target =
                 activeTab === TableTab.Favorite
-                  ? `/widgets/list/?filters=(favorite:(label:${t(
+                  ? `/chart/list/?filters=(favorite:(label:${t(
                       'Yes',
                     )},value:!t))`
-                  : '/widgets/list/';
+                  : '/chart/list/';
               history.push(target);
             },
           },

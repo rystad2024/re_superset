@@ -223,7 +223,7 @@ const RightMenu = ({
       view: 'Superset',
     },
     {
-      label: t('Chart'),
+      label: t('Widget'),
       url: Number.isInteger(dashboardId)
         ? `/chart/add?dashboard_id=${dashboardId}`
         : '/chart/add',
@@ -232,7 +232,7 @@ const RightMenu = ({
       view: 'Chart',
     },
     {
-      label: t('Dashboard'),
+      label: t('Workspace'),
       url: '/dashboard/new',
       icon: 'fa-fw fa-dashboard',
       perm: 'can_write',

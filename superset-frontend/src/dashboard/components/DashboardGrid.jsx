@@ -206,15 +206,15 @@ class DashboardGrid extends PureComponent {
 
     const dashboardEmptyState = editMode && (
       <EmptyState
-        title={t('Drag and drop components and charts to the dashboard')}
+        title={t('Drag and drop components and widgets to the workspace')}
         description={t(
-          'You can create a new chart or use existing ones from the panel on the right',
+          'You can create a new widget or use existing ones from the panel on the right',
         )}
         size="large"
         buttonText={
           <>
             <i className="fa fa-plus" />
-            {t('Create a new chart')}
+            {t('Create a new widget')}
           </>
         }
         buttonAction={() => {
@@ -238,7 +238,7 @@ class DashboardGrid extends PureComponent {
         buttonText={
           <>
             <i className="fa fa-plus" />
-            {t('Create a new chart')}
+            {t('Create a new widget')}
           </>
         }
         buttonAction={() => {

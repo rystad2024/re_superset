@@ -157,7 +157,7 @@ export function Menu({
   enum Paths {
     Explore = '/explore',
     Dashboard = '/workspace',
-    Chart = '/widgets',
+    Chart = '/chart',
     Datasets = '/exploredata',
   }
 

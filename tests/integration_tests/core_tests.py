@@ -345,7 +345,7 @@ class TestCore(SupersetTestCase):
 
     def test_gamma(self):
         self.login(GAMMA_USERNAME)
-        assert "Charts" in self.get_resp("/widgets/list/")
+        assert "Charts" in self.get_resp("/chart/list/")
         assert "Dashboards" in self.get_resp("/workspaces/list/")
 
     def test_templated_sql_json(self):

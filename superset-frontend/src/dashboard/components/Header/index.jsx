@@ -701,9 +701,9 @@ const Header = () => {
                 data-test="edit-dashboard-button"
                 className="action-button"
                 css={editButtonStyle}
-                aria-label={t('Edit dashboard')}
+                aria-label={t('Edit workspace')}
               >
-                {t('Edit dashboard')}
+                {t('Edit workspace')}
               </Button>
             )}
           </div>

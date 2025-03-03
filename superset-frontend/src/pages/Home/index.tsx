@@ -385,7 +385,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   <LoadingCards />
                 )}
               </Collapse.Panel>
-              <Collapse.Panel header={t('Dashboards')} key="2">
+              <Collapse.Panel header={t('Workspaces')} key="2">
                 {!dashboardData || isRecentActivityLoading ? (
                   <LoadingCards cover={checked} />
                 ) : (
@@ -399,7 +399,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   />
                 )}
               </Collapse.Panel>
-              <Collapse.Panel header={t('Charts')} key="3">
+              <Collapse.Panel header={t('Widgets')} key="3">
                 {!chartData || isRecentActivityLoading ? (
                   <LoadingCards cover={checked} />
                 ) : (
@@ -413,7 +413,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   />
                 )}
               </Collapse.Panel>
-              {canReadSavedQueries && (
+              {/* {canReadSavedQueries && (
                 <Collapse.Panel header={t('Saved queries')} key="4">
                   {!queryData ? (
                     <LoadingCards cover={checked} />
@@ -426,7 +426,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                     />
                   )}
                 </Collapse.Panel>
-              )}
+              )} */}
             </Collapse>
           </>
         )}
