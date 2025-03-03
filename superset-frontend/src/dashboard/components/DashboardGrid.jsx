@@ -219,7 +219,7 @@ class DashboardGrid extends PureComponent {
         }
         buttonAction={() => {
           window.open(
-            `/widgets/add?dashboard_id=${dashboardId}`,
+            `/chart/add?dashboard_id=${dashboardId}`,
             '_blank',
             'noopener noreferrer',
           );

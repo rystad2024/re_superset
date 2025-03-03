@@ -18,7 +18,7 @@
  */
 
 export const DASHBOARD_LIST = '/workspaces/list/';
-export const CHART_LIST = '/widgets/list/';
+export const CHART_LIST = '/chart/list/';
 export const WORLD_HEALTH_DASHBOARD = '/superset/dashboard/world_health/';
 export const SAMPLE_DASHBOARD_1 = '/superset/dashboard/1-sample-dashboard/';
 export const SUPPORTED_CHARTS_DASHBOARD =

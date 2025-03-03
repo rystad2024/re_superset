@@ -148,7 +148,7 @@ export const routes: Routes = [
     Component: ChartCreation,
   },
   {
-    path: '/widgets/list/',
+    path: '/chart/list/',
     Component: ChartList,
   },
   {

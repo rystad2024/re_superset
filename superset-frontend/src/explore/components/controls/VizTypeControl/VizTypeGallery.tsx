@@ -74,7 +74,7 @@ export const MAX_ADVISABLE_VIZ_GALLERY_WIDTH = 1090;
 
 const OTHER_CATEGORY = t('Other');
 
-const ALL_CHARTS = t('All charts');
+const ALL_CHARTS = t('All widgets');
 
 const FEATURED = t('Featured');
 
@@ -731,7 +731,7 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
           type="text"
           ref={searchInputRef as any /* cast required because emotion */}
           value={searchInputValue}
-          placeholder={t('Search all charts')}
+          placeholder={t('Search all widgets')}
           onChange={changeSearch}
           onFocus={focusSearch}
           data-test={`${VIZ_TYPE_CONTROL_TEST_ID}__search-input`}

@@ -326,7 +326,7 @@ export class ChartCreation extends PureComponent<
 
     return (
       <StyledContainer>
-        <h3>{t('Create a new chart')}</h3>
+        <h3>{t('Create a new widget')}</h3>
         <Steps direction="vertical" size="small">
           <Steps.Step
             title={<StyledStepTitle>{t('Choose a dataset')}</StyledStepTitle>}
@@ -349,7 +349,7 @@ export class ChartCreation extends PureComponent<
             }
           />
           <Steps.Step
-            title={<StyledStepTitle>{t('Choose chart type')}</StyledStepTitle>}
+            title={<StyledStepTitle>{t('Choose widget type')}</StyledStepTitle>}
             status={this.state.vizType ? 'finish' : 'process'}
             description={
               <StyledStepDescription>
@@ -367,7 +367,7 @@ export class ChartCreation extends PureComponent<
         <div className="footer">
           {isButtonDisabled && (
             <span>
-              {t('Please select both a Dataset and a Chart type to proceed')}
+              {t('Please select both a Dataset and a Widget type to proceed')}
             </span>
           )}
           <Button
@@ -375,7 +375,7 @@ export class ChartCreation extends PureComponent<
             disabled={isButtonDisabled}
             onClick={this.gotoSlice}
           >
-            {t('Create new chart')}
+            {t('Create new widget')}
           </Button>
         </div>
       </StyledContainer>

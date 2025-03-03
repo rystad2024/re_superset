@@ -44,7 +44,7 @@ const REDIRECTS = {
     [WelcomeTable.SavedQueries]: '/sqllab?new=true',
   },
   viewAll: {
-    [WelcomeTable.Charts]: '/widgets/list',
+    [WelcomeTable.Charts]: '/chart/list',
     [WelcomeTable.Dashboards]: '/workspaces/list/',
     [WelcomeTable.SavedQueries]: '/savedqueryview/list/',
   },

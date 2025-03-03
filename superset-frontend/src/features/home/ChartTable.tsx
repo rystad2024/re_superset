@@ -202,10 +202,10 @@ function ChartTable({
             onClick: () => {
               const target =
                 activeTab === TableTab.Favorite
-                  ? `/widgets/list/?filters=(favorite:(label:${t(
+                  ? `/chart/list/?filters=(favorite:(label:${t(
                       'Yes',
                     )},value:!t))`
-                  : '/widgets/list/';
+                  : '/chart/list/';
               history.push(target);
             },
           },
