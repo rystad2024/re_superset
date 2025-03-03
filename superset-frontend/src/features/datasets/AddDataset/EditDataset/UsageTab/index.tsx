@@ -143,7 +143,7 @@ const emptyStateButtonText = (
         }
       `}
     />
-    {t('Create chart with dataset')}
+    {t('Create widget with dataset')}
   </>
 );
 
@@ -253,8 +253,8 @@ const DatasetUsage = ({ datasetId }: DatasetUsageProps) => {
         <StyledEmptyState
           image={<ChartImage />}
           size="large"
-          title={t('No charts')}
-          description={t('This dataset is not used to power any charts.')}
+          title={t('No widgets')}
+          description={t('This dataset is not used to power any widgets.')}
           buttonText={emptyStateButtonText}
           buttonAction={emptyStateButtonAction}
         />

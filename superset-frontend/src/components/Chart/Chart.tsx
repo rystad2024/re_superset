@@ -341,7 +341,7 @@ class Chart extends PureComponent<ChartProps, {}> {
       return (
         <EmptyState
           size="large"
-          title={t('Add required control values to preview chart')}
+          title={t('Add required control values to preview widget')}
           description={getChartRequiredFieldsMissingMessage(true)}
           image="chart.svg"
         />

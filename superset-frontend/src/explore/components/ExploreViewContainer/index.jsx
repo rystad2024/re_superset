@@ -621,7 +621,7 @@ function ExploreViewContainer(props) {
           }
         >
           <div className="title-container">
-            <span className="horizontal-text">{t('Chart Source')}</span>
+            <span className="horizontal-text">{t('Widget Source')}</span>
             <span
               role="button"
               tabIndex={0}
