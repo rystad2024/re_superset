@@ -897,3 +897,7 @@ topologySpreadConstraints: []
 
 # -- Set priorityClassName for superset pods
 priorityClassName: ~
+
+extraPipPackages:
+  - snowflake-connector-python
+  - snowflake-sqlalchemy
