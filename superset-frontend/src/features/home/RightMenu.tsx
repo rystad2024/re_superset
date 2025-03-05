@@ -23,7 +23,6 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useQueryParams, BooleanParam } from 'use-query-params';
 import { get, isEmpty } from 'lodash';
-
 import {
   t,
   styled,
@@ -319,7 +318,7 @@ const RightMenu = ({
       </Menu.Item>
     ) : (
       <Menu.Item key={item.name} css={styledChildMenu}>
-        {item.url ? <a href={item.url}> {item.label} </a> : item.label}
+        {item.url ? <Link to={item.url}> {item.label} </Link> : item.label}
       </Menu.Item>
     );
 
