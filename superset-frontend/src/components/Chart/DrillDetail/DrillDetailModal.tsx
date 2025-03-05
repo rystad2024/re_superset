@@ -69,7 +69,7 @@ const ModalFooter = ({
           margin-left: ${theme.gridUnit * 2}px;
         `}
       >
-        {t('Download Chart Data')}
+        {t('Download Widget Data')}
       </Button>
       <Button
         buttonStyle="secondary"

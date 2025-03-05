@@ -36,6 +36,7 @@ import { UrlParamEntries } from 'src/utils/urlUtils';
 import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 import Owner from 'src/types/Owner';
 import { ChartState } from '../explore/types';
+import drilldownReducer from 'src/explore/reducers/drillDownReducer';
 
 export type { Dashboard } from 'src/types/Dashboard';
 
@@ -173,6 +174,7 @@ export type RootState = {
   impressionId: string;
   nativeFilters: NativeFiltersState;
   user: UserWithPermissionsAndRoles;
+  drillDownData: ReturnType<typeof drilldownReducer>;
 };
 
 /** State of dashboardLayout in redux */
