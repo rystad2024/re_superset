@@ -96,13 +96,20 @@ export const useHeaderActionsMenu = ({
           showPropertiesModal();
           break;
         case MenuKeys.ToggleFullscreen: {
-          const url = getDashboardUrl({
+          const currentStandalone = getUrlParam(URL_PARAMS.standalone);
+          console.log('Current standalone:', currentStandalone);
+
+          const newUrl = getDashboardUrl({
             pathname: window.location.pathname,
             filters: getActiveFilters(),
             hash: window.location.hash,
-            standalone: getUrlParam(URL_PARAMS.standalone),
+            standalone: currentStandalone ? undefined : 1,
           });
-          window.location.replace(url);
+
+          console.log('New URL:', newUrl);
+          console.log('Current URL:', window.location.href);
+
+          window.location.replace(newUrl);
           break;
         }
         case MenuKeys.ManageEmbedded:
