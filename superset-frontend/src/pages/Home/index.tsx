@@ -49,7 +49,6 @@ import {
 import { Switch } from 'src/components/Switch';
 import getBootstrapData from 'src/utils/getBootstrapData';
 import { TableTab } from 'src/views/CRUD/types';
-import { SubMenuProps } from 'src/features/home/SubMenu';
 import { userHasPermission } from 'src/dashboard/util/permissionUtils';
 import { WelcomePageLastTab } from 'src/features/home/types';
 import ActivityTable from 'src/features/home/ActivityTable';
