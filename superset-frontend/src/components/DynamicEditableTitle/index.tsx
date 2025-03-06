@@ -30,6 +30,8 @@ import {
 import { css, SupersetTheme, t } from '@superset-ui/core';
 import { Tooltip } from 'src/components/Tooltip';
 import { useResizeDetector } from 'react-resize-detector';
+import { useDispatch } from 'react-redux';
+import { setWorkspaceTitle } from 'src/explore/actions/drillDownAction';
 
 export type DynamicEditableTitleProps = {
   title: string;
@@ -85,6 +87,7 @@ export const DynamicEditableTitle = memo(
     canEdit,
     label,
   }: DynamicEditableTitleProps) => {
+    const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
     const [currentTitle, setCurrentTitle] = useState(title || '');
     const contentRef = useRef<HTMLInputElement>(null);
@@ -96,8 +99,13 @@ export const DynamicEditableTitle = memo(
     });
 
     useEffect(() => {
-      setCurrentTitle(title);
-    }, [title]);
+      console.log("DynamicEditableTitle: Received title =", title);
+      if (title) {  // ✅ Only dispatch if the title exists
+        setCurrentTitle(title);
+        dispatch(setWorkspaceTitle(title));
+        console.log("Dispatched workspace title:", title);  // Debugging
+      }
+    }, [title, dispatch]);
 
     useEffect(() => {
       if (isEditing && contentRef?.current) {
@@ -146,6 +154,7 @@ export const DynamicEditableTitle = memo(
       setCurrentTitle(formattedTitle);
       if (title !== formattedTitle) {
         onSave(formattedTitle);
+        dispatch(setWorkspaceTitle(formattedTitle));
       }
       setIsEditing(false);
     }, [canEdit, currentTitle, onSave, title]);

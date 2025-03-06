@@ -1,16 +1,28 @@
-import { AnyDrilldownAction, SET_DRILLDOWN_DATA } from '../actions/drillDownAction';
+import { AnyDrilldownAction, SET_DRILLDOWN_DATA, SET_WORKSPACE_TITLE } from '../actions/drillDownAction';
 
-const initialState = {}; // Ensure initial state is an empty object
+const initialState = {
+  drilldownData: {},   // Stores chart drilldown data
+  workspaceTitle: "",  // ✅ Ensure this is defined initially
+};
 
-export default function drilldownReducer(
-  state = initialState,
-  action: AnyDrilldownAction,
-) {
-  if (action.type === SET_DRILLDOWN_DATA) {
-    return {
-      ...state,
-      [action.chartId]: action.data, // Update drill-down data for a specific chart
-    };
+export default function drilldownReducer(state = initialState, action: AnyDrilldownAction) {
+  switch (action.type) {
+    case SET_DRILLDOWN_DATA:
+      return {
+        ...state,
+        drilldownData: {
+          ...state.drilldownData,
+          [action.chartId]: action.data,
+        },
+      };
+      
+    case SET_WORKSPACE_TITLE:
+      return {
+        ...state,
+        workspaceTitle: action.title || "Untitled Workspace",  
+      };
+
+    default:
+      return state;
   }
-  return state;
 }

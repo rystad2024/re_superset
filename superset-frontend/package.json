@@ -158,6 +158,7 @@
     "js-yaml-loader": "^1.2.2",
     "json-bigint": "^1.0.0",
     "json-stringify-pretty-compact": "^2.0.0",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "mapbox-gl": "^2.10.0",

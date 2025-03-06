@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
 import { getDatasourceSamples } from 'src/components/Chart/chartAction';
 import { getDrillPayload } from 'src/components/Chart/DrillDetail/utils';
-import * as XLSX from 'xlsx';
 
 export const SET_DRILLDOWN_DATA = 'SET_DRILLDOWN_DATA';
+export const SET_WORKSPACE_TITLE = 'SET_WORKSPACE_TITLE';
 
 // Action Interface
 export interface SetDrilldownData {
@@ -12,10 +12,22 @@ export interface SetDrilldownData {
   data: any;
 }
 
+// Action Interface for Title
+export interface SetWorkspaceTitle {
+    type: typeof SET_WORKSPACE_TITLE;
+    title: string;
+  }
+
 // Action Creator
 export function setDrilldownData(chartId: number, data: any): SetDrilldownData {
   return { type: SET_DRILLDOWN_DATA, chartId, data };
 }
+
+// Action Creator for Title
+export function setWorkspaceTitle(title: string): SetWorkspaceTitle {
+    return { type: SET_WORKSPACE_TITLE, title };
+  }
+
 
 // Fetch drill-down data for a single chart
 async function fetchSingleChartDrillData(
@@ -24,10 +36,12 @@ async function fetchSingleChartDrillData(
   dispatch: Dispatch,
 ) {
   try {
+    console.log("formData", formData);
+    console.log("datasource", formData.datasource);
     const datasourceType = formData.datasource.split('__')[1];
     const datasourceId = parseInt(formData.datasource.split('__')[0], 10);
     const jsonPayload = getDrillPayload(formData, []);
-    const perPage = 500; // Number of records per request
+    const perPage = 1000; // Number of records per request
 
     console.log(`🚀 Fetching drill-down data for Chart ${chartId}...`);
 
@@ -54,7 +68,7 @@ async function fetchSingleChartDrillData(
 
     let allData = [...firstResponse.data];
 
-    const batchSize = 5; // Number of parallel API calls
+    const batchSize = 40; // Number of parallel API calls
     let processedPages = 1;
 
     for (let i = 2; i <= totalPages; i += batchSize) {
@@ -144,6 +158,7 @@ export function fetchAllDrilldownData(
 export const drilldownActions = {
   setDrilldownData,
   fetchAllDrilldownData,
+  setWorkspaceTitle
 };
 
-export type AnyDrilldownAction = SetDrilldownData;
+export type AnyDrilldownAction = SetDrilldownData | SetWorkspaceTitle;
