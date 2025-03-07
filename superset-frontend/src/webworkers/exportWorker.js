@@ -4,10 +4,9 @@ importScripts("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
 
 const zip = new JSZip();
 let processedCharts = 0;
-let totalCharts = 0;
-const usedSheetNames = new Set(); // Track used sheet names
+let totalCharts = 1; 
+const usedSheetNames = new Set();
 
-// Function to sanitize and ensure sheet name uniqueness
 function getUniqueSheetName(baseName, chartId) {
     let name = `${baseName}_${chartId}`.substring(0, 31);
     let counter = 1;
@@ -22,23 +21,26 @@ function getUniqueSheetName(baseName, chartId) {
 }
 
 self.onmessage = async function (event) {
-    const { type, chartId, chartName, chartData } = event.data;
+    const { type, chartId, chartName, chartData, total } = event.data;
 
-    if (type === "chunk") {
+    if (type === "init") {
+        totalCharts = total > 0 ? total : 1;
+        processedCharts = 0;
+        console.log(`Worker: 📊 Preparing to process ${totalCharts} charts.`);
+        self.postMessage({ type: "progress", progress: 50 }); 
+
+    } else if (type === "chunk") {
         console.log(`Worker: Processing chart ${chartName} (${chartId}) with ${chartData.length} rows`);
 
         if (!Array.isArray(chartData) || chartData.length === 0) return;
 
         const workbook = XLSX.utils.book_new();
         const worksheet = XLSX.utils.json_to_sheet(chartData);
-
-        // Sanitize chart name and ensure uniqueness
         const sanitizedBaseName = chartName.replace(/[:\\\/\?\*\[\]]/g, "_").substring(0, 25);
         const uniqueSheetName = getUniqueSheetName(sanitizedBaseName, chartId);
 
         XLSX.utils.book_append_sheet(workbook, worksheet, uniqueSheetName);
 
-        // Sanitize filename separately (no 31-char limit for filenames)
         const sanitizedChartName = chartName.replace(/[:\\\/\?\*\[\]]/g, "_");
         const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
 
@@ -46,15 +48,34 @@ self.onmessage = async function (event) {
         zip.file(`widgets/${sanitizedChartName}.xlsx`, blob);
 
         processedCharts++;
-        self.postMessage({ type: "progress", progress: Math.round((processedCharts / totalCharts) * 100) });
+
+        const progressSteps = [60, 75, 85, 90]; 
+        let stepIndex = Math.min(processedCharts - 1, progressSteps.length - 1); 
+        let progress = progressSteps[stepIndex];
+
+        console.log(`Worker: Progress updated to ${progress}%`);
+        self.postMessage({ type: "progress", progress });
 
     } else if (type === "done") {
         console.log("Worker: All charts processed, creating final ZIP file...");
-        
+
+        let zipProgress = 90;
+        const interval = setInterval(() => {
+            zipProgress += 2;
+            if (zipProgress >= 100) {
+                clearInterval(interval);
+                zipProgress = 100;
+            }
+            self.postMessage({ type: "progress", progress: zipProgress });
+        }, 400); 
+
         zip.generateAsync({ type: "blob" }).then((finalZipBlob) => {
-            console.log("Worker: Sending final ZIP file to main thread...");
+            clearInterval(interval);
+            console.log("Worker: ZIP file created, sending to main thread...");
+            self.postMessage({ type: "progress", progress: 100 }); 
             self.postMessage({ type: "complete", success: true, blob: finalZipBlob });
         }).catch((error) => {
+            clearInterval(interval);
             console.error("Worker: ZIP creation failed", error);
             self.postMessage({ type: "error", success: false, error: error.message });
         });

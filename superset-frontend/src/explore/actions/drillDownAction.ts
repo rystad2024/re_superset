@@ -14,9 +14,9 @@ export interface SetDrilldownData {
 
 // Action Interface for Title
 export interface SetWorkspaceTitle {
-    type: typeof SET_WORKSPACE_TITLE;
-    title: string;
-  }
+  type: typeof SET_WORKSPACE_TITLE;
+  title: string;
+}
 
 // Action Creator
 export function setDrilldownData(chartId: number, data: any): SetDrilldownData {
@@ -25,10 +25,9 @@ export function setDrilldownData(chartId: number, data: any): SetDrilldownData {
 
 // Action Creator for Title
 export function setWorkspaceTitle(title: string): SetWorkspaceTitle {
-    console.log("setWorkspaceTitle: title =", title);
-    return { type: SET_WORKSPACE_TITLE, title };
-  }
-
+  console.log("setWorkspaceTitle: title =", title);
+  return { type: SET_WORKSPACE_TITLE, title };
+}
 
 // Fetch drill-down data for a single chart
 async function fetchSingleChartDrillData(
@@ -42,11 +41,10 @@ async function fetchSingleChartDrillData(
     const datasourceType = formData.datasource.split('__')[1];
     const datasourceId = parseInt(formData.datasource.split('__')[0], 10);
     const jsonPayload = getDrillPayload(formData, []);
-    const perPage = 1000; // Number of records per request
+    const perPage = 1000;
 
     console.log(`🚀 Fetching drill-down data for Chart ${chartId}...`);
 
-    // Fetch first page to get total count
     const firstResponse = await getDatasourceSamples(
       datasourceType,
       datasourceId,
@@ -63,13 +61,11 @@ async function fetchSingleChartDrillData(
 
     const totalRecords = firstResponse.total_count;
     const totalPages = Math.ceil(totalRecords / perPage);
-    console.log(
-      `✅ Chart ${chartId}: Total records: ${totalRecords}, Total pages: ${totalPages}`,
-    );
+    console.log(`✅ Chart ${chartId}: Total records: ${totalRecords}, Total pages: ${totalPages}`);
 
     let allData = [...firstResponse.data];
 
-    const batchSize = 40; // Number of parallel API calls
+    const batchSize = 40;
     let processedPages = 1;
 
     for (let i = 2; i <= totalPages; i += batchSize) {
@@ -99,9 +95,7 @@ async function fetchSingleChartDrillData(
       });
 
       processedPages += responses.length;
-      console.log(
-        `📊 Fetched ${processedPages}/${totalPages} pages for Chart ${chartId}`,
-      );
+      console.log(`📊 Fetched ${processedPages}/${totalPages} pages for Chart ${chartId}`);
     }
 
     console.log(`✅ Completed fetching all data for Chart ${chartId}.`);
@@ -109,54 +103,55 @@ async function fetchSingleChartDrillData(
 
     return allData;
   } catch (error) {
-    console.error(
-      `❌ Error fetching drill-down data for Chart ${chartId}:`,
-      error,
-    );
+    console.error(`❌ Error fetching drill-down data for Chart ${chartId}:`, error);
     return [];
   }
 }
 
-// Fetch drill-down data for **all charts** on dashboard load
+// Fetch drill-down data for all charts
 export function fetchAllDrilldownData(
-    chartsData: any,
-    progressCallback?: (progress: number) => void
-  ) {
-    return async function (dispatch: Dispatch) {
-      const chartEntries = Object.entries(chartsData);
-      const totalCharts = chartEntries.length;
-      let processedCharts = 0;
-  
-      const drillDownResults: Record<number, any[]> = {};
-  
-      for (const [chartId, chart] of chartEntries) {
-        const data = await fetchSingleChartDrillData(
-          Number(chartId),
-          (chart as any).form_data,
-          dispatch
-        );
-  
-        if (data !== undefined) {
-          drillDownResults[Number(chartId)] = data;
-          dispatch(setDrilldownData(Number(chartId), data));
-        }
-  
-        processedCharts++;
-        const progress = Math.round((processedCharts / totalCharts) * 100);
-        if (progressCallback) {
-          progressCallback(progress);
-        }
+  chartsData: any,
+  progressCallback?: (progress: number) => void,
+  completionCallback?: () => void
+) {
+  return async function (dispatch: Dispatch) {
+    const chartEntries = Object.entries(chartsData);
+    const totalCharts = chartEntries.length;
+    let processedCharts = 0;
+
+    const drillDownResults: Record<number, any[]> = {};
+
+    for (const [chartId, chart] of chartEntries) {
+      const data = await fetchSingleChartDrillData(
+        Number(chartId),
+        (chart as any).form_data,
+        dispatch
+      );
+
+      if (data !== undefined) {
+        drillDownResults[Number(chartId)] = data;
+        dispatch(setDrilldownData(Number(chartId), data));
       }
-  
-      return drillDownResults; // Return all processed data
-    };
-  }
-  
+
+      processedCharts++;
+      const progress = Math.round((processedCharts / totalCharts) * 50);
+      if (progressCallback) {
+        progressCallback(progress);
+      }
+    }
+
+    // Notify that data fetching is complete
+    completionCallback?.();
+
+    return drillDownResults;
+  };
+}
+
 // Export Actions
 export const drilldownActions = {
   setDrilldownData,
   fetchAllDrilldownData,
-  setWorkspaceTitle
+  setWorkspaceTitle,
 };
 
 export type AnyDrilldownAction = SetDrilldownData | SetWorkspaceTitle;
