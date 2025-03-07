@@ -23,7 +23,6 @@ export default function DownloadAsExcel({
     const chartsData = useSelector((state: RootState) => state.charts);
     const chartsMetadata = useSelector((state: RootState) => state.sliceEntities?.slices || {});
 
-    const [isFetching, setIsFetching] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
     const workerRef = useRef<Worker | null>(null);
 
@@ -36,7 +35,6 @@ export default function DownloadAsExcel({
         }
 
         setDownloadProgress(0);
-        setIsFetching(true);
 
         try {
             const allDrillData = await dispatch<any>(
@@ -67,7 +65,6 @@ export default function DownloadAsExcel({
 
                     addSuccessToast(t("ZIP file has been downloaded successfully!"));
                     setDownloadProgress(null);
-                    setIsFetching(false);
                 }
             };
 
