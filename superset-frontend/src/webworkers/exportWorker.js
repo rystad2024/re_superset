@@ -1,6 +1,9 @@
 // console.log("Worker: Initialized and ready!");
-importScripts("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
-importScripts("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+// importScripts("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
+// importScripts("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+
+import * as XLSX from "xlsx";
+import JSZip from "jszip";
 
 const zip = new JSZip();
 let processedCharts = 0;
