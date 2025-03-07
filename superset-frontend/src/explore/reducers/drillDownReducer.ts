@@ -17,9 +17,10 @@ export default function drilldownReducer(state = initialState, action: AnyDrilld
       };
       
     case SET_WORKSPACE_TITLE:
+      console.log("drilldownReducer: SET_WORKSPACE_TITLE: title =", action.title);
       return {
         ...state,
-        workspaceTitle: action.title || "Untitled Workspace",  
+        workspaceTitle: action.title,  
       };
 
     default:

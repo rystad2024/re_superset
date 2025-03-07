@@ -1,5 +1,4 @@
 console.log("Worker: 🚀 Initialized and ready!");
-
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
 
@@ -51,7 +50,7 @@ self.onmessage = async function (event) {
 
     } else if (type === "done") {
         console.log("Worker: All charts processed, creating final ZIP file...");
-
+        
         zip.generateAsync({ type: "blob" }).then((finalZipBlob) => {
             console.log("Worker: Sending final ZIP file to main thread...");
             self.postMessage({ type: "complete", success: true, blob: finalZipBlob });

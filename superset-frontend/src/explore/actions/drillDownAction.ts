@@ -25,6 +25,7 @@ export function setDrilldownData(chartId: number, data: any): SetDrilldownData {
 
 // Action Creator for Title
 export function setWorkspaceTitle(title: string): SetWorkspaceTitle {
+    console.log("setWorkspaceTitle: title =", title);
     return { type: SET_WORKSPACE_TITLE, title };
   }
 
@@ -151,9 +152,6 @@ export function fetchAllDrilldownData(
     };
   }
   
-  
-  
-
 // Export Actions
 export const drilldownActions = {
   setDrilldownData,
