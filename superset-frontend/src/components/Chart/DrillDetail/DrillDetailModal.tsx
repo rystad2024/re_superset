@@ -45,7 +45,7 @@ interface ModalFooterProps {
   closeModal?: () => void;
   exploreChart: () => void;
   downloadExcelData: () => void;
-  downloadProgress: number | null; // Added progress bar prop
+  downloadProgress: number | null; 
 
 }
 
@@ -146,27 +146,12 @@ export default function DrillDetailModal({
     history.push(exploreUrl);
   }, [exploreUrl, history]);
 
-  // const downloadExcelData = useCallback(async () => {
-  //   setDownloadProgress(0); // Start progress
-
-  //   // Simulate a fake download process (replace this with real API call)
-  //   for (let i = 0; i <= 100; i += 10) {
-  //     await new Promise(resolve => setTimeout(resolve, 300)); // Simulate delay
-  //     setDownloadProgress(i);
-  //   }
-
-  //   setTimeout(() => {
-  //     setDownloadProgress(null); // Hide progress bar when done
-  //     console.log('Download complete!');
-  //   }, 500);
-  // }, []);
-
   const downloadExcelData = useCallback(async () => {
-    setDownloadProgress(0); // Start at 0%
+    setDownloadProgress(0); 
   
     try {
-      const jsonPayload = getDrillPayload(formData, initialFilters) ?? {}; 
-      const perPage = 50; // Number of records per API request
+      const jsonPayload = getDrillPayload(formData, initialFilters) ?? {};
+      const perPage = 1000; // Number of records per API request
       const datasourceType = formData.datasource.split('__')[1];
       const datasourceId = parseInt(formData.datasource.split('__')[0], 10);
   
@@ -191,13 +176,9 @@ export default function DrillDetailModal({
       const totalPages = Math.ceil(totalRecords / perPage);
       console.log(`Total records: ${totalRecords}, Total pages: ${totalPages}`);
   
-      const workbook = XLSX.utils.book_new();
       let allData = [...firstResponse.data];
   
-      const firstWorksheet = XLSX.utils.json_to_sheet(firstResponse.data);
-      XLSX.utils.book_append_sheet(workbook, firstWorksheet, `Page_1`); 
-  
-      const batchSize = 20; 
+      const batchSize = 5; 
       let processedPages = 1; 
   
       for (let i = 2; i <= totalPages; i += batchSize) {
@@ -213,37 +194,28 @@ export default function DrillDetailModal({
   
         const responses = await Promise.all(batchRequests);
   
-        responses.forEach((response, batchIndex) => {
+        responses.forEach((response) => {
           if (response?.data?.length) {
-            allData = [...allData, ...response.data];
-  
-            const batchNumber = processedPages + batchIndex + 1; 
-            const worksheetName = `Page_${batchNumber}`;
-  
-            let finalSheetName = worksheetName;
-            let sheetCounter = 1;
-            while (workbook.SheetNames.includes(finalSheetName)) {
-              finalSheetName = `Page_${batchNumber}_${sheetCounter++}`;
-            }
-  
-            const worksheet = XLSX.utils.json_to_sheet(response.data);
-            XLSX.utils.book_append_sheet(workbook, worksheet, finalSheetName);
+            allData = [...allData, ...response.data]; 
           }
         });
   
         processedPages += responses.length;
-  
         const progress = Math.round((processedPages / totalPages) * 100);
         setDownloadProgress(progress > 100 ? 100 : progress);
       }
   
-      console.log("Data successfully stored in workbook. Generating Excel file...");
+      console.log("Data successfully stored. Generating Excel file...");
   
-      XLSX.writeFile(workbook, "exported_data.xlsx");
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(allData);
+      XLSX.utils.book_append_sheet(workbook, worksheet, chartName);
+  
+      XLSX.writeFile(workbook, `${chartName}.xlsx`);
   
       console.log("Excel file generated and downloaded.");
   
-      setDownloadProgress(100); 
+      setDownloadProgress(100);
   
       setTimeout(() => {
         setDownloadProgress(null);
@@ -254,6 +226,7 @@ export default function DrillDetailModal({
       setDownloadProgress(null);
     }
   }, [formData, initialFilters]);
+  
 
   return (
     <Modal
