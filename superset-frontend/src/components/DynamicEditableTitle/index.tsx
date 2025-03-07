@@ -99,11 +99,9 @@ export const DynamicEditableTitle = memo(
     });
 
     useEffect(() => {
-      console.log("DynamicEditableTitle: Received title =", title);
-      if (title) {  // ✅ Only dispatch if the title exists
+      if (title) {  
         setCurrentTitle(title);
         dispatch(setWorkspaceTitle(title));
-        console.log("Dispatched workspace title:", title);  // Debugging
       }
     }, [title, dispatch]);
 

@@ -1,4 +1,4 @@
-console.log("Worker: 🚀 Initialized and ready!");
+// console.log("Worker: Initialized and ready!");
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
 
@@ -26,11 +26,11 @@ self.onmessage = async function (event) {
     if (type === "init") {
         totalCharts = total > 0 ? total : 1;
         processedCharts = 0;
-        console.log(`Worker: 📊 Preparing to process ${totalCharts} charts.`);
+        // console.log(`Worker: Preparing to process ${totalCharts} charts.`);
         self.postMessage({ type: "progress", progress: 50 }); 
 
     } else if (type === "chunk") {
-        console.log(`Worker: Processing chart ${chartName} (${chartId}) with ${chartData.length} rows`);
+        // console.log(`Worker: Processing chart ${chartName} (${chartId}) with ${chartData.length} rows`);
 
         if (!Array.isArray(chartData) || chartData.length === 0) return;
 
@@ -53,11 +53,11 @@ self.onmessage = async function (event) {
         let stepIndex = Math.min(processedCharts - 1, progressSteps.length - 1); 
         let progress = progressSteps[stepIndex];
 
-        console.log(`Worker: Progress updated to ${progress}%`);
+        // console.log(`Worker: Progress updated to ${progress}%`);
         self.postMessage({ type: "progress", progress });
 
     } else if (type === "done") {
-        console.log("Worker: All charts processed, creating final ZIP file...");
+        // console.log("Worker: All charts processed, creating final ZIP file...");
 
         let zipProgress = 90;
         const interval = setInterval(() => {
@@ -71,7 +71,7 @@ self.onmessage = async function (event) {
 
         zip.generateAsync({ type: "blob" }).then((finalZipBlob) => {
             clearInterval(interval);
-            console.log("Worker: ZIP file created, sending to main thread...");
+            // console.log("Worker: ZIP file created, sending to main thread...");
             self.postMessage({ type: "progress", progress: 100 }); 
             self.postMessage({ type: "complete", success: true, blob: finalZipBlob });
         }).catch((error) => {

@@ -155,7 +155,7 @@ export default function DrillDetailModal({
       const datasourceType = formData.datasource.split('__')[1];
       const datasourceId = parseInt(formData.datasource.split('__')[0], 10);
   
-      console.log('Starting data fetch for Excel export...');
+      //console.log('Starting data fetch for Excel export...');
   
       const firstResponse = await getDatasourceSamples(
         datasourceType,
@@ -174,7 +174,7 @@ export default function DrillDetailModal({
   
       const totalRecords = firstResponse.total_count;
       const totalPages = Math.ceil(totalRecords / perPage);
-      console.log(`Total records: ${totalRecords}, Total pages: ${totalPages}`);
+      //console.log(`Total records: ${totalRecords}, Total pages: ${totalPages}`);
   
       let allData = [...firstResponse.data];
   
@@ -190,7 +190,7 @@ export default function DrillDetailModal({
           );
         }
   
-        console.log(`Fetching batch starting from page ${i}...`);
+        // console.log(`Fetching batch starting from page ${i}...`);
   
         const responses = await Promise.all(batchRequests);
   
@@ -205,7 +205,7 @@ export default function DrillDetailModal({
         setDownloadProgress(progress > 100 ? 100 : progress);
       }
   
-      console.log("Data successfully stored. Generating Excel file...");
+      // console.log("Data successfully stored. Generating Excel file...");
   
       const workbook = XLSX.utils.book_new();
       const worksheet = XLSX.utils.json_to_sheet(allData);
@@ -213,7 +213,7 @@ export default function DrillDetailModal({
   
       XLSX.writeFile(workbook, `${chartName}.xlsx`);
   
-      console.log("Excel file generated and downloaded.");
+      // console.log("Excel file generated and downloaded.");
   
       setDownloadProgress(100);
   

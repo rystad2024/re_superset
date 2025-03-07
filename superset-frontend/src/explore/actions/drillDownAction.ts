@@ -25,7 +25,6 @@ export function setDrilldownData(chartId: number, data: any): SetDrilldownData {
 
 // Action Creator for Title
 export function setWorkspaceTitle(title: string): SetWorkspaceTitle {
-  console.log("setWorkspaceTitle: title =", title);
   return { type: SET_WORKSPACE_TITLE, title };
 }
 
@@ -36,14 +35,12 @@ async function fetchSingleChartDrillData(
   dispatch: Dispatch,
 ) {
   try {
-    console.log("formData", formData);
-    console.log("datasource", formData.datasource);
     const datasourceType = formData.datasource.split('__')[1];
     const datasourceId = parseInt(formData.datasource.split('__')[0], 10);
     const jsonPayload = getDrillPayload(formData, []);
     const perPage = 1000;
 
-    console.log(`🚀 Fetching drill-down data for Chart ${chartId}...`);
+    // console.log(`Fetching drill-down data for Chart ${chartId}...`);
 
     const firstResponse = await getDatasourceSamples(
       datasourceType,
@@ -61,7 +58,7 @@ async function fetchSingleChartDrillData(
 
     const totalRecords = firstResponse.total_count;
     const totalPages = Math.ceil(totalRecords / perPage);
-    console.log(`✅ Chart ${chartId}: Total records: ${totalRecords}, Total pages: ${totalPages}`);
+    // console.log(`Chart ${chartId}: Total records: ${totalRecords}, Total pages: ${totalPages}`);
 
     let allData = [...firstResponse.data];
 
@@ -84,7 +81,7 @@ async function fetchSingleChartDrillData(
         );
       }
 
-      console.log(`📡 Fetching batch starting from page ${i}...`);
+    //   console.log(`Fetching batch starting from page ${i}...`);
 
       const responses = await Promise.all(batchRequests);
 
@@ -95,10 +92,10 @@ async function fetchSingleChartDrillData(
       });
 
       processedPages += responses.length;
-      console.log(`📊 Fetched ${processedPages}/${totalPages} pages for Chart ${chartId}`);
+    //   console.log(`Fetched ${processedPages}/${totalPages} pages for Chart ${chartId}`);
     }
 
-    console.log(`✅ Completed fetching all data for Chart ${chartId}.`);
+    // console.log(`Completed fetching all data for Chart ${chartId}.`);
     dispatch(setDrilldownData(chartId, allData));
 
     return allData;
