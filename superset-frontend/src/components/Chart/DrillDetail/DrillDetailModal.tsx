@@ -209,7 +209,8 @@ export default function DrillDetailModal({
   
       const workbook = XLSX.utils.book_new();
       const worksheet = XLSX.utils.json_to_sheet(allData);
-      XLSX.utils.book_append_sheet(workbook, worksheet, chartName);
+      const sanitizedChartName = chartName.replace(/[:\\\/\?\*\[\]]/g, "_");
+      XLSX.utils.book_append_sheet(workbook, worksheet, sanitizedChartName.substring(0, 31));
   
       XLSX.writeFile(workbook, `${chartName}.xlsx`);
   
