@@ -22,7 +22,7 @@ import rison from 'rison';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useQueryParams, BooleanParam } from 'use-query-params';
-import { get, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import {
   t,
   styled,
@@ -35,7 +35,6 @@ import {
 import { Menu } from 'src/components/Menu';
 import { Tooltip } from 'src/components/Tooltip';
 import Icons from 'src/components/Icons';
-import Label from 'src/components/Label';
 import { findPermission } from 'src/utils/findPermission';
 import { isUserAdmin } from 'src/dashboard/util/permissionUtils';
 import {
@@ -43,7 +42,7 @@ import {
   UserWithPermissionsAndRoles,
   MenuObjectChildProps,
 } from 'src/types/bootstrapTypes';
-import { RootState } from 'src/dashboard/types';
+// import { RootState } from 'src/dashboard/types';
 import DatabaseModal from 'src/features/databases/DatabaseModal';
 import UploadDataModal from 'src/features/databases/UploadDataModel';
 import { uploadUserPerms } from 'src/views/CRUD/utils';
@@ -63,9 +62,6 @@ const versionInfoStyles = (theme: SupersetTheme) => css`
   color: ${theme.colors.grayscale.base};
   font-size: ${theme.typography.sizes.xs}px;
   white-space: nowrap;
-`;
-const StyledI = styled.div`
-  color: ${({ theme }) => theme.colors.primary.dark1};
 `;
 
 const styledDisabled = (theme: SupersetTheme) => css`
@@ -93,10 +89,6 @@ const StyledAnchor = styled.a`
   padding-left: ${({ theme }) => theme.gridUnit}px;
 `;
 
-const tagStyles = (theme: SupersetTheme) => css`
-  color: ${theme.colors.grayscale.light5};
-`;
-
 const styledChildMenu = (theme: SupersetTheme) => css`
   &:hover {
     color: ${theme.colors.primary.base} !important;
@@ -119,7 +111,6 @@ const RightMenu = ({
   settings,
   navbarRight,
   isFrontendRoute,
-  environmentTag,
   setQuery,
 }: RightMenuProps & {
   setQuery: ({
@@ -133,9 +124,9 @@ const RightMenu = ({
   const user = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
-  const dashboardId = useSelector<RootState, number | undefined>(
-    state => state.dashboardInfo?.id,
-  );
+  // const dashboardId = useSelector<RootState, number | undefined>(
+  //   state => state.dashboardInfo?.id,
+  // );
   const userValues = user || {};
   const { roles } = userValues;
   const {
@@ -220,22 +211,6 @@ const RightMenu = ({
       icon: 'fa-fw fa-search',
       perm: 'can_sqllab',
       view: 'Superset',
-    },
-    {
-      label: t('Widget'),
-      url: Number.isInteger(dashboardId)
-        ? `/chart/add?dashboard_id=${dashboardId}`
-        : '/chart/add',
-      icon: 'fa-fw fa-bar-chart',
-      perm: 'can_write',
-      view: 'Chart',
-    },
-    {
-      label: t('Workspace'),
-      url: '/dashboard/new',
-      icon: 'fa-fw fa-dashboard',
-      perm: 'can_write',
-      view: 'Dashboard',
     },
   ];
 
@@ -349,9 +324,7 @@ const RightMenu = ({
   const handleLogout = () => {
     localStorage.removeItem('redux');
   };
-
   const theme = useTheme();
-
   return (
     <StyledDiv align={align}>
       {canDatabase && (
@@ -386,7 +359,7 @@ const RightMenu = ({
           type="columnar"
         />
       )}
-      {environmentTag?.text && (
+      {/* {environmentTag?.text && (
         <Label
           css={{ borderRadius: `${theme.gridUnit * 125}px` }}
           color={
@@ -397,7 +370,7 @@ const RightMenu = ({
         >
           <span css={tagStyles}>{environmentTag.text}</span>
         </Label>
-      )}
+      )} */}
       <Menu
         selectable={false}
         mode="horizontal"
@@ -406,110 +379,224 @@ const RightMenu = ({
         disabledOverflow
       >
         {RightMenuExtension && <RightMenuExtension />}
-        {!navbarRight.user_is_anonymous && showActionDropdown && (
-          <StyledSubMenu
-            key="sub1"
-            data-test="new-dropdown"
-            title={
-              <StyledI data-test="new-dropdown-icon" className="fa fa-plus" />
-            }
-            icon={<Icons.TriangleDown />}
-          >
-            {dropdownItems?.map?.(menu => {
-              const canShowChild = menu.childs?.some(
-                item => typeof item === 'object' && !!item.perm,
-              );
-              if (menu.childs) {
-                if (canShowChild) {
-                  return (
-                    <StyledSubMenu
-                      key={`sub2_${menu.label}`}
-                      className="data-menu"
-                      title={menu.label}
-                      icon={menuIcon(menu)}
-                    >
-                      {menu?.childs?.map?.((item, idx) =>
-                        typeof item !== 'string' && item.name && item.perm ? (
-                          <Fragment key={item.name}>
-                            {idx === 3 && <Menu.Divider />}
-                            {buildMenuItem(item)}
-                          </Fragment>
-                        ) : null,
-                      )}
-                    </StyledSubMenu>
-                  );
-                }
-                if (!menu.url) {
-                  return null;
-                }
-              }
-              return (
-                findPermission(
-                  menu.perm as string,
-                  menu.view as string,
-                  roles,
-                ) && (
-                  <Menu.Item key={menu.label}>
-                    {isFrontendRoute(menu.url) ? (
-                      <Link to={menu.url || ''}>
-                        <i
-                          data-test={`menu-item-${menu.label}`}
-                          className={`fa ${menu.icon}`}
-                        />{' '}
-                        {menu.label}
-                      </Link>
-                    ) : (
-                      <a href={menu.url}>
-                        <i
-                          data-test={`menu-item-${menu.label}`}
-                          className={`fa ${menu.icon}`}
-                        />{' '}
-                        {menu.label}
-                      </a>
-                    )}
-                  </Menu.Item>
-                )
-              );
-            })}
-          </StyledSubMenu>
-        )}
+        {/* Merged dropdown replacing both the plus and settings buttons */}
         <StyledSubMenu
-          key="sub3_settings"
-          title={t('Settings')}
-          icon={<Icons.TriangleDown iconSize="xl" />}
+          key="merged_menu"
+          data-test="merged-dropdown"
+          icon={
+            <Icons.NavExplore
+              style={{
+                backgroundColor: theme.colors.grayscale.dark2,
+                color: 'white',
+                fontSize: '24px',
+                padding: '4px',
+                borderRadius: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+              }}
+            />
+          }
         >
-          {settings?.map?.((section, index) => [
-            <Menu.ItemGroup key={`${section.label}`} title={section.label}>
-              {section?.childs?.map?.(child => {
-                if (typeof child !== 'string') {
-                  const menuItemDisplay = RightMenuItemIconExtension ? (
-                    <StyledMenuItemWithIcon>
-                      {child.label}
-                      <RightMenuItemIconExtension menuChild={child} />
-                    </StyledMenuItemWithIcon>
-                  ) : (
-                    child.label
+          {/* Actions Section - from the Plus button */}
+          {!navbarRight.user_is_anonymous && showActionDropdown && (
+            <>
+              <Menu.ItemGroup key="actions-section" title={t('Actions')}>
+                {dropdownItems?.map?.(menu => {
+                  const canShowChild = menu.childs?.some(
+                    item => typeof item === 'object' && !!item.perm,
                   );
+                  if (menu.childs) {
+                    if (canShowChild) {
+                      return (
+                        <StyledSubMenu
+                          key={`sub2_${menu.label}`}
+                          className="data-menu"
+                          title={menu.label}
+                          icon={menuIcon(menu)}
+                        >
+                          {menu?.childs?.map?.((item, idx) =>
+                            typeof item !== 'string' &&
+                            item.name &&
+                            item.perm ? (
+                              <Fragment key={item.name}>
+                                {idx === 3 && <Menu.Divider />}
+                                {buildMenuItem(item)}
+                              </Fragment>
+                            ) : null,
+                          )}
+                        </StyledSubMenu>
+                      );
+                    }
+                    if (!menu.url) {
+                      return null;
+                    }
+                  }
                   return (
-                    <Menu.Item key={`${child.label}`}>
-                      {isFrontendRoute(child.url) ? (
-                        <Link to={child.url || ''}>{menuItemDisplay}</Link>
-                      ) : (
-                        <a href={child.url}>{menuItemDisplay}</a>
-                      )}
-                    </Menu.Item>
+                    findPermission(
+                      menu.perm as string,
+                      menu.view as string,
+                      roles,
+                    ) && (
+                      <Menu.Item key={menu.label}>
+                        {isFrontendRoute(menu.url) ? (
+                          <Link to={menu.url || ''}>
+                            <i
+                              data-test={`menu-item-${menu.label}`}
+                              className={`fa ${menu.icon}`}
+                            />{' '}
+                            {menu.label}
+                          </Link>
+                        ) : (
+                          <a href={menu.url}>
+                            <i
+                              data-test={`menu-item-${menu.label}`}
+                              className={`fa ${menu.icon}`}
+                            />{' '}
+                            {menu.label}
+                          </a>
+                        )}
+                      </Menu.Item>
+                    )
                   );
-                }
-                return null;
-              })}
-            </Menu.ItemGroup>,
-            index < settings.length - 1 && (
-              <Menu.Divider key={`divider_${index}`} />
-            ),
-          ])}
+                })}
+              </Menu.ItemGroup>
+              <Menu.Divider key="actions-divider" />
+            </>
+          )}
 
+          {/* Data Section */}
+          <Menu.ItemGroup key="data-section" title={t('Data')}>
+            {/* We'll use your existing settings structure but add a custom filter */}
+            {settings
+              ?.filter(section => section.label === 'Data')
+              ?.map?.(section =>
+                section?.childs?.map?.(child => {
+                  if (typeof child !== 'string') {
+                    const menuItemDisplay = RightMenuItemIconExtension ? (
+                      <StyledMenuItemWithIcon>
+                        {child.label}
+                        <RightMenuItemIconExtension menuChild={child} />
+                      </StyledMenuItemWithIcon>
+                    ) : (
+                      child.label
+                    );
+                    return (
+                      <Menu.Item key={`data_${child.label}`}>
+                        {isFrontendRoute(child.url) ? (
+                          <Link to={child.url || ''}>{menuItemDisplay}</Link>
+                        ) : (
+                          <a href={child.url}>{menuItemDisplay}</a>
+                        )}
+                      </Menu.Item>
+                    );
+                  }
+                  return null;
+                }),
+              )}
+          </Menu.ItemGroup>
+          <Menu.Divider key="data-divider" />
+
+          {/* Security Section - Using your original settings structure for these items */}
+          <Menu.ItemGroup key="security-section" title={t('Security')}>
+            {settings
+              ?.filter(section => section.label === 'Security')
+              ?.map?.(section =>
+                section?.childs?.map?.(child => {
+                  if (typeof child !== 'string') {
+                    const menuItemDisplay = RightMenuItemIconExtension ? (
+                      <StyledMenuItemWithIcon>
+                        {child.label}
+                        <RightMenuItemIconExtension menuChild={child} />
+                      </StyledMenuItemWithIcon>
+                    ) : (
+                      child.label
+                    );
+                    return (
+                      <Menu.Item key={`security_${child.label}`}>
+                        {isFrontendRoute(child.url) ? (
+                          <Link to={child.url || ''}>{menuItemDisplay}</Link>
+                        ) : (
+                          <a href={child.url}>{menuItemDisplay}</a>
+                        )}
+                      </Menu.Item>
+                    );
+                  }
+                  return null;
+                }),
+              )}
+          </Menu.ItemGroup>
+          <Menu.Divider key="security-divider" />
+
+          {/* Manage Section - Using your original settings structure for these items */}
+          <Menu.ItemGroup key="manage-section" title={t('Manage')}>
+            {settings
+              ?.filter(section => section.label === 'Manage')
+              ?.map?.(section =>
+                section?.childs?.map?.(child => {
+                  if (typeof child !== 'string') {
+                    const menuItemDisplay = RightMenuItemIconExtension ? (
+                      <StyledMenuItemWithIcon>
+                        {child.label}
+                        <RightMenuItemIconExtension menuChild={child} />
+                      </StyledMenuItemWithIcon>
+                    ) : (
+                      child.label
+                    );
+                    return (
+                      <Menu.Item key={`manage_${child.label}`}>
+                        {isFrontendRoute(child.url) ? (
+                          <Link to={child.url || ''}>{menuItemDisplay}</Link>
+                        ) : (
+                          <a href={child.url}>{menuItemDisplay}</a>
+                        )}
+                      </Menu.Item>
+                    );
+                  }
+                  return null;
+                }),
+              )}
+          </Menu.ItemGroup>
+          <Menu.Divider key="manage-divider" />
+
+          {/* Include any other settings sections that might not have been captured */}
+          {settings
+            ?.filter(
+              section =>
+                !['Data', 'Security', 'Manage'].includes(section.label),
+            )
+            ?.map?.((section, index) => [
+              <Menu.ItemGroup key={`${section.label}`} title={section.label}>
+                {section?.childs?.map?.(child => {
+                  if (typeof child !== 'string') {
+                    const menuItemDisplay = RightMenuItemIconExtension ? (
+                      <StyledMenuItemWithIcon>
+                        {child.label}
+                        <RightMenuItemIconExtension menuChild={child} />
+                      </StyledMenuItemWithIcon>
+                    ) : (
+                      child.label
+                    );
+                    return (
+                      <Menu.Item key={`${child.label}`}>
+                        {isFrontendRoute(child.url) ? (
+                          <Link to={child.url || ''}>{menuItemDisplay}</Link>
+                        ) : (
+                          <a href={child.url}>{menuItemDisplay}</a>
+                        )}
+                      </Menu.Item>
+                    );
+                  }
+                  return null;
+                })}
+              </Menu.ItemGroup>,
+              <Menu.Divider key={`divider_${index}`} />,
+            ])}
+
+          {/* User Section */}
           {!navbarRight.user_is_anonymous && [
-            <Menu.Divider key="user-divider" />,
             <Menu.ItemGroup key="user-section" title={t('User')}>
               {navbarRight.user_info_url && (
                 <Menu.Item key="info">
@@ -521,6 +608,8 @@ const RightMenu = ({
               </Menu.Item>
             </Menu.ItemGroup>,
           ]}
+
+          {/* About Section */}
           {(navbarRight.version_string || navbarRight.version_sha) && [
             <Menu.Divider key="version-info-divider" />,
             <Menu.ItemGroup key="about-section" title={t('About')}>
@@ -549,6 +638,8 @@ const RightMenu = ({
             </Menu.ItemGroup>,
           ]}
         </StyledSubMenu>
+
+        {/* Language picker remains separate */}
         {navbarRight.show_language_picker && (
           <LanguagePicker
             locale={navbarRight.locale}
@@ -556,6 +647,8 @@ const RightMenu = ({
           />
         )}
       </Menu>
+
+      {/* Documentation link remains separate */}
       {navbarRight.documentation_url && (
         <>
           <StyledAnchor
@@ -573,6 +666,8 @@ const RightMenu = ({
           <span>&nbsp;</span>
         </>
       )}
+
+      {/* Bug report link remains separate */}
       {navbarRight.bug_report_url && (
         <>
           <StyledAnchor
@@ -590,6 +685,8 @@ const RightMenu = ({
           <span>&nbsp;</span>
         </>
       )}
+
+      {/* Login link remains separate */}
       {navbarRight.user_is_anonymous && (
         <StyledAnchor href={navbarRight.user_login_url}>
           <i className="fa fa-fw fa-sign-in" />
@@ -613,7 +710,6 @@ const RightMenuWithQueryWrapper: FC<RightMenuProps> = props => {
 
   return <RightMenu setQuery={setQuery} {...props} />;
 };
-
 // Query param manipulation requires that, during the setup, the
 // QueryParamProvider is present and configured.
 // Superset still has multiple entry points, and not all of them have

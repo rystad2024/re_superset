@@ -45,10 +45,12 @@ const StyledHeader = styled.header`
       background-color: white;
       margin-bottom: 2px;
       z-index: 10;
+      
+      padding: 0px 20px;
 
       .main-nav, .navbar {
-  background-color: white;
-}
+        background-color: white;
+      }
       &:nth-last-of-type(2) nav {
         margin-bottom: 2px;
       }
@@ -65,7 +67,7 @@ const StyledHeader = styled.header`
           ${theme.gridUnit * 2}px
           ${theme.gridUnit}px
           ${theme.gridUnit * 4}px;
-        max-width: ${theme.gridUnit * theme.brandIconMaxWidth}px;
+        // max-width: ${theme.gridUnit * theme.brandIconMaxWidth}px;
         img {
           height: 100%;
           object-fit: contain;
@@ -186,6 +188,52 @@ export function Menu({
   const standalone = getUrlParam(URL_PARAMS.standalone);
   if (standalone || uiConfig.hideNav) return <></>;
 
+  const SearchBar = () => {
+    const SearchContainer = styled.div`
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+      padding: 0 12px;
+      height: 36px;
+      transition: all 0.2s ease;
+      margin-right: 50px;
+      &:hover,
+      &:focus-within {
+        background-color:;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+    `;
+
+    const SearchInput = styled.input`
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      width: 100%;
+      padding: 8px 8px 8px 0;
+      outline: none;
+
+      &::placeholder {
+        color: theme.colors.grayscale.dark2;
+      }
+    `;
+
+    const IconWrapper = styled.div`
+      display: flex;
+      align-items: center;
+      color: theme.colors.grayscale.dark2;
+      margin-right: 8px;
+    `;
+
+    return (
+      <SearchContainer>
+        <IconWrapper>
+          <Icons.Search />
+        </IconWrapper>
+        <SearchInput placeholder="Search" />
+      </SearchContainer>
+    );
+  };
+
   const renderSubMenu = ({
     label,
     childs,
@@ -244,7 +292,7 @@ export function Menu({
   return (
     <StyledHeader className="top" id="main-menu" role="navigation">
       <Row>
-        <Col md={16} xs={24}>
+        <Col style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Tooltip
             id="brand-tooltip"
             placement="bottomLeft"
@@ -266,6 +314,12 @@ export function Menu({
               <span>{brand.text}</span>
             </div>
           )}
+          <SearchBar />
+        </Col>
+        <Col
+          flex="auto"
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
+        >
           <MainNav
             mode={showMenu}
             data-test="navbar-top"
@@ -294,7 +348,7 @@ export function Menu({
             })}
           </MainNav>
         </Col>
-        <Col md={8} xs={24}>
+        <Col>
           <RightMenu
             align={screens.md ? 'flex-end' : 'flex-start'}
             settings={settings}
