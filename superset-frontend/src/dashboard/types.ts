@@ -37,6 +37,7 @@ import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 import Owner from 'src/types/Owner';
 import { ChartState } from '../explore/types';
 import drilldownReducer from 'src/explore/reducers/drillDownReducer';
+import notificationReducer from 'src/explore/reducers/notificationReducer';
 
 export type { Dashboard } from 'src/types/Dashboard';
 
@@ -175,6 +176,7 @@ export type RootState = {
   nativeFilters: NativeFiltersState;
   user: UserWithPermissionsAndRoles;
   drillDownData: ReturnType<typeof drilldownReducer>;
+  notification:ReturnType<typeof notificationReducer>;
 };
 
 /** State of dashboardLayout in redux */

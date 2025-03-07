@@ -72,6 +72,12 @@ CACHE_CONFIG = {
 }
 DATA_CACHE_CONFIG = CACHE_CONFIG
 
+PREFERRED_DATABASES = [
+    "Snowflake",
+    "PostgreSQL",
+    "SQLite",  # Default Superset DB
+    "MySQL",   # Some example datasets use this
+]
 
 class CeleryConfig:
     broker_url = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_CELERY_DB}"

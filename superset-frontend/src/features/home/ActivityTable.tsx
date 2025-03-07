@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { extendedDayjs } from 'src/utils/dates';
 import { styled, t } from '@superset-ui/core';
 import { setItem, LocalStorageKeys } from 'src/utils/localStorageHelpers';
@@ -31,13 +31,40 @@ import {
 } from 'src/views/CRUD/utils';
 import { Chart } from 'src/types/Chart';
 import Icons from 'src/components/Icons';
-import SubMenu from './SubMenu';
 import EmptyState from './EmptyState';
 import { WelcomeTable } from './types';
 
 /**
  * Return result from /api/v1/log/recent_activity/
  */
+
+const CustomNav = styled.div`
+  display: flex;
+  padding: 0px 32px;
+  border-bottom: 1px solid #ddd;
+  marginbottom: 20px;
+
+  .tab {
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.primary.light5};
+      box-shadow: inset 0px -3px 0px ${({ theme }) => theme.colors.primary.base};
+    }
+
+    &.active {
+      color: ${({ theme }) => theme.colors.primary.base};
+
+      /* Instead of border-bottom, use box-shadow to avoid shifting layout */
+      box-shadow: inset 0px -2px 0px ${({ theme }) => theme.colors.primary.base};
+    }
+  }
+`;
+
 interface RecentActivity {
   action: string;
   item_type: 'slice' | 'dashboard';
@@ -150,6 +177,22 @@ export default function ActivityTable({
     }
   }, [activeChild]);
 
+  const tabRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  useEffect(() => {
+    const activeTab = tabRefs.current.get(activeChild);
+    if (activeTab) {
+      document.documentElement.style.setProperty(
+        '--active-left',
+        `${activeTab.offsetLeft}px`,
+      );
+      document.documentElement.style.setProperty(
+        '--active-width',
+        `${activeTab.offsetWidth}px`,
+      );
+    }
+  }, [activeChild]);
+
   const tabs = [
     {
       name: TableTab.Edited,
@@ -179,6 +222,7 @@ export default function ActivityTable({
       },
     });
   }
+
   const renderActivity = () => {
     const activities =
       (activeChild === TableTab.Edited
@@ -222,7 +266,18 @@ export default function ActivityTable({
   }
   return (
     <Styles>
-      <SubMenu activeChild={activeChild} tabs={tabs} />
+      <CustomNav>
+        {tabs.map(tab => (
+          <div
+            key={tab.name}
+            ref={el => el && tabRefs.current.set(tab.name, el)}
+            className={`tab ${activeChild === tab.name ? 'active' : ''}`}
+            onClick={tab.onClick}
+          >
+            {tab.label}
+          </div>
+        ))}
+      </CustomNav>
       {Number(activityData[activeChild as keyof ActivityData]?.length) > 0 ||
       (activeChild === TableTab.Edited && editedCards?.length) ? (
         <CardContainer className="recentCards" showThumbnails={showThumbnails}>

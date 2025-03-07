@@ -49,12 +49,88 @@ import {
 import { Switch } from 'src/components/Switch';
 import getBootstrapData from 'src/utils/getBootstrapData';
 import { TableTab } from 'src/views/CRUD/types';
-import SubMenu, { SubMenuProps } from 'src/features/home/SubMenu';
 import { userHasPermission } from 'src/dashboard/util/permissionUtils';
 import { WelcomePageLastTab } from 'src/features/home/types';
 import ActivityTable from 'src/features/home/ActivityTable';
-import ChartTable from 'src/features/home/ChartTable';
-import DashboardTable from 'src/features/home/DashboardTable';
+import { css } from '@emotion/css';
+import { Link } from 'react-router-dom';
+
+const styles = {
+  welcomeContainer: css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  `,
+  welcomeHeader: css`
+    padding: 32px;
+    border-radius: 4px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    max-width: fit-content;
+  `,
+  welcomeHeaderContent: css`
+    text-align: center;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 350px;
+  `,
+  cardsContainer: css`
+    padding: 32px;
+    border-radius: 4px;
+    margin: auto;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    max-width: fit-content;
+  `,
+  card: css`
+    width: 300px;
+    border-radius: 4px;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 20px;
+    &:hover {
+      background-color: #e6ecf2;
+    }
+  `,
+  exploreDateCard: css`
+    width: 300px;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 20px;
+    &:hover {
+      background-color: #e6ecf2;
+      text-decoration: none;
+    }
+  `,
+  recentsHeader: css`
+    color: #5b67d6;
+    font-weight: 600;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px 32px;
+    padding-top: 20px;
+  `,
+};
 
 const extensionsRegistry = getExtensionsRegistry();
 
@@ -121,20 +197,20 @@ const WelcomeContainer = styled.div`
   }
 `;
 
-const WelcomeNav = styled.div`
-  ${({ theme }) => `
-    .switch {
-      display: flex;
-      flex-direction: row;
-      margin: ${theme.gridUnit * 4}px;
-      span {
-        display: block;
-        margin: ${theme.gridUnit}px;
-        line-height: ${theme.gridUnit * 3.5}px;
-      }
-    }
-  `}
-`;
+// const WelcomeNav = styled.div`
+//   ${({ theme }) => `
+//     .switch {
+//       display: flex;
+//       flex-direction: row;
+//       margin: ${theme.gridUnit * 4}px;
+//       span {
+//         display: block;
+//         margin: ${theme.gridUnit}px;
+//         line-height: ${theme.gridUnit * 3.5}px;
+//       }
+//     }
+//   `}
+// `;
 
 const bootstrapData = getBootstrapData();
 
@@ -182,14 +258,13 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
     setItem(LocalStorageKeys.HomepageCollapseState, state);
   };
 
-  const SubmenuExtension = extensionsRegistry.get('home.submenu');
   const WelcomeMessageExtension = extensionsRegistry.get('welcome.message');
   const WelcomeTopExtension = extensionsRegistry.get('welcome.banner');
   const WelcomeMainExtension = extensionsRegistry.get(
     'welcome.main.replacement',
   );
 
-  const [otherTabTitle, otherTabFilters] = useMemo(() => {
+  const [_otherTabTitle, otherTabFilters] = useMemo(() => {
     const lastTab = bootstrapData.common?.conf
       .WELCOME_PAGE_LAST_TAB as WelcomePageLastTab;
     const [customTitle, customFilter] = Array.isArray(lastTab)
@@ -322,68 +397,127 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
     }
   }, [activityData]);
 
-  const isRecentActivityLoading =
-    !activityData?.[TableTab.Other] && !activityData?.[TableTab.Viewed];
+  // const isRecentActivityLoading =
+  //   !activityData?.[TableTab.Other] && !activityData?.[TableTab.Viewed];
 
-  const menuData: SubMenuProps = {
-    activeChild: 'Home',
-    name: t('Home'),
-  };
+  // const menuData: SubMenuProps = {
+  //   activeChild: 'Home',
+  //   name: t('Home'),
+  // };
 
-  if (isThumbnailsEnabled) {
-    menuData.buttons = [
-      {
-        name: (
-          <WelcomeNav>
-            <div className="switch">
-              <Switch checked={checked} onClick={handleToggle} />
-              <span>{t('Thumbnails')}</span>
-            </div>
-          </WelcomeNav>
-        ),
-        onClick: handleToggle,
-        buttonStyle: 'link',
-      },
-    ];
-  }
+  // if (isThumbnailsEnabled) {
+  //   menuData.buttons = [
+  //     {
+  //       name: (
+  //         <WelcomeNav>
+  //           <div className="switch">
+  //             <Switch checked={checked} onClick={handleToggle} />
+  //             <span>{t('Thumbnails')}</span>
+  //           </div>
+  //         </WelcomeNav>
+  //       ),
+  //       onClick: handleToggle,
+  //       buttonStyle: 'link',
+  //     },
+  //   ];
+  // }
 
   return (
     <>
-      {SubmenuExtension ? (
+      {/* {SubmenuExtension ? (
         <SubmenuExtension {...menuData} />
       ) : (
         <SubMenu {...menuData} />
-      )}
+      )} */}
       <WelcomeContainer>
         {WelcomeMessageExtension && <WelcomeMessageExtension />}
         {WelcomeTopExtension && <WelcomeTopExtension />}
         {WelcomeMainExtension && <WelcomeMainExtension />}
         {(!WelcomeTopExtension || !WelcomeMainExtension) && (
           <>
-            <Collapse
-              activeKey={activeState}
-              onChange={handleCollapse}
-              ghost
-              bigger
-            >
-              <Collapse.Panel header={t('Recents')} key="1">
-                {activityData &&
-                (activityData[TableTab.Viewed] ||
-                  activityData[TableTab.Other] ||
-                  activityData[TableTab.Created]) &&
-                activeChild !== 'Loading' ? (
-                  <ActivityTable
-                    user={{ userId: user.userId! }} // user is definitely not a guest user on this page
-                    activeChild={activeChild}
-                    setActiveChild={setActiveChild}
-                    activityData={activityData}
-                    isFetchingActivityData={isFetchingActivityData}
-                    showThumbnails={checked}
-                  />
-                ) : (
-                  <LoadingCards />
-                )}
-              </Collapse.Panel>
+            <div className={styles.welcomeContainer}>
+              <div className={styles.welcomeHeader}>
+                <div className={styles.welcomeHeaderContent}>
+                  <h1>Cube Browser</h1>
+                  <p>
+                    Here you can find our data visualization tools, create
+                    workspaces, export data and visual elemets.
+                  </p>
+                </div>
+              </div>
+              <div className={styles.cardsContainer}>
+                <Link to="/workspaces/list" style={{ textDecoration: 'none' }}>
+                  <div className={styles.card}>
+                    <img src="/static/assets/images/home-workspace.svg" />
+                    <h3>Workspaces</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt
+                    </p>
+                    <a
+                      onClick={() => {
+                        window.location.assign('/dashboard/new');
+                      }}
+                    >
+                      Create Workspace
+                    </a>
+                  </div>
+                </Link>
+                <Link to="/chart/list" style={{ textDecoration: 'none' }}>
+                  <div className={styles.card}>
+                    <img src="/static/assets/images/home-widgets.svg" />
+                    <h3>Widgets</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt
+                    </p>
+                    <Link to="/chart/add/">Create Widget</Link>
+                  </div>
+                </Link>
+                <Link to="/exploredata/list" style={{ textDecoration: 'none' }}>
+                  <div className={styles.exploreDateCard}>
+                    <img src="/static/assets/images/home-exploredata.svg" />
+                    <h3>Explore Data</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt
+                    </p>
+                    <Link to="/dataset/add/">Create Dataset</Link>
+                  </div>
+                </Link>
+              </div>
+            </div>
+            <div style={{ backgroundColor: 'white' }}>
+              <div className={styles.recentsHeader}>
+                <h4>Recents</h4>
+                <div className="switch">
+                  <Switch checked={checked} onClick={handleToggle} />
+                  <span style={{ marginLeft: '6px' }}>{t('Thumbnails')}</span>
+                </div>
+              </div>
+              {activityData &&
+              (activityData[TableTab.Viewed] ||
+                activityData[TableTab.Other] ||
+                activityData[TableTab.Created]) &&
+              activeChild !== 'Loading' ? (
+                <ActivityTable
+                  user={{ userId: user.userId! }} // user is definitely not a guest user on this page
+                  activeChild={activeChild}
+                  setActiveChild={setActiveChild}
+                  activityData={activityData}
+                  isFetchingActivityData={isFetchingActivityData}
+                  showThumbnails={checked}
+                />
+              ) : (
+                <LoadingCards />
+              )}
+              <Collapse
+                activeKey={activeState}
+                onChange={handleCollapse}
+                ghost
+                bigger
+              >
+                {/* <Collapse.Panel header={t('Recents')} key="1"></Collapse.Panel>
               <Collapse.Panel header={t('Workspaces')} key="2">
                 {!dashboardData || isRecentActivityLoading ? (
                   <LoadingCards cover={checked} />
@@ -411,8 +545,8 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                     otherTabTitle={otherTabTitle}
                   />
                 )}
-              </Collapse.Panel>
-              {/* {canReadSavedQueries && (
+              </Collapse.Panel> */}
+                {/* {canReadSavedQueries && (
                 <Collapse.Panel header={t('Saved queries')} key="4">
                   {!queryData ? (
                     <LoadingCards cover={checked} />
@@ -426,7 +560,8 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   )}
                 </Collapse.Panel>
               )} */}
-            </Collapse>
+              </Collapse>
+            </div>
           </>
         )}
       </WelcomeContainer>

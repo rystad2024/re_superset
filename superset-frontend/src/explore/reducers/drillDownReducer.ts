@@ -1,8 +1,8 @@
 import { AnyDrilldownAction, SET_DRILLDOWN_DATA, SET_WORKSPACE_TITLE } from '../actions/drillDownAction';
 
 const initialState = {
-  drilldownData: {},   // Stores chart drilldown data
-  workspaceTitle: "",  // ✅ Ensure this is defined initially
+  drilldownData: {},   
+  workspaceTitle: "",  
 };
 
 export default function drilldownReducer(state = initialState, action: AnyDrilldownAction) {
@@ -17,7 +17,6 @@ export default function drilldownReducer(state = initialState, action: AnyDrilld
       };
       
     case SET_WORKSPACE_TITLE:
-      console.log("drilldownReducer: SET_WORKSPACE_TITLE: title =", action.title);
       return {
         ...state,
         workspaceTitle: action.title,  

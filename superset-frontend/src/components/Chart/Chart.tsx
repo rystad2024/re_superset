@@ -357,11 +357,11 @@ class Chart extends PureComponent<ChartProps, {}> {
       return (
         <EmptyState
           size="large"
-          title={t('Your chart is ready to go!')}
+          title={t('Your widget is ready to go!')}
           description={
             <span>
               {t(
-                'Click on "Create chart" button in the control panel on the left to preview a visualization or',
+                'Click on "Create widget" button in the control panel on the left to preview a visualization or',
               )}{' '}
               <span role="button" tabIndex={0} onClick={this.props.onQuery}>
                 {t('click here')}
