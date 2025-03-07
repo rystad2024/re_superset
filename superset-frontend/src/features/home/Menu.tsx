@@ -314,7 +314,6 @@ export default function MenuWrapper({ data, ...rest }: MenuProps) {
     ...data,
   };
 
-  console.log(data.menu);
   data.menu.map(x => {
     if (x.label === 'Dashboards') {
       x.label = 'Workspaces';
