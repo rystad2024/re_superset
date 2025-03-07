@@ -99,6 +99,7 @@ import DashboardsSubMenu from 'src/explore/components/useExploreAdditionalAction
 import { Menu } from 'src/components/Menu';
 import DownloadAsPdf from '../menu/DownloadMenuItems/DownloadAsPdf';
 import DownloadAsImage from '../menu/DownloadMenuItems/DownloadAsImage';
+import DownloadAsExcel from '../menu/DownloadMenuItems/DownloadAsExcel';
 
 const extensionsRegistry = getExtensionsRegistry();
 
@@ -597,6 +598,11 @@ const Header = () => {
         />
         <DownloadAsImage
           text={t('Download as Image')}
+          dashboardTitle={dashboardTitle}
+          dashboardId={dashboardInfo.id}
+        />
+        <DownloadAsExcel
+          text={t('Download as Excel')}
           dashboardTitle={dashboardTitle}
           dashboardId={dashboardInfo.id}
         />
