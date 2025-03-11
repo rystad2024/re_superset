@@ -40,7 +40,7 @@ import { WelcomeTable } from './types';
 
 const CustomNav = styled.div`
   display: flex;
-  padding: 0px 32px;
+  margin: 0px 32px;
   border-bottom: 1px solid #ddd;
   marginbottom: 20px;
 
@@ -106,7 +106,9 @@ interface ActivityProps {
 const Styles = styled.div`
   .recentCards {
     max-height: none;
-    grid-gap: ${({ theme }) => `${theme.gridUnit * 4}px`};
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2px;
   }
 `;
 

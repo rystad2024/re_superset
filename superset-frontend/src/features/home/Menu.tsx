@@ -18,9 +18,8 @@
  */
 import { useState, useEffect } from 'react';
 import { styled } from '@superset-ui/core';
-import { debounce } from 'lodash';
 import { getUrlParam } from 'src/utils/urlUtils';
-import { Row, Col, Grid } from 'src/components';
+import { Grid } from 'src/components';
 import { MainNav, MenuMode } from 'src/components/Menu';
 import { Tooltip } from 'src/components/Tooltip';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -45,11 +44,10 @@ const StyledHeader = styled.header`
       background-color: white;
       margin-bottom: 2px;
       z-index: 10;
-      
-      padding: 0px 20px;
 
       .main-nav, .navbar {
         background-color: white;
+        font-size: 16px !important;
       }
       &:nth-last-of-type(2) nav {
         margin-bottom: 2px;
@@ -110,11 +108,13 @@ const StyledHeader = styled.header`
       }
       @media (max-width: 767px) {
         .antd5-menu-item {
+          height: 100%;
           padding: 0 ${theme.gridUnit * 6}px 0
             ${theme.gridUnit * 3}px !important;
         }
         .antd5-menu > .antd5-menu-item > span > a {
           padding: 0px;
+          
         }
         .main-nav .antd5-menu-submenu-title > svg:nth-of-type(1) {
           display: none;
@@ -126,6 +126,63 @@ const { SubMenu } = MainNav;
 
 const StyledSubMenu = styled(SubMenu)`
   background-color: #e8edf3;
+  height: 100%;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TopRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  height: 55px;
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+`;
+
+const NavRightContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+  height: 55px;
+`;
+
+const SearchRowContainer = styled.div`
+  display: none;
+  width: 100%;
+
+  @media (max-width: 992px) {
+    display: block;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const SearchBarWrapper = styled.div`
+  @media (max-width: 992px) {
+    &.desktop-search {
+      display: none;
+    }
+  }
+
+  @media (min-width: 993px) {
+    &.mobile-search {
+      display: none;
+    }
+  }
 `;
 
 const { useBreakpoint } = Grid;
@@ -140,21 +197,21 @@ export function Menu({
   },
   isFrontendRoute = () => false,
 }: MenuProps) {
-  const [showMenu, setMenu] = useState<MenuMode>('horizontal');
+  const [showMenu, _setMenu] = useState<MenuMode>('horizontal');
   const screens = useBreakpoint();
   const uiConfig = useUiConfig();
 
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth <= 767) {
-        setMenu('inline');
-      } else setMenu('horizontal');
-    }
-    handleResize();
-    const windowResize = debounce(() => handleResize(), 10);
-    window.addEventListener('resize', windowResize);
-    return () => window.removeEventListener('resize', windowResize);
-  }, []);
+  // useEffect(() => {
+  //   function handleResize() {
+  //     if (window.innerWidth <= 767) {
+  //       setMenu('inline');
+  //     } else setMenu('horizontal');
+  //   }
+  //   handleResize();
+  //   const windowResize = debounce(() => handleResize(), 10);
+  //   window.addEventListener('resize', windowResize);
+  //   return () => window.removeEventListener('resize', windowResize);
+  // }, []);
 
   enum Paths {
     Explore = '/explore',
@@ -197,9 +254,9 @@ export function Menu({
       height: 36px;
       transition: all 0.2s ease;
       margin-right: 50px;
+
       &:hover,
       &:focus-within {
-        background-color:;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       }
     `;
@@ -225,7 +282,7 @@ export function Menu({
     `;
 
     return (
-      <SearchContainer>
+      <SearchContainer className="header-search-container">
         <IconWrapper>
           <Icons.Search />
         </IconWrapper>
@@ -291,73 +348,82 @@ export function Menu({
   };
   return (
     <StyledHeader className="top" id="main-menu" role="navigation">
-      <Row>
-        <Col style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Tooltip
-            id="brand-tooltip"
-            placement="bottomLeft"
-            title={brand.tooltip}
-            arrow={{ pointAtCenter: true }}
-          >
-            {isFrontendRoute(window.location.pathname) ? (
-              <GenericLink className="navbar-brand" to={brand.path}>
-                <img src={brand.icon} alt={brand.alt} />
-              </GenericLink>
-            ) : (
-              <a className="navbar-brand" href={brand.path} tabIndex={-1}>
-                <img src={brand.icon} alt={brand.alt} />
-              </a>
+      <HeaderContainer>
+        <TopRow>
+          <LogoContainer>
+            <Tooltip
+              id="brand-tooltip"
+              placement="bottomLeft"
+              title={brand.tooltip}
+              arrow={{ pointAtCenter: true }}
+            >
+              {isFrontendRoute(window.location.pathname) ? (
+                <GenericLink className="navbar-brand" to={brand.path}>
+                  <img src={brand.icon} alt={brand.alt} />
+                </GenericLink>
+              ) : (
+                <a className="navbar-brand" href={brand.path} tabIndex={-1}>
+                  <img src={brand.icon} alt={brand.alt} />
+                </a>
+              )}
+            </Tooltip>
+            {brand.text && (
+              <div className="navbar-brand-text">
+                <span>{brand.text}</span>
+              </div>
             )}
-          </Tooltip>
-          {brand.text && (
-            <div className="navbar-brand-text">
-              <span>{brand.text}</span>
-            </div>
-          )}
-          <SearchBar />
-        </Col>
-        <Col
-          flex="auto"
-          style={{ display: 'flex', justifyContent: 'flex-end' }}
-        >
-          <MainNav
-            mode={showMenu}
-            data-test="navbar-top"
-            className="main-nav"
-            selectedKeys={activeTabs}
-            disabledOverflow
-          >
-            {menu.map((item, index) => {
-              const props = {
-                index,
-                ...item,
-                isFrontendRoute: isFrontendRoute(item.url),
-                childs: item.childs?.map(c => {
-                  if (typeof c === 'string') {
-                    return c;
-                  }
 
-                  return {
-                    ...c,
-                    isFrontendRoute: isFrontendRoute(c.url),
-                  };
-                }),
-              };
+            {/* Desktop version of search bar */}
+            <SearchBarWrapper className="desktop-search">
+              <SearchBar />
+            </SearchBarWrapper>
+          </LogoContainer>
 
-              return renderSubMenu(props);
-            })}
-          </MainNav>
-        </Col>
-        <Col>
-          <RightMenu
-            align={screens.md ? 'flex-end' : 'flex-start'}
-            settings={settings}
-            navbarRight={navbarRight}
-            isFrontendRoute={isFrontendRoute}
-            environmentTag={environmentTag}
-          />
-        </Col>
-      </Row>
+          <NavRightContainer>
+            <MainNav
+              mode={showMenu}
+              data-test="navbar-top"
+              className="main-nav"
+              selectedKeys={activeTabs}
+              disabledOverflow
+            >
+              {menu.map((item, index) => {
+                const props = {
+                  index,
+                  ...item,
+                  isFrontendRoute: isFrontendRoute(item.url),
+                  childs: item.childs?.map(c => {
+                    if (typeof c === 'string') {
+                      return c;
+                    }
+
+                    return {
+                      ...c,
+                      isFrontendRoute: isFrontendRoute(c.url),
+                    };
+                  }),
+                };
+
+                return renderSubMenu(props);
+              })}
+            </MainNav>
+            <RightMenu
+              align={screens.md ? 'flex-end' : 'flex-start'}
+              settings={settings}
+              navbarRight={navbarRight}
+              isFrontendRoute={isFrontendRoute}
+              environmentTag={environmentTag}
+            />
+          </NavRightContainer>
+        </TopRow>
+
+        {/* Mobile version of search bar (only shown on small screens) */}
+        <SearchRowContainer>
+          <SearchBarWrapper className="mobile-search">
+            <SearchBar />
+          </SearchBarWrapper>
+        </SearchRowContainer>
+      </HeaderContainer>
     </StyledHeader>
   );
 }

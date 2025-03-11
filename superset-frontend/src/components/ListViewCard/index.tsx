@@ -44,7 +44,7 @@ const listViewCardTheme = {
 const StyledCard = styled(Card)`
   ${({ theme }) => `
     overflow: hidden;
-
+    border-radius: 20px;
     .gradient-container {
       position: relative;
       height: 100%;
