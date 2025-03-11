@@ -113,10 +113,13 @@ const styles = {
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
-   &:hover {
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border: rgb(187, 189, 209);
+      border-style: inset;
       position: relative;
-      color: #3B3A84;
-  
+
       &::before {
         content: '';
         position: absolute;
@@ -124,14 +127,13 @@ const styles = {
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: white;
-        opacity: 0.4;
-        border-radius: 8px; 
+
+        border-radius: 8px;
         z-index: -1;
         pointer-events: none;
       }
-    }   
     }
+
     img {
       height: 200px;
     }
