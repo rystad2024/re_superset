@@ -359,7 +359,7 @@ export const CardContainer = styled.div<{
   ${({ showThumbnails, theme }) => `
     overflow: hidden;
     display: grid;
-    grid-gap: ${theme.gridUnit * 12}px ${theme.gridUnit * 4}px;
+    grid-gap: ${theme.gridUnit * 4}px ${theme.gridUnit * 4}px;
     grid-template-columns: repeat(auto-fit, 300px);
     max-height: ${showThumbnails ? '314' : '148'}px;
     margin-top: ${theme.gridUnit * -6}px;
@@ -380,6 +380,9 @@ export const CardStyles = styled.div`
     /* Height is calculated based on 300px width, to keep the same aspect ratio as the 800*450 thumbnails */
     height: 168px;
   }
+  width: 300px;
+  flex: 1 1 300px; /* Ensures equal width and prevents shrinking */
+  max-width: 300px;
 `;
 
 export const StyledIcon = (theme: SupersetTheme) => css`

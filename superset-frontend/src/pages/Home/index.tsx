@@ -54,6 +54,9 @@ import { WelcomePageLastTab } from 'src/features/home/types';
 import ActivityTable from 'src/features/home/ActivityTable';
 import { css } from '@emotion/css';
 import { Link } from 'react-router-dom';
+// import { Grid } from 'src/components';
+import Icons from 'src/components/Icons';
+import ParticleBackground from './BackgroundAnimation';
 
 const styles = {
   welcomeContainer: css`
@@ -62,6 +65,7 @@ const styles = {
     justify-content: center;
     align-items: center;
     width: 100%;
+    position: relative;
   `,
   welcomeHeader: css`
     padding: 32px;
@@ -72,6 +76,8 @@ const styles = {
     align-items: center;
     gap: 8px;
     max-width: fit-content;
+    position: relative;
+    z-index: 1;
   `,
   welcomeHeaderContent: css`
     text-align: center;
@@ -80,6 +86,9 @@ const styles = {
     flex-direction: column;
     gap: 8px;
     max-width: 350px;
+    position: relative;
+    z-index: 1;
+    color: white;
   `,
   cardsContainer: css`
     padding: 32px;
@@ -91,35 +100,62 @@ const styles = {
     align-items: center;
     gap: 8px;
     max-width: fit-content;
+    margin-bottom: 60px;
   `,
   card: css`
-    width: 300px;
-    border-radius: 4px;
-    margin: auto;
-    text-align: center;
     display: flex;
-    gap: 8px;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    color: white;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
     &:hover {
-      background-color: #e6ecf2;
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border: rgb(187, 189, 209);
+      border-style: inset;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        border-radius: 8px;
+        z-index: -1;
+        pointer-events: none;
+      }
+    }
+
+    img {
+      height: 200px;
     }
   `,
-  exploreDateCard: css`
-    width: 300px;
-    margin: auto;
-    text-align: center;
+
+  plusButton: css`
+    margin-top: 16px;
+    background-color: #5b67d6;
+    color: white;
+    padding: 3px 7px 3px 3px;
+    border-radius: 14px;
+    border: none;
     display: flex;
-    gap: 8px;
-    flex-direction: column;
-    padding: 20px;
-    border-radius: 20px;
+    align-items: center;
+    gap: 4px;
     &:hover {
-      background-color: #e6ecf2;
+      box-shadow: 0px 4px 10px rgba(91, 103, 214, 0.4);
+      color: white;
       text-decoration: none;
     }
   `,
+
   recentsHeader: css`
     color: #5b67d6;
     font-weight: 600;
@@ -153,10 +189,11 @@ interface LoadingProps {
 const DEFAULT_TAB_ARR = ['2', '3'];
 
 const WelcomeContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.secondary.light5};
+  background-color: #16213a;
+
   .ant-row.menu {
     margin-top: -15px;
-    background-color: ${({ theme }) => theme.colors.grayscale.light4};
+    background: linear-gradient(135deg, #0a0a20 0%, #1a1a35 100%);
     &:after {
       content: '';
       display: block;
@@ -195,6 +232,30 @@ const WelcomeContainer = styled.div`
       height: 168px;
     }
   }
+
+  .welcomeContainer::before,
+  .welcomeContainer::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    height: 150px;
+    background-repeat: no-repeat;
+    background-size: 100% 150px;
+    opacity: 0.3;
+  }
+
+  .welcomeContainer::before {
+    top: 20%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23ffffff'/%3E%3C/svg%3E");
+  }
+
+  .welcomeContainer::after {
+    bottom: 20%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%23ffffff'/%3E%3C/svg%3E");
+    transform: rotate(180deg);
+  }
 `;
 
 // const WelcomeNav = styled.div`
@@ -226,8 +287,9 @@ export const LoadingCards = ({ cover }: LoadingProps) => (
     ))}
   </CardContainer>
 );
-
+// const { useBreakpoint } = Grid;
 function Welcome({ user, addDangerToast }: WelcomeProps) {
+  // const screens = useBreakpoint();
   const canReadSavedQueries = userHasPermission(user, 'SavedQuery', 'can_read');
   const userid = user.userId;
   const id = userid!.toString(); // confident that user is not a guest user
@@ -308,7 +370,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
           } else setActiveChild(activeTab || TableTab.Created);
         } else if (!activeTab) setActiveChild(TableTab.Created);
         else setActiveChild(activeTab);
-        setActivityData(activityData => ({ ...activityData, ...data }));
+        setActivityData(prevActivityData => ({ ...prevActivityData, ...data }));
       })
       .catch(
         createErrorHandler((errMsg: unknown) => {
@@ -370,7 +432,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
     ]).then(() => {
       setIsFetchingActivityData(false);
     });
-  }, [otherTabFilters]);
+  }, [user?.userId, otherTabFilters, recent]);
 
   const handleToggle = () => {
     setChecked(!checked);
@@ -379,10 +441,11 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
 
   useEffect(() => {
     if (!collapseState && queryData?.length) {
-      setActiveState(activeState => [...activeState, '4']);
+      setActiveState(prevState => [...prevState, '4']);
     }
-    setActivityData(activityData => ({
-      ...activityData,
+
+    setActivityData(prev => ({
+      ...prev,
       Created: [
         ...(chartData?.slice(0, 3) || []),
         ...(dashboardData?.slice(0, 3) || []),
@@ -436,6 +499,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
         {(!WelcomeTopExtension || !WelcomeMainExtension) && (
           <>
             <div className={styles.welcomeContainer}>
+              <ParticleBackground />
               <div className={styles.welcomeHeader}>
                 <div className={styles.welcomeHeaderContent}>
                   <h1>Cube Browser</h1>
@@ -448,18 +512,17 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
               <div className={styles.cardsContainer}>
                 <Link to="/workspaces/list" style={{ textDecoration: 'none' }}>
                   <div className={styles.card}>
-                    <img src="/static/assets/images/home-workspace.svg" />
+                    <img
+                      src="/static/assets/images/home-workspace.svg"
+                      alt="Workspaces"
+                    />
                     <h3>Workspaces</h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt
-                    </p>
+                    <p>An environment to create and manage your analysis</p>
                     <a
-                      onClick={() => {
-                        window.location.assign('/dashboard/new');
-                      }}
+                      onClick={() => window.location.assign('/dashboard/new')}
+                      className={styles.plusButton}
                     >
-                      Create Workspace
+                      <Icons.Plus /> Create
                     </a>
                   </div>
                 </Link>
@@ -467,57 +530,65 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   <div className={styles.card}>
                     <img src="/static/assets/images/home-widgets.svg" />
                     <h3>Widgets</h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt
-                    </p>
-                    <Link to="/chart/add/">Create Widget</Link>
+                    <p>An interactive component to query and visualize data</p>
+                    <Link to="/chart/add/" className={styles.plusButton}>
+                      <Icons.Plus /> Create
+                    </Link>
                   </div>
                 </Link>
                 <Link to="/exploredata/list" style={{ textDecoration: 'none' }}>
-                  <div className={styles.exploreDateCard}>
+                  <div className={styles.card}>
                     <img src="/static/assets/images/home-exploredata.svg" />
                     <h3>Explore Data</h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt
-                    </p>
-                    <Link to="/dataset/add/">Create Dataset</Link>
+                    <p>All Rystad Energy databases at your fingertips</p>
+                    <Link to="/dataset/add/" className={styles.plusButton}>
+                      <Icons.Plus /> Create
+                    </Link>
                   </div>
                 </Link>
               </div>
             </div>
-            <div style={{ backgroundColor: 'white' }}>
-              <div className={styles.recentsHeader}>
-                <h4>Recents</h4>
-                <div className="switch">
-                  <Switch checked={checked} onClick={handleToggle} />
-                  <span style={{ marginLeft: '6px' }}>{t('Thumbnails')}</span>
-                </div>
-              </div>
-              {activityData &&
-              (activityData[TableTab.Viewed] ||
-                activityData[TableTab.Other] ||
-                activityData[TableTab.Created]) &&
-              activeChild !== 'Loading' ? (
-                <ActivityTable
-                  user={{ userId: user.userId! }} // user is definitely not a guest user on this page
-                  activeChild={activeChild}
-                  setActiveChild={setActiveChild}
-                  activityData={activityData}
-                  isFetchingActivityData={isFetchingActivityData}
-                  showThumbnails={checked}
-                />
-              ) : (
-                <LoadingCards />
-              )}
-              <Collapse
-                activeKey={activeState}
-                onChange={handleCollapse}
-                ghost
-                bigger
+            <div
+              style={{
+                backgroundColor: 'white',
+              }}
+            >
+              <div
+                style={{
+                  maxWidth: '1008px',
+                  margin: 'auto',
+                }}
               >
-                {/* <Collapse.Panel header={t('Recents')} key="1"></Collapse.Panel>
+                <div className={styles.recentsHeader}>
+                  <h4>Recents</h4>
+                  <div className="switch">
+                    <Switch checked={checked} onClick={handleToggle} />
+                    <span style={{ marginLeft: '6px' }}>{t('Thumbnails')}</span>
+                  </div>
+                </div>
+                {activityData &&
+                (activityData[TableTab.Viewed] ||
+                  activityData[TableTab.Other] ||
+                  activityData[TableTab.Created]) &&
+                activeChild !== 'Loading' ? (
+                  <ActivityTable
+                    user={{ userId: user.userId! }} // user is definitely not a guest user on this page
+                    activeChild={activeChild}
+                    setActiveChild={setActiveChild}
+                    activityData={activityData}
+                    isFetchingActivityData={isFetchingActivityData}
+                    showThumbnails={checked}
+                  />
+                ) : (
+                  <LoadingCards />
+                )}
+                <Collapse
+                  activeKey={activeState}
+                  onChange={handleCollapse}
+                  ghost
+                  bigger
+                >
+                  {/* <Collapse.Panel header={t('Recents')} key="1"></Collapse.Panel>
               <Collapse.Panel header={t('Workspaces')} key="2">
                 {!dashboardData || isRecentActivityLoading ? (
                   <LoadingCards cover={checked} />
@@ -546,7 +617,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   />
                 )}
               </Collapse.Panel> */}
-                {/* {canReadSavedQueries && (
+                  {/* {canReadSavedQueries && (
                 <Collapse.Panel header={t('Saved queries')} key="4">
                   {!queryData ? (
                     <LoadingCards cover={checked} />
@@ -560,7 +631,8 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   )}
                 </Collapse.Panel>
               )} */}
-              </Collapse>
+                </Collapse>
+              </div>
             </div>
           </>
         )}

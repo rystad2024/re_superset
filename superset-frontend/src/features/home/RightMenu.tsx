@@ -384,12 +384,11 @@ const RightMenu = ({
           key="merged_menu"
           data-test="merged-dropdown"
           icon={
-            <Icons.NavExplore
+            <div
               style={{
                 backgroundColor: theme.colors.grayscale.dark2,
                 color: 'white',
                 fontSize: '24px',
-                padding: '4px',
                 borderRadius: '20px',
                 display: 'flex',
                 alignItems: 'center',
@@ -397,7 +396,17 @@ const RightMenu = ({
                 width: '32px',
                 height: '32px',
               }}
-            />
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="white"
+              >
+                <path d="M710-150q-63 0-106.5-43.5T560-300q0-63 43.5-106.5T710-450q63 0 106.5 43.5T860-300q0 63-43.5 106.5T710-150Zm0-80q29 0 49.5-20.5T780-300q0-29-20.5-49.5T710-370q-29 0-49.5 20.5T640-300q0 29 20.5 49.5T710-230Zm-550-30v-80h320v80H160Zm90-250q-63 0-106.5-43.5T100-660q0-63 43.5-106.5T250-810q63 0 106.5 43.5T400-660q0 63-43.5 106.5T250-510Zm0-80q29 0 49.5-20.5T320-660q0-29-20.5-49.5T250-730q-29 0-49.5 20.5T180-660q0 29 20.5 49.5T250-590Zm230-30v-80h320v80H480Zm230 320ZM250-660Z" />
+              </svg>
+            </div>
           }
         >
           {/* Actions Section - from the Plus button */}
@@ -466,10 +475,11 @@ const RightMenu = ({
               <Menu.Divider key="actions-divider" />
             </>
           )}
-
-          {/* Data Section */}
-          <Menu.ItemGroup key="data-section" title={t('Data')}>
-            {/* We'll use your existing settings structure but add a custom filter */}
+          <StyledSubMenu
+            key="data-main"
+            title={t('Data')}
+            className="data-menu"
+          >
             {settings
               ?.filter(section => section.label === 'Data')
               ?.map?.(section =>
@@ -496,11 +506,14 @@ const RightMenu = ({
                   return null;
                 }),
               )}
-          </Menu.ItemGroup>
-          <Menu.Divider key="data-divider" />
+          </StyledSubMenu>
 
-          {/* Security Section - Using your original settings structure for these items */}
-          <Menu.ItemGroup key="security-section" title={t('Security')}>
+          {/* Security Section - Modified to use StyledSubMenu */}
+          <StyledSubMenu
+            key="security-main"
+            title={t('Security')}
+            className="data-menu"
+          >
             {settings
               ?.filter(section => section.label === 'Security')
               ?.map?.(section =>
@@ -527,11 +540,14 @@ const RightMenu = ({
                   return null;
                 }),
               )}
-          </Menu.ItemGroup>
-          <Menu.Divider key="security-divider" />
+          </StyledSubMenu>
 
-          {/* Manage Section - Using your original settings structure for these items */}
-          <Menu.ItemGroup key="manage-section" title={t('Manage')}>
+          {/* Manage Section - Modified to use StyledSubMenu */}
+          <StyledSubMenu
+            key="manage-main"
+            title={t('Manage')}
+            className="data-menu"
+          >
             {settings
               ?.filter(section => section.label === 'Manage')
               ?.map?.(section =>
@@ -558,8 +574,7 @@ const RightMenu = ({
                   return null;
                 }),
               )}
-          </Menu.ItemGroup>
-          <Menu.Divider key="manage-divider" />
+          </StyledSubMenu>
 
           {/* Include any other settings sections that might not have been captured */}
           {settings
@@ -567,8 +582,12 @@ const RightMenu = ({
               section =>
                 !['Data', 'Security', 'Manage'].includes(section.label),
             )
-            ?.map?.((section, index) => [
-              <Menu.ItemGroup key={`${section.label}`} title={section.label}>
+            ?.map?.((section, index) => (
+              <StyledSubMenu
+                key={`${section.label}-main`}
+                title={t(section.label)}
+                className="data-menu"
+              >
                 {section?.childs?.map?.(child => {
                   if (typeof child !== 'string') {
                     const menuItemDisplay = RightMenuItemIconExtension ? (
@@ -580,7 +599,7 @@ const RightMenu = ({
                       child.label
                     );
                     return (
-                      <Menu.Item key={`${child.label}`}>
+                      <Menu.Item key={`${section.label}_${child.label}`}>
                         {isFrontendRoute(child.url) ? (
                           <Link to={child.url || ''}>{menuItemDisplay}</Link>
                         ) : (
@@ -591,13 +610,16 @@ const RightMenu = ({
                   }
                   return null;
                 })}
-              </Menu.ItemGroup>,
-              <Menu.Divider key={`divider_${index}`} />,
-            ])}
+              </StyledSubMenu>
+            ))}
 
-          {/* User Section */}
-          {!navbarRight.user_is_anonymous && [
-            <Menu.ItemGroup key="user-section" title={t('User')}>
+          {/* User Section - Modified to use StyledSubMenu */}
+          {!navbarRight.user_is_anonymous && (
+            <StyledSubMenu
+              key="user-main"
+              title={t('User')}
+              className="data-menu"
+            >
               {navbarRight.user_info_url && (
                 <Menu.Item key="info">
                   <a href={navbarRight.user_info_url}>{t('Info')}</a>
@@ -606,13 +628,16 @@ const RightMenu = ({
               <Menu.Item key="logout" onClick={handleLogout}>
                 <a href={navbarRight.user_logout_url}>{t('Logout')}</a>
               </Menu.Item>
-            </Menu.ItemGroup>,
-          ]}
+            </StyledSubMenu>
+          )}
 
-          {/* About Section */}
-          {(navbarRight.version_string || navbarRight.version_sha) && [
-            <Menu.Divider key="version-info-divider" />,
-            <Menu.ItemGroup key="about-section" title={t('About')}>
+          {/* About Section - Modified to use StyledSubMenu */}
+          {(navbarRight.version_string || navbarRight.version_sha) && (
+            <StyledSubMenu
+              key="about-main"
+              title={t('About')}
+              className="data-menu"
+            >
               <div className="about-section">
                 {navbarRight.show_watermark && (
                   <div css={versionInfoStyles}>
@@ -635,8 +660,8 @@ const RightMenu = ({
                   </div>
                 )}
               </div>
-            </Menu.ItemGroup>,
-          ]}
+            </StyledSubMenu>
+          )}
         </StyledSubMenu>
 
         {/* Language picker remains separate */}
