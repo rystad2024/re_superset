@@ -61,11 +61,11 @@ const defaultTheme = {
       help: '#798899',
     },
     primary: {
-      base: '#495B6D', // Your main brand blue
-      dark1: '#5B67D6', // Darker for hover/active states
+      base: '#3B3A84', // Your main brand blue
+      dark1: '#2E435F', // Darker for hover/active states
       dark2: '#192C47',
       light1: '#798899', // Lighter for subtle interactions
-      light2: '#A8B3C1',
+      light2: '#bfdbfe',
       light3: '#CBD5E1',
       light4: '#E6ECF2',
       light5: '#F1F5F9',
@@ -83,8 +83,10 @@ const defaultTheme = {
     },
     orange: {
       base: '#FFF7E9',
+      dark1: '#5B67D6', // Darker for hover/active states
+      dark2: '#192C47',
       light1: '#EAA776',
-      light2: '#EDBA8D',
+      light2: '#E58843',
     },
     grayscale: {
       base: '#051938', // Default text color
@@ -138,7 +140,7 @@ const defaultTheme = {
   },
   typography: {
     families: {
-      sansSerif: `'Inter', Helvetica, Arial`,
+      sansSerif: `'Red Hat Display','Inter', Helvetica, Arial`,
       serif: `Georgia, 'Times New Roman', Times, serif`,
       monospace: `'Fira Code', 'Courier New', monospace`,
     },

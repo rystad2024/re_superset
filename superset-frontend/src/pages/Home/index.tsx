@@ -85,7 +85,7 @@ const styles = {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-width: 350px;
+    max-width: 360px;
     position: relative;
     z-index: 1;
     color: white;
@@ -503,7 +503,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
               <div className={styles.welcomeHeader}>
                 <div className={styles.welcomeHeaderContent}>
                   <h1>Cube Browser</h1>
-                  <p>
+                  <p style={{ fontSize: '16px' }}>
                     Here you can find our data visualization tools, create
                     workspaces, export data and visual elemets.
                   </p>

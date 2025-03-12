@@ -67,7 +67,7 @@ export const useHeaderActionsMenu = ({
   startPeriodicRender,
   setRefreshFrequency,
   dashboardTitle,
-  logEvent,
+  // logEvent,
   setCurrentReportDeleting,
 }: HeaderDropdownProps) => {
   const [css, setCss] = useState(customCss || '');
@@ -97,17 +97,12 @@ export const useHeaderActionsMenu = ({
           break;
         case MenuKeys.ToggleFullscreen: {
           const currentStandalone = getUrlParam(URL_PARAMS.standalone);
-          console.log('Current standalone:', currentStandalone);
-
           const newUrl = getDashboardUrl({
             pathname: window.location.pathname,
             filters: getActiveFilters(),
             hash: window.location.hash,
             standalone: currentStandalone ? undefined : 1,
           });
-
-          console.log('New URL:', newUrl);
-          console.log('Current URL:', window.location.href);
 
           window.location.replace(newUrl);
           break;

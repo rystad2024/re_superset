@@ -42,7 +42,10 @@ export type ButtonStyle =
   | 'danger'
   | 'default'
   | 'link'
-  | 'dashed';
+  | 'dashed'
+  | 'dark-primary'
+  | 'dark-secondary'
+  | 'dark-link';
 
 export type ButtonSize = 'default' | 'small' | 'xsmall';
 
@@ -70,6 +73,9 @@ const decideType = (buttonStyle: ButtonStyle) => {
     tertiary: 'default',
     dashed: 'dashed',
     link: 'link',
+    'dark-primary': 'default', // New style
+    'dark-secondary': 'default', // New style
+    'dark-link': 'default', // New style
   };
 
   return typeMap[buttonStyle];
@@ -145,6 +151,24 @@ export default function Button(props: ButtonProps) {
     backgroundColorHover = 'transparent';
     backgroundColorActive = 'transparent';
     color = primary.dark1;
+  } else if (buttonStyle === 'dark-primary') {
+    backgroundColor = 'white';
+    color = '#2e435f';
+  } else if (buttonStyle === 'dark-secondary') {
+    backgroundColor = 'inherit';
+    color = 'white';
+    borderWidth = 1;
+    borderStyle = 'solid';
+    borderColor = 'white';
+    backgroundColorHover = '#3A5274';
+    colorHover = 'white';
+    borderColorHover = 'white';
+  } else if (buttonStyle === 'dark-link') {
+    backgroundColor = 'transparent';
+    backgroundColorHover = 'transparent';
+    backgroundColorActive = 'transparent';
+    color = 'white';
+    colorHover = 'white';
   }
 
   const element = children as ReactElement;
