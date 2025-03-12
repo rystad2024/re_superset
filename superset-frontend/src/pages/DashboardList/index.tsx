@@ -668,7 +668,7 @@ function DashboardList(props: DashboardListProps) {
   if (canDelete || canExport) {
     subMenuButtons.push({
       name: t('Bulk select'),
-      buttonStyle: 'secondary',
+      buttonStyle: 'dark-secondary',
       'data-test': 'bulk-select',
       onClick: toggleBulkSelect,
     });
@@ -680,7 +680,7 @@ function DashboardList(props: DashboardListProps) {
           <i className="fa fa-plus" /> {t('Workspace')}
         </>
       ),
-      buttonStyle: 'primary',
+      buttonStyle: 'dark-primary',
       onClick: () => {
         window.location.assign('/dashboard/new');
       },
@@ -696,7 +696,7 @@ function DashboardList(props: DashboardListProps) {
           <Icons.Import data-test="import-button" />
         </Tooltip>
       ),
-      buttonStyle: 'link',
+      buttonStyle: 'dark-link',
       onClick: openDashboardImportModal,
     });
   }

@@ -751,7 +751,7 @@ function ChartList(props: ChartListProps) {
   if (canDelete || canExport) {
     subMenuButtons.push({
       name: t('Bulk select'),
-      buttonStyle: 'secondary',
+      buttonStyle: 'dark-secondary',
       'data-test': 'bulk-select',
       onClick: toggleBulkSelect,
     });
@@ -763,7 +763,7 @@ function ChartList(props: ChartListProps) {
           <i className="fa fa-plus" /> {t('Widget')}
         </>
       ),
-      buttonStyle: 'primary',
+      buttonStyle: 'dark-primary',
       onClick: () => {
         history.push('/chart/add');
       },
@@ -779,7 +779,7 @@ function ChartList(props: ChartListProps) {
           <Icons.Import data-test="import-button" />
         </Tooltip>
       ),
-      buttonStyle: 'link',
+      buttonStyle: 'dark-link',
       onClick: openChartImportModal,
     });
   }

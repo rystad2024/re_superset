@@ -657,6 +657,7 @@ THEME_OVERRIDES = {
     "colors": {
         "primary": {
             "base": "#3B3A84",  # Dark primary color
+            "dark1": "#2E435F",  # Darker primary color
         },
         "secondary": {
             "base": "#E58843",  # Secondary color

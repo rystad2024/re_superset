@@ -39,6 +39,7 @@ const StyledHeader = styled.div`
     padding: ${({ theme }) => theme.gridUnit * 3}px;
     display: inline-block;
     line-height: ${({ theme }) => theme.gridUnit * 9}px;
+    background-color: #2e435f;
   }
   .nav-right {
     display: flex;
@@ -68,14 +69,15 @@ const StyledHeader = styled.div`
     padding-left: 10px;
   }
   .menu {
-    background-color: ${({ theme }) => theme.colors.grayscale.light5};
+    background-color: #2e435f;
+    color: white;
+    padding-left: 6px;
   }
 
   .menu > .antd5-menu {
     padding: ${({ theme }) => theme.gridUnit * 4}px
       ${({ theme }) => theme.gridUnit * 8}px;
 
-    background-color: ${({ theme }) => theme.colors.grayscale.light5};
     .antd5-menu-item {
       border-radius: ${({ theme }) => theme.borderRadius}px;
       font-size: ${({ theme }) => theme.typography.sizes.s}px;
@@ -134,7 +136,10 @@ export interface ButtonProps {
     | 'link'
     | 'warning'
     | 'success'
-    | 'tertiary';
+    | 'tertiary'
+    | 'dark-primary'
+    | 'dark-secondary'
+    | 'dark-link';
 }
 
 export interface SubMenuProps {

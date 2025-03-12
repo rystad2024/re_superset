@@ -45,7 +45,7 @@ export const StyledSelect = styled(AntdSelect, {
   ${({ theme, headerPosition, oneLine }) => `
     flex: ${headerPosition === 'left' ? 1 : 0};
     && .ant-select-selector {
-      border-radius: ${theme.gridUnit}px;
+      border-radius: 12px;
     }
     // Open the dropdown when clicking on the suffix
     // This is fixed in version 4.16

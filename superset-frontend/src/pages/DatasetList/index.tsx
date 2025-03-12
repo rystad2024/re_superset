@@ -620,7 +620,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     buttonArr.push({
       name: t('Bulk select'),
       onClick: toggleBulkSelect,
-      buttonStyle: 'secondary',
+      buttonStyle: 'dark-secondary',
     });
   }
 
@@ -634,7 +634,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
       onClick: () => {
         history.push('/dataset/add/');
       },
-      buttonStyle: 'primary',
+      buttonStyle: 'dark-primary',
     });
 
     buttonArr.push({
@@ -647,7 +647,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           <Icons.Import data-test="import-button" />
         </Tooltip>
       ),
-      buttonStyle: 'link',
+      buttonStyle: 'dark-link',
       onClick: openDatasetImportModal,
     });
   }

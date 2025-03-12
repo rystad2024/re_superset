@@ -63,14 +63,13 @@ export default function Label(props: LabelProps) {
     icon,
     ...rest
   } = props;
-  const { primary, secondary, grayscale, success, warning, error, info } =
-    colors;
+  const { primary, grayscale, success, warning, error, info, orange } = colors;
 
   let baseColor;
   if (type === 'primary') {
     baseColor = primary;
   } else if (type === 'secondary') {
-    baseColor = secondary;
+    baseColor = orange;
   } else if (type === 'success') {
     baseColor = success;
   } else if (type === 'warning') {
@@ -90,7 +89,7 @@ export default function Label(props: LabelProps) {
   // currently shades for >=light2 are not aligned for primary, default and secondary
   if (['default', 'primary', 'secondary'].includes(type)) {
     // @ts-ignore
-    backgroundColor = baseColor.light4;
+    backgroundColor = baseColor.light2;
     borderColor = baseColor.light2;
   }
 
@@ -109,9 +108,9 @@ export default function Label(props: LabelProps) {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     backgroundColor,
-    borderRadius: 8,
+    borderRadius: 10,
     borderColor,
-    padding: '0.35em 0.8em',
+    padding: '0.45em 0.8em',
     lineHeight: 1,
     color,
     display: 'inline-flex',
