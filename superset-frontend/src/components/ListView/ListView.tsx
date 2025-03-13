@@ -155,7 +155,7 @@ const ViewModeContainer = styled.div`
   }
 
   .active {
-    background-color: ${({ theme }) => theme.colors.grayscale.light1};
+    background-color: ${({ theme }) => theme.colors.secondary.light1};
   }
 `;
 

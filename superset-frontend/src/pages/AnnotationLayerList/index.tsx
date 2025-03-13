@@ -217,7 +217,7 @@ function AnnotationLayersList({
           <i className="fa fa-plus" /> {t('Annotation layer')}
         </>
       ),
-      buttonStyle: 'primary',
+      buttonStyle: 'dark-primary',
       onClick: () => {
         handleAnnotationLayerEdit(null);
       },
@@ -228,7 +228,7 @@ function AnnotationLayersList({
     subMenuButtons.push({
       name: t('Bulk select'),
       onClick: toggleBulkSelect,
-      buttonStyle: 'secondary',
+      buttonStyle: 'dark-secondary',
     });
   }
 

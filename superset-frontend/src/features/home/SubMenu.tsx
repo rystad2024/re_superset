@@ -84,6 +84,7 @@ const StyledHeader = styled.div`
       padding: ${({ theme }) => theme.gridUnit * 2}px
         ${({ theme }) => theme.gridUnit * 4}px;
       margin-right: ${({ theme }) => theme.gridUnit}px;
+      background-color: ${({ theme }) => theme.colors.orange.base};
     }
     .antd5-menu-item:has(> span > .active) {
       background-color: ${({ theme }) => theme.colors.orange.light2};
