@@ -42,7 +42,7 @@ import { QueryObjectColumns, Tag } from 'src/views/CRUD/types';
 import TagModal from 'src/features/tags/TagModal';
 import FaveStar from 'src/components/FaveStar';
 import { ModifiedInfo } from 'src/components/AuditInfo';
-
+import { styled } from '@superset-ui/core';
 const PAGE_SIZE = 25;
 
 interface TagListProps {
@@ -55,6 +55,15 @@ interface TagListProps {
   };
 }
 
+const StyledTag = styled(AntdTag)`
+  ${({ theme }) => `
+  margin-top: ${theme.gridUnit}px;
+  margin-bottom: ${theme.gridUnit}px;
+  background-color: #81D5D5;
+  border-radius: 12px;
+  border: none;
+  `};
+`;
 function TagList(props: TagListProps) {
   const { addDangerToast, addSuccessToast, user } = props;
   const { userId } = user;
@@ -167,9 +176,9 @@ function TagList(props: TagListProps) {
             original: { id, name: tagName },
           },
         }: any) => (
-          <AntdTag>
+          <StyledTag>
             <Link to={`/superset/all_entities/?id=${id}`}>{tagName}</Link>
-          </AntdTag>
+          </StyledTag>
         ),
         Header: t('Name'),
         accessor: 'name',
@@ -311,7 +320,7 @@ function TagList(props: TagListProps) {
   if (canDelete) {
     subMenuButtons.push({
       name: t('Bulk select'),
-      buttonStyle: 'secondary',
+      buttonStyle: 'dark-secondary',
       'data-test': 'bulk-select',
       onClick: toggleBulkSelect,
     });
@@ -324,7 +333,7 @@ function TagList(props: TagListProps) {
         <i className="fa fa-plus" /> {t('Tag')}
       </>
     ),
-    buttonStyle: 'primary',
+    buttonStyle: 'dark-primary',
     'data-test': 'bulk-select',
     onClick: () => setShowTagModal(true),
   });

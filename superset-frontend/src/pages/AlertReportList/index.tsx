@@ -420,7 +420,7 @@ function AlertList({
           <i className="fa fa-plus" /> {title}
         </>
       ),
-      buttonStyle: 'primary',
+      buttonStyle: 'dark-primary',
       onClick: () => {
         handleAlertEdit(null);
       },
@@ -430,7 +430,7 @@ function AlertList({
     subMenuButtons.push({
       name: t('Bulk select'),
       onClick: toggleBulkSelect,
-      buttonStyle: 'secondary',
+      buttonStyle: 'dark-secondary',
       'data-test': 'bulk-select-toggle',
     });
   }

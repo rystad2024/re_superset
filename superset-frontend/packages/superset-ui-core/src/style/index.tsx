@@ -95,7 +95,7 @@ const defaultTheme = {
       light1: '#A8B3C1', // Muted text color
       light2: '#CBD5E1', // Disabled element background
       light3: '#E6ECF2', // Inputs & dropdowns
-      light4: '#F1F5F9', // Lighter backgrounds
+      light4: '#F0F0F0', // Lighter backgrounds
       light5: '#FFFFFF', // White
     },
     disabled: {

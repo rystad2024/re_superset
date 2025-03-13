@@ -28,6 +28,9 @@ const StyledTag = styled(AntdTag)`
   ${({ theme }) => `
   margin-top: ${theme.gridUnit}px;
   margin-bottom: ${theme.gridUnit}px;
+  background-color: #81D5D5;
+  border-radius: 12px;
+  border: none;
   `};
 `;
 

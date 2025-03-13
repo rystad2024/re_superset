@@ -199,7 +199,7 @@ function CssTemplatesList({
           <i className="fa fa-plus" /> {t('CSS template')}
         </>
       ),
-      buttonStyle: 'primary',
+      buttonStyle: 'dark-primary',
       onClick: () => {
         setCurrentCssTemplate(null);
         setCssTemplateModalOpen(true);
@@ -211,7 +211,7 @@ function CssTemplatesList({
     subMenuButtons.push({
       name: t('Bulk select'),
       onClick: toggleBulkSelect,
-      buttonStyle: 'secondary',
+      buttonStyle: 'dark-secondary',
     });
   }
 

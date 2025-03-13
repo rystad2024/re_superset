@@ -113,7 +113,7 @@ export default function Button(props: ButtonProps) {
   let backgroundColor;
   let backgroundColorHover;
   let backgroundColorActive;
-  let backgroundColorDisabled = grayscale.light2;
+  let backgroundColorDisabled = grayscale.light4;
   let color;
   let colorHover;
   let borderWidth = 0;

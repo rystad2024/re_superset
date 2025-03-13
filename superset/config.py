@@ -664,7 +664,7 @@ THEME_OVERRIDES = {
         },
         "grayscale": {
             "base": "#495B6D",  # Darker background elements
-            "light1": "#E1E5F8",  #lighter than before (for inactive elements)
+            "light1": "#B2B2B2",  #lighter than before (for inactive elements)
             "light2": "#798899",  # More contrast for readability
             "dark1": "#495B6D",  # Even darker for better contrast
             "dark2": "#2E435F",  # Almost black for maximum contrast
