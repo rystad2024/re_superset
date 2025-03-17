@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useState, useEffect } from 'react';
-import { styled } from '@superset-ui/core';
+import { useState, useEffect, useRef } from 'react';
+import { styled, SupersetClient } from '@superset-ui/core';
 import { getUrlParam } from 'src/utils/urlUtils';
 import { Grid } from 'src/components';
 import { MainNav, MenuMode } from 'src/components/Menu';
@@ -33,6 +33,15 @@ import {
   MenuData,
 } from 'src/types/bootstrapTypes';
 import RightMenu from './RightMenu';
+import rison from 'rison';
+import { keyBy } from 'lodash';
+import { resourceUsage } from 'process';
+import { Item } from 'src/components/Pagination/Item';
+import { Charts, Dashboard } from 'src/dashboard/types';
+import Chart from 'src/types/Chart';
+import Dataset from 'src/types/Dataset';
+import SearchBar from './SearchBar';
+import { useFetchAllData } from 'src/views/CRUD/hooks';
 
 interface MenuProps {
   data: MenuData;
@@ -222,6 +231,11 @@ export function Menu({
 
   const defaultTabSelection: string[] = [];
   const [activeTabs, setActiveTabs] = useState(defaultTabSelection);
+  const { refetch } = useFetchAllData();
+  // const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
+  // const [allData, setAllData] = useState({});
+  // const searchRef = useRef<HTMLDivElement | null>(null);
+
   const location = useLocation();
   useEffect(() => {
     const path = location.pathname;
@@ -242,54 +256,156 @@ export function Menu({
     }
   }, [location.pathname]);
 
+  
+
   const standalone = getUrlParam(URL_PARAMS.standalone);
   if (standalone || uiConfig.hideNav) return <></>;
 
-  const SearchBar = () => {
-    const SearchContainer = styled.div`
-      display: flex;
-      align-items: center;
-      border-radius: 4px;
-      padding: 0 12px;
-      height: 36px;
-      transition: all 0.2s ease;
-      margin-right: 50px;
 
-      &:hover,
-      &:focus-within {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      }
-    `;
+  // const fetchAllData = async () => {
+  //   const resources = ['dashboard', 'chart', 'dataset'];
+  //   const promises = resources.map(async resource =>{
+  //     const queryParams = rison.encode_uri({
+  //       page: 0,
+  //       page_size: 10000, // Large value to get all records
+  //       order_column: 'changed_on_delta_humanized',
+  //       order_direction: 'desc',
+  //     });
+      
+  //     const response = await SupersetClient.get({
+  //       endpoint: `/api/v1/${resource}/?q=${queryParams}`, 
+  //     });
+  //     return { [resource]: response.json };
+  //   })
+  
+  //   const allDataArray = await Promise.all(promises);
+  //   const allData = Object.assign({}, ...allDataArray);
+  //   setAllData(allData);
+  //   console.log(allData);
+  // };
 
-    const SearchInput = styled.input`
-      border: none;
-      background: transparent;
-      font-size: 16px;
-      width: 100%;
-      padding: 8px 8px 8px 0;
-      outline: none;
+  // function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>){
+  //   console.log(event?.target.value)
+  // }
 
-      &::placeholder {
-        color: theme.colors.grayscale.dark2;
-      }
-    `;
+  // function handleSearchClick(){
+  //   fetchAllData();
+  //   setIsSearchBoxClicked(true);
+  // }
 
-    const IconWrapper = styled.div`
-      display: flex;
-      align-items: center;
-      color: theme.colors.grayscale.dark2;
-      margin-right: 8px;
-    `;
+  // useEffect(() => {
+  //   function handleClickOutside(event: MouseEvent) {
+  //     if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+  //       setIsSearchBoxClicked(false);
+  //     }
+  //   }
 
-    return (
-      <SearchContainer className="header-search-container">
-        <IconWrapper>
-          <Icons.Search />
-        </IconWrapper>
-        <SearchInput placeholder="Search" />
-      </SearchContainer>
-    );
-  };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+
+  // const SearchBar = () => {
+  
+  //   const SearchContainer = styled.div`
+  //   display: flex;
+  //   align-items: center;
+  //   position: relative;
+  //   border-radius: 4px;
+  //   padding: 0 12px;
+  //   height: 40px; /* Slightly increased height for better UX */
+  //   transition: all 0.2s ease;
+  //   margin-right: 50px;
+  //   background: #fff;
+  //   border: 1px solid #ccc;
+  //   width: 350px; /* Increased width */
+  
+  //   &:hover,
+  //   &:focus-within {
+  //     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  //   }
+  // `;
+  
+  // const SearchInput = styled.input`
+  //   border: none;
+  //   background: transparent;
+  //   font-size: 16px;
+  //   width: 100%;
+  //   padding: 10px 12px;
+  //   outline: none;
+  
+  //   &::placeholder {
+  //     color: #666;
+  //   }
+  // `;
+  
+  // const IconWrapper = styled.div`
+  //   display: flex;
+  //   align-items: center;
+  //   color: #666;
+  //   margin-right: 8px;
+  // `;
+  
+  // const DropdownContainer = styled.div`
+  //   position: absolute;
+  //   top: 200px;
+  //   left: 0;
+  //   width: 350px; /* Match width with SearchContainer */
+  //   max-height: 400px; /* Increased height */
+  //   overflow-y: auto;
+  //   background: #fff;
+  //   border: 1px solid #ccc;
+  //   border-radius: 4px;
+  //   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  //   z-index: 9999;
+  // `;
+  
+  // const DropdownItem = styled.div`
+  //   padding: 12px; /* Increased padding for better readability */
+  //   cursor: pointer;
+  //   transition: background 0.2s ease-in-out;
+  //   font-size: 14px; /* Slightly larger text */
+    
+  //   &:hover {
+  //     background: #f5f5f5;
+  //   }
+  // `;
+  
+  //   return (
+  //     <SearchContainer ref={searchRef}>
+  //     <IconWrapper>
+  //       <Icons.Search />
+  //     </IconWrapper>
+  //     <SearchInput
+  //       placeholder="Search"
+  //       onChange={(e) => handleSearchChange(e)}
+  //       onClick={handleSearchClick}
+  //     />
+  //     {isSearchBoxClicked && (
+  //       <DropdownContainer onMouseDown={(e) => e.stopPropagation()}>
+  //         {Object.entries(allData).map(([resourceKey, resourceValue]: [string, { result: any[] }]) => {
+  //           const results = resourceValue.result || [];
+  //           return (
+  //             <div key={resourceKey}>
+  //               <strong>{resourceKey.toUpperCase()}</strong>
+  //               {results.length === 0 ? (
+  //                 <DropdownItem>No Data</DropdownItem>
+  //               ) : (
+  //                 results.map((item) => (
+  //                   <DropdownItem key={`${resourceKey}-${item.id}`}>
+  //                     {item.dashboard_title || item.slice_name || item.table_name}
+  //                   </DropdownItem>
+  //                 ))
+  //               )}
+  //             </div>
+  //           );
+  //         })}
+  //       </DropdownContainer>
+  //     )}
+  //   </SearchContainer>
+  //   );
+  // };
 
   const renderSubMenu = ({
     label,
@@ -359,11 +475,11 @@ export function Menu({
             >
               {isFrontendRoute(window.location.pathname) ? (
                 <GenericLink className="navbar-brand" to={brand.path}>
-                  <img src={brand.icon} alt={brand.alt} />
+                  <img src={brand.icon} alt={brand.alt} onClick={refetch}/>
                 </GenericLink>
               ) : (
                 <a className="navbar-brand" href={brand.path} tabIndex={-1}>
-                  <img src={brand.icon} alt={brand.alt} />
+                  <img src={brand.icon} alt={brand.alt} onClick={refetch}/>
                 </a>
               )}
             </Tooltip>
