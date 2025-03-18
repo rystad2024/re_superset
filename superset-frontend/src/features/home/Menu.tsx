@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useState, useEffect, useRef } from 'react';
-import { styled, SupersetClient } from '@superset-ui/core';
+import { useState, useEffect } from 'react';
+import { styled } from '@superset-ui/core';
 import { getUrlParam } from 'src/utils/urlUtils';
 import { Grid } from 'src/components';
 import { MainNav, MenuMode } from 'src/components/Menu';
@@ -33,13 +33,6 @@ import {
   MenuData,
 } from 'src/types/bootstrapTypes';
 import RightMenu from './RightMenu';
-import rison from 'rison';
-import { keyBy } from 'lodash';
-import { resourceUsage } from 'process';
-import { Item } from 'src/components/Pagination/Item';
-import { Charts, Dashboard } from 'src/dashboard/types';
-import Chart from 'src/types/Chart';
-import Dataset from 'src/types/Dataset';
 import SearchBar from './SearchBar';
 import { useFetchAllData } from 'src/views/CRUD/hooks';
 
