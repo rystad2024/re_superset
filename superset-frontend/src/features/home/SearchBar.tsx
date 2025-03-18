@@ -1,8 +1,8 @@
-import { styled, keyframes } from "@superset-ui/core";
-import React, { useEffect, useRef, useState } from "react";
-import Icons from "src/components/Icons";
-import { useFetchAllData, useGetFavoriteStatus } from "src/views/CRUD/hooks";
-import FavouriteComponent from "./FavouriteComponent";
+import { styled, keyframes } from '@superset-ui/core';
+import React, { useEffect, useRef, useState } from 'react';
+import Icons from 'src/components/Icons';
+import { useFetchAllData, useGetFavoriteStatus } from 'src/views/CRUD/hooks';
+import FavouriteComponent from './FavouriteComponent';
 
 const shimmer = keyframes`
   0% { background-position: -200px 0; }
@@ -101,7 +101,9 @@ const DropdownItem = styled.a`
   font-size: 11px;
   text-decoration: none;
   color: #333;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -129,11 +131,13 @@ const Resources = styled.div`
 
 function SearchBar() {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const searchRef = useRef<HTMLDivElement | null>(null);
-  const { allData, filteredData, setFilteredData, loading, refetch } = useFetchAllData();
+  const { allData, filteredData, setFilteredData, loading, refetch } =
+    useFetchAllData();
 
-  const { favoriteStatus, favIds, filteredFavData } = useGetFavoriteStatus(allData);
+  const { favoriteStatus, favIds, filteredFavData } =
+    useGetFavoriteStatus(allData);
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const query = event.target.value.toLowerCase();
@@ -144,7 +148,7 @@ function SearchBar() {
         const results = resourceValue.result.filter((item: any) =>
           (item.dashboard_title || item.slice_name || item.table_name)
             ?.toLowerCase()
-            .includes(query)
+            .includes(query),
         );
 
         if (results.length > 0) {
@@ -152,7 +156,7 @@ function SearchBar() {
         }
         return acc;
       },
-      {}
+      {},
     );
 
     setFilteredData(newFilteredData);
@@ -165,14 +169,17 @@ function SearchBar() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setIsSearchBoxClicked(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -187,40 +194,72 @@ function SearchBar() {
         onClick={handleSearchClick}
         value={searchQuery}
       />
-      {isSearchBoxClicked && (loading || Object.keys(filteredData).length > 0) && (
-        <DropdownContainer onMouseDown={(e) => e.stopPropagation()}>
-          <FavouriteComponent
-            filteredFavData={filteredFavData}
-            favoriteStatus={favoriteStatus}
-            favIds={favIds}
-          />
-          <Resources>
-            {loading ? (
-              <>
-                <SkeletonItem />
-                <SkeletonItem />
-                <SkeletonItem />
-              </>
-            ) : Object.keys(filteredData).length === 0 ? (
-              <NoDataMessage>No matching results found</NoDataMessage>
-            ) : (
-              Object.entries(filteredData).map(([resourceKey, resourceValue]) => {
-                const results = resourceValue.result || [];
-                return results.length > 0 ? (
-                  <div key={resourceKey}>
-                    <DropdownHeader>{resourceKey.toUpperCase()}</DropdownHeader>
-                    {results.map((item: any) => (
-                      <DropdownItem key={`${resourceKey}-${item.id}`} href={item?.url || item?.explore_url} rel="noopener noreferrer">
-                        {item.dashboard_title || item.slice_name || item.table_name}
-                      </DropdownItem>
-                    ))}
-                  </div>
-                ) : null;
-              })
-            )}
-          </Resources>
-        </DropdownContainer>
-      )}
+      {isSearchBoxClicked &&
+        (loading || Object.keys(filteredData).length > 0) && (
+          <DropdownContainer onMouseDown={e => e.stopPropagation()}>
+            <FavouriteComponent
+              filteredFavData={filteredFavData}
+              favoriteStatus={favoriteStatus}
+              favIds={favIds}
+            />
+            <Resources>
+              {loading ? (
+                <>
+                  <SkeletonItem />
+                  <SkeletonItem />
+                  <SkeletonItem />
+                </>
+              ) : Object.keys(filteredData).length === 0 ? (
+                <NoDataMessage>No matching results found</NoDataMessage>
+              ) : (
+                Object.entries(filteredData).map(
+                  ([resourceKey, resourceValue]) => {
+                    const results = resourceValue.result || [];
+                    return results.length > 0 ? (
+                      <div key={resourceKey}>
+                        <DropdownHeader>
+                          {resourceKey === 'dashboard'
+                            ? 'Workspaces'
+                            : resourceKey === 'chart'
+                              ? 'Widgets'
+                              : 'Explore Data'}
+                        </DropdownHeader>
+                        {results.map((item: any) => (
+                          <DropdownItem
+                            key={`${resourceKey}-${item.id}`}
+                            href={item?.url || item?.explore_url}
+                            rel="noopener noreferrer"
+                          >
+                            {resourceKey === 'dashboard' ? (
+                              <Icons.NavDashboard
+                                iconSize="l"
+                                style={{ paddingRight: '2px' }}
+                              />
+                            ) : resourceKey === 'chart' ? (
+                              <Icons.NavCharts
+                                iconSize="l"
+                                style={{ paddingRight: '2px' }}
+                              />
+                            ) : (
+                              <Icons.Database
+                                iconSize="l"
+                                style={{ paddingRight: '2px' }}
+                              />
+                            )}
+
+                            {item.dashboard_title ||
+                              item.slice_name ||
+                              item.table_name}
+                          </DropdownItem>
+                        ))}
+                      </div>
+                    ) : null;
+                  },
+                )
+              )}
+            </Resources>
+          </DropdownContainer>
+        )}
     </SearchContainer>
   );
 }

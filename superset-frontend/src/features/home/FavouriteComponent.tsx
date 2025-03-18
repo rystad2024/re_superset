@@ -1,6 +1,11 @@
-import { styled } from "@superset-ui/core";
-import React from "react";
-import { ChartResult, DashboardResult, FavoriteResources, FilteredFavouiteData } from "src/views/CRUD/types";
+import { styled } from '@superset-ui/core';
+import React from 'react';
+import {
+  ChartResult,
+  DashboardResult,
+  FavoriteResources,
+  FilteredFavouiteData,
+} from 'src/views/CRUD/types';
 
 const shimmerAnimation = `
   @keyframes shimmer {
@@ -18,7 +23,7 @@ const FavouriteContainer = styled.div`
   border-radius: 6px;
   border: 1px solid #ddd;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  margin:2px 2px 4px 2px;
+  margin: 2px 2px 4px 2px;
 `;
 
 const FavouriteHeader = styled.div`
@@ -31,7 +36,7 @@ const FavouriteHeader = styled.div`
 const FavouriteItem = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   gap: 2px;
   padding: 4px;
   border-radius: 4px;
@@ -77,35 +82,42 @@ interface FavouriteComponentProps {
 }
 
 function isDashboard(item: FilteredFavouiteData): item is DashboardResult {
-  return "dashboard_title" in item && !("slice_name" in item);
+  return 'dashboard_title' in item && !('slice_name' in item);
 }
 
 function isChart(item: FilteredFavouiteData): item is ChartResult {
-  return "viz_type" in item && "slice_name" in item;
+  return 'viz_type' in item && 'slice_name' in item;
 }
 
-const FavouriteComponent: React.FC<FavouriteComponentProps> = ({ filteredFavData, favoriteStatus, favIds }) => {
-
+const FavouriteComponent: React.FC<FavouriteComponentProps> = ({
+  filteredFavData,
+  favoriteStatus,
+  favIds,
+}) => {
   return (
     <div>
       <FavouriteHeader>Favourite Items</FavouriteHeader>
       <FavouriteContainer>
-        {filteredFavData.length === 0 ? (
-          Array.from({ length: 5 }).map((_, index) => <ShimmerItem key={index} />)
-        ) : (
-          filteredFavData.map((item) => (
-            <FavouriteItem key={item.id}>
-              <StarIcon>&#9733;</StarIcon>
-              {isDashboard(item) ? (
-                <FavouriteLink href={item.url} title={item.dashboard_title}>{item.dashboard_title}</FavouriteLink>
-              ) : isChart(item) ? (
-                <FavouriteLink href={item.url} title={item.slice_name}>{item.slice_name} (Type: {item.viz_type})</FavouriteLink>
-              ) : (
-                <span>Unknown Item</span>
-              )}
-            </FavouriteItem>
-          ))
-        )}
+        {filteredFavData.length === 0
+          ? Array.from({ length: 5 }).map((_, index) => (
+              <ShimmerItem key={index} />
+            ))
+          : filteredFavData.map(item => (
+              <FavouriteItem key={item.id}>
+                <StarIcon>&#9733;</StarIcon>
+                {isDashboard(item) ? (
+                  <FavouriteLink href={item.url} title={item.dashboard_title}>
+                    {item.dashboard_title}
+                  </FavouriteLink>
+                ) : isChart(item) ? (
+                  <FavouriteLink href={item.url} title={item.slice_name}>
+                    {item.slice_name} (Type: {item.viz_type})
+                  </FavouriteLink>
+                ) : (
+                  <span>Unknown Item</span>
+                )}
+              </FavouriteItem>
+            ))}
       </FavouriteContainer>
     </div>
   );

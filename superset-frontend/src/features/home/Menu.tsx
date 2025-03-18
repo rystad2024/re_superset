@@ -31,10 +31,12 @@ import {
   MenuObjectChildProps,
   MenuObjectProps,
   MenuData,
+  UserWithPermissionsAndRoles,
 } from 'src/types/bootstrapTypes';
 import RightMenu from './RightMenu';
 import SearchBar from './SearchBar';
 import { useFetchAllData } from 'src/views/CRUD/hooks';
+import { useSelector } from 'react-redux';
 
 interface MenuProps {
   data: MenuData;
@@ -45,7 +47,7 @@ const StyledHeader = styled.header`
   ${({ theme }) => `
       background-color: white;
       margin-bottom: 2px;
-      z-index: 10;
+      z-index: 100000;
 
       .main-nav, .navbar {
         background-color: white;
@@ -202,7 +204,9 @@ export function Menu({
   const [showMenu, _setMenu] = useState<MenuMode>('horizontal');
   const screens = useBreakpoint();
   const uiConfig = useUiConfig();
-
+  const user = useSelector<any, UserWithPermissionsAndRoles>(
+    state => state.user,
+  );
   // useEffect(() => {
   //   function handleResize() {
   //     if (window.innerWidth <= 767) {
@@ -248,8 +252,6 @@ export function Menu({
         setActiveTabs(defaultTabSelection);
     }
   }, [location.pathname]);
-
-  
 
   const standalone = getUrlParam(URL_PARAMS.standalone);
   if (standalone || uiConfig.hideNav) return <></>;
@@ -322,11 +324,11 @@ export function Menu({
             >
               {isFrontendRoute(window.location.pathname) ? (
                 <GenericLink className="navbar-brand" to={brand.path}>
-                  <img src={brand.icon} alt={brand.alt} onClick={refetch}/>
+                  <img src={brand.icon} alt={brand.alt} onClick={refetch} />
                 </GenericLink>
               ) : (
                 <a className="navbar-brand" href={brand.path} tabIndex={-1}>
-                  <img src={brand.icon} alt={brand.alt} onClick={refetch}/>
+                  <img src={brand.icon} alt={brand.alt} onClick={refetch} />
                 </a>
               )}
             </Tooltip>
@@ -337,9 +339,11 @@ export function Menu({
             )}
 
             {/* Desktop version of search bar */}
-            <SearchBarWrapper className="desktop-search">
-              <SearchBar />
-            </SearchBarWrapper>
+            {user.isActive && (
+              <SearchBarWrapper className="desktop-search">
+                <SearchBar />
+              </SearchBarWrapper>
+            )}
           </LogoContainer>
 
           <NavRightContainer>
@@ -381,11 +385,13 @@ export function Menu({
         </TopRow>
 
         {/* Mobile version of search bar (only shown on small screens) */}
-        <SearchRowContainer>
-          <SearchBarWrapper className="mobile-search">
-            <SearchBar />
-          </SearchBarWrapper>
-        </SearchRowContainer>
+        {user.isActive && (
+          <SearchRowContainer>
+            <SearchBarWrapper className="mobile-search">
+              <SearchBar />
+            </SearchBarWrapper>
+          </SearchRowContainer>
+        )}
       </HeaderContainer>
     </StyledHeader>
   );
