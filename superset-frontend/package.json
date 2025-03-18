@@ -82,7 +82,6 @@
   ],
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@applitools/eyes-cypress": "^3.50.2",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.3.0",
@@ -220,6 +219,7 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@applitools/eyes-cypress": "^3.50.3",
     "@applitools/eyes-storybook": "^3.50.9",
     "@babel/cli": "^7.22.6",
     "@babel/compat-data": "^7.22.6",

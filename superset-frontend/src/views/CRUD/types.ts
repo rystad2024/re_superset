@@ -326,3 +326,5 @@ export interface APIResponseStructure {
     dashboard: [],
     tag: [],
   };
+
+  export type FilteredFavouiteData = (DashboardResult | ChartResult);

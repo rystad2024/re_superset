@@ -41,7 +41,7 @@ import Chart, { Slice } from 'src/types/Chart';
 import copyTextToClipboard from 'src/utils/copy';
 import SupersetText from 'src/utils/textUtils';
 import { DatabaseObject } from 'src/features/databases/types';
-import { APIResponseStructure, FavoriteItem, FavoriteResources, FavoriteStatus, ImportResourceName, initialChartState, initialDashboardState, initialDatasetState, initialFavoriteResources } from './types';
+import { APIResponseStructure, FavoriteResources, FavoriteStatus, FilteredFavouiteData, ImportResourceName, initialChartState, initialDashboardState, initialDatasetState, initialFavoriteResources } from './types';
 
 
 interface ListViewResourceState<D extends object = any> {
@@ -259,7 +259,7 @@ export function useFetchAllData() {
       
       setAllData(allData);
       setFilteredData(allData);
-      console.log(allData);
+      // console.log(allData);
     } catch (err) {
       setError("Failed to fetch data.");
       console.error("Error fetching data:", err);
@@ -279,8 +279,8 @@ export function useGetFavoriteStatus(allData: APIResponseStructure) {
   const [favoriteStatus, setFavoriteStatus] = useState<FavoriteResources>(initialFavoriteResources);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [favIds, setFavIds] = useState<any[]>([]);
-  const [filteredFavData, setFilteredFavData] = useState<any[]>([]);
+  const [favIds, setFavIds] = useState<number[]>([]);
+  const [filteredFavData, setFilteredFavData] = useState<FilteredFavouiteData[]>([]);
 
   const fetchFavoriteStatus = async () => {
     if (!allData) return;
@@ -319,7 +319,7 @@ export function useGetFavoriteStatus(allData: APIResponseStructure) {
       });
 
       setFilteredFavData(filteredResourceFavData);
-      console.log("filteredResourceFavData", filteredResourceFavData);
+      // console.log("filteredResourceFavData", filteredResourceFavData);
 
     } catch (err) {
       setError("Failed to fetch favorite status");
