@@ -35,7 +35,7 @@ const StyledToastPresenter = styled.div<VisualProps>`
   word-break: break-word;
 
   .toast {
-    background: ${({ theme }) => theme.colors.grayscale.dark1};
+    background: ${({ theme }) => theme.colors.primary.base};
     border-radius: ${({ theme }) => theme.borderRadius};
     box-shadow: 0 2px 4px 0
       fade(
