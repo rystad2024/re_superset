@@ -18,8 +18,10 @@
  */
 import { QueryState } from '@superset-ui/core';
 import { User } from 'src/types/bootstrapTypes';
+import { ChartLinkedDashboard } from 'src/types/Chart';
 import Database from 'src/types/Database';
 import Owner from 'src/types/Owner';
+import Role from 'src/types/Role';
 
 export type FavoriteStatus = {
   [id: number]: boolean;
@@ -151,3 +153,178 @@ export interface Tag {
 
 export type DatabaseObject = Partial<Database> &
   Pick<Database, 'sqlalchemy_uri'>;
+
+export const initialDashboardState = {
+    count: 0,
+    description_columns: {},
+    ids: [],
+    label_columns: {},
+    list_columns: [],
+    list_title: "",
+    order_columns: [],
+    result: [],
+  };
+  
+export const initialChartState = {
+    count: 0,
+    description_columns: {},
+    ids: [],
+    label_columns: {},
+    list_columns: [],
+    list_title: "",
+    order_columns: [],
+    result: [],
+  };
+  
+export const initialDatasetState = {
+    count: 0,
+    description_columns: {},
+    ids: [],
+    label_columns: {},
+    list_columns: [],
+    list_title: "",
+    order_columns: [],
+    result: [],
+  };
+
+export interface APIResponseStructure {
+    dashboard: {
+      count: number;
+      description_columns: Record<string, any>;
+      ids: number[];
+      label_columns: Record<string, string>;
+      list_columns: string[];
+      list_title: string;
+      order_columns: string[];
+      result: DashboardResult[];
+    };
+    chart: {
+      count: number;
+      description_columns: Record<string, any>;
+      ids: number[];
+      label_columns: Record<string, string>;
+      list_columns: string[];
+      list_title: string;
+      order_columns: string[];
+      result: ChartResult[];
+    };
+    dataset: {
+      count: number;
+      description_columns: Record<string, any>;
+      ids: number[];
+      label_columns: Record<string, string>;
+      list_columns: string[];
+      list_title: string;
+      order_columns: string[];
+      result: DatasetResult[];
+    };
+  }
+  
+  // Interface for Dashboard result items in the API response
+  export interface DashboardResult {
+    id: number;
+    slug: string | null;
+    url: string;
+    dashboard_title: string;
+    thumbnail_url: string;
+    published: boolean;
+    status: string;
+    certification_details: string;
+    certified_by: string;
+    changed_by: Owner;
+    changed_by_name: string;
+    changed_on_delta_humanized: string;
+    changed_on_utc: string;
+    created_by: Owner;
+    created_on_delta_humanized: string;
+    is_managed_externally: boolean;
+    owners: Owner[];
+    roles: Role[];
+    tags: Tag[];
+  }
+  
+  // Interface for Chart result items in the API response
+  export interface ChartResult {
+    id: number;
+    url: string;
+    viz_type: string;
+    slice_name: string;
+    cache_timeout: number | null;
+    certification_details: string | null;
+    certified_by: string | null;
+    changed_by: Owner | null;
+    changed_by_name: string;
+    changed_on_delta_humanized: string;
+    changed_on_dttm: number;
+    changed_on_utc: string;
+    created_by: Owner | null;
+    created_by_name: string;
+    created_on_delta_humanized: string;
+    dashboards: ChartLinkedDashboard[];
+    datasource_id: number;
+    datasource_name_text: string;
+    datasource_type: string;
+    datasource_url: string;
+    description: string | null;
+    description_markeddown: string;
+    edit_url: string;
+    form_data: {
+      [key: string]: any;
+      viz_type: string;
+    };
+    is_managed_externally: boolean;
+    last_saved_at: string | null;
+    last_saved_by: Owner | null;
+    owners: Owner[];
+    params: string;
+    slice_url: string;
+    table: {
+      default_endpoint: string | null;
+      table_name: string;
+    };
+    tags: Tag[];
+    thumbnail_url: string;
+  }
+  
+  // Interface for Dataset result items in the API response
+  export interface DatasetResult {
+    id: number;
+    catalog: string;
+    changed_by: Owner;
+    changed_by_name: string;
+    changed_on_delta_humanized: string;
+    changed_on_utc: string;
+    database: {
+      database_name: string;
+      id: number;
+    };
+    datasource_type: string;
+    default_endpoint: string | null;
+    description: string | null;
+    explore_url: string;
+    extra: string | null;
+    kind: string;
+    owners: Owner[];
+    schema: string;
+    sql: string | null;
+    table_name: string;
+  }
+
+  export interface FavoriteItem {
+    id: number;
+    value: boolean;
+  }
+  
+  export interface FavoriteResources {
+    chart: FavoriteItem[];
+    dashboard: FavoriteItem[];
+    tag: FavoriteItem[];
+  }
+
+  export const initialFavoriteResources: FavoriteResources = {
+    chart: [],
+    dashboard: [],
+    tag: [],
+  };
+
+  export type FilteredFavouiteData = (DashboardResult | ChartResult);

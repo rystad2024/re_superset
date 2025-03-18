@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useState, useEffect } from 'react';
-import { styled } from '@superset-ui/core';
+import { useState, useEffect, useRef } from 'react';
+import { styled, SupersetClient } from '@superset-ui/core';
 import { getUrlParam } from 'src/utils/urlUtils';
 import { Grid } from 'src/components';
 import { MainNav, MenuMode } from 'src/components/Menu';
@@ -33,6 +33,15 @@ import {
   MenuData,
 } from 'src/types/bootstrapTypes';
 import RightMenu from './RightMenu';
+import rison from 'rison';
+import { keyBy } from 'lodash';
+import { resourceUsage } from 'process';
+import { Item } from 'src/components/Pagination/Item';
+import { Charts, Dashboard } from 'src/dashboard/types';
+import Chart from 'src/types/Chart';
+import Dataset from 'src/types/Dataset';
+import SearchBar from './SearchBar';
+import { useFetchAllData } from 'src/views/CRUD/hooks';
 
 interface MenuProps {
   data: MenuData;
@@ -222,6 +231,11 @@ export function Menu({
 
   const defaultTabSelection: string[] = [];
   const [activeTabs, setActiveTabs] = useState(defaultTabSelection);
+  const { refetch } = useFetchAllData();
+  // const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
+  // const [allData, setAllData] = useState({});
+  // const searchRef = useRef<HTMLDivElement | null>(null);
+
   const location = useLocation();
   useEffect(() => {
     const path = location.pathname;
@@ -242,54 +256,10 @@ export function Menu({
     }
   }, [location.pathname]);
 
+  
+
   const standalone = getUrlParam(URL_PARAMS.standalone);
   if (standalone || uiConfig.hideNav) return <></>;
-
-  const SearchBar = () => {
-    const SearchContainer = styled.div`
-      display: flex;
-      align-items: center;
-      border-radius: 4px;
-      padding: 0 12px;
-      height: 36px;
-      transition: all 0.2s ease;
-      margin-right: 50px;
-
-      &:hover,
-      &:focus-within {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      }
-    `;
-
-    const SearchInput = styled.input`
-      border: none;
-      background: transparent;
-      font-size: 16px;
-      width: 100%;
-      padding: 8px 8px 8px 0;
-      outline: none;
-
-      &::placeholder {
-        color: theme.colors.grayscale.dark2;
-      }
-    `;
-
-    const IconWrapper = styled.div`
-      display: flex;
-      align-items: center;
-      color: theme.colors.grayscale.dark2;
-      margin-right: 8px;
-    `;
-
-    return (
-      <SearchContainer className="header-search-container">
-        <IconWrapper>
-          <Icons.Search />
-        </IconWrapper>
-        <SearchInput placeholder="Search" />
-      </SearchContainer>
-    );
-  };
 
   const renderSubMenu = ({
     label,
@@ -359,11 +329,11 @@ export function Menu({
             >
               {isFrontendRoute(window.location.pathname) ? (
                 <GenericLink className="navbar-brand" to={brand.path}>
-                  <img src={brand.icon} alt={brand.alt} />
+                  <img src={brand.icon} alt={brand.alt} onClick={refetch}/>
                 </GenericLink>
               ) : (
                 <a className="navbar-brand" href={brand.path} tabIndex={-1}>
-                  <img src={brand.icon} alt={brand.alt} />
+                  <img src={brand.icon} alt={brand.alt} onClick={refetch}/>
                 </a>
               )}
             </Tooltip>
