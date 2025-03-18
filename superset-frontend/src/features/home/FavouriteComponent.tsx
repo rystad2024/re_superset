@@ -85,11 +85,6 @@ function isChart(item: FilteredFavouiteData): item is ChartResult {
 }
 
 const FavouriteComponent: React.FC<FavouriteComponentProps> = ({ filteredFavData, favoriteStatus, favIds }) => {
-  useEffect(() => {
-    console.log("Favorite Status: ", favoriteStatus);
-    console.log("Favorite IDs: ", favIds);
-    console.log("Filtered Favorite Data:", filteredFavData);
-  }, [favoriteStatus, favIds, filteredFavData]);
 
   return (
     <div>
