@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Icons from 'src/components/Icons';
 import { useFetchAllData, useGetFavoriteStatus } from 'src/views/CRUD/hooks';
 import FavouriteComponent from './FavouriteComponent';
+import { Link } from 'react-router-dom';
 
 const shimmer = keyframes`
   0% { background-position: -200px 0; }
@@ -30,7 +31,7 @@ const SearchContainer = styled.div`
   margin-right: 20px;
   background: #fff;
   border: 1px solid #ccc;
-  width: 280px;
+  width: 380px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
   &:hover,
@@ -65,7 +66,7 @@ const DropdownContainer = styled.div`
   top: 38px;
   left: 0;
   width: 100%;
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
   background: #fff;
   border-radius: 6px;
@@ -85,20 +86,23 @@ const DropdownContainer = styled.div`
 `;
 
 const DropdownHeader = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: bold;
-  color: #444;
-  background: #f0f0f0;
-  border-bottom: 1px solid #ddd;
+  color: #fff;
+  background-color: ${({ theme }) => theme.colors.primary.dark1};
 `;
 
 const DropdownItem = styled.a`
   display: flex;
   align-items: center;
   padding: 6px 10px;
+  gap: 6px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 14px;
   text-decoration: none;
   color: #333;
   transition:
@@ -108,7 +112,7 @@ const DropdownItem = styled.a`
   overflow: hidden;
   text-overflow: ellipsis;
   border-radius: 3px;
-
+  border-bottom: 1px solid #f0f0f0;
   &:hover {
     background: #eef4ff;
     color: #0073e6;
@@ -128,6 +132,26 @@ const Resources = styled.div`
   gap: 4px;
   margin-top: 6px;
 `;
+
+interface ResultItem {
+  id: string | number;
+  url?: string;
+  explore_url?: string;
+  dashboard_title?: string;
+  slice_name?: string;
+  table_name?: string;
+}
+
+interface ResourceValue {
+  result?: ResultItem[];
+}
+
+interface ResourceMapping {
+  title: string;
+  icon: JSX.Element;
+  link: string;
+  getItemTitle: (item: ResultItem) => string | undefined;
+}
 
 function SearchBar() {
   const [isSearchBoxClicked, setIsSearchBoxClicked] = useState(false);
@@ -183,6 +207,26 @@ function SearchBar() {
     };
   }, []);
 
+  const resourceMappings: Record<string, ResourceMapping> = {
+    dashboard: {
+      title: 'Workspaces',
+      icon: <Icons.NavDashboard iconSize="l" style={{ paddingRight: '2px' }} />,
+      link: '/workspaces/list/',
+      getItemTitle: (item: ResultItem) => item.dashboard_title,
+    },
+    chart: {
+      title: 'Widgets',
+      icon: <Icons.NavCharts iconSize="l" style={{ paddingRight: '2px' }} />,
+      link: '/chart/list',
+      getItemTitle: (item: ResultItem) => item.slice_name,
+    },
+    explore: {
+      title: 'Explore Data',
+      icon: <Icons.Database iconSize="l" style={{ paddingRight: '2px' }} />,
+      link: '/exploredata/list/',
+      getItemTitle: (item: ResultItem) => item.table_name,
+    },
+  };
   return (
     <SearchContainer ref={searchRef}>
       <IconWrapper>
@@ -215,45 +259,38 @@ function SearchBar() {
                 Object.entries(filteredData).map(
                   ([resourceKey, resourceValue]) => {
                     const results = resourceValue.result || [];
-                    return results.length > 0 ? (
+                    if (results.length === 0) return null;
+
+                    // Get the correct configuration for this resource
+                    const config =
+                      resourceMappings[resourceKey] || resourceMappings.explore;
+                    return (
                       <div key={resourceKey}>
                         <DropdownHeader>
-                          {resourceKey === 'dashboard'
-                            ? 'Workspaces'
-                            : resourceKey === 'chart'
-                              ? 'Widgets'
-                              : 'Explore Data'}
+                          {config.title}
+                          <Link
+                            to={config.link}
+                            style={{
+                              color: 'white',
+                              fontStyle: 'italic',
+                              fontWeight: 'normal',
+                            }}
+                          >
+                            View all
+                          </Link>
                         </DropdownHeader>
-                        {results.map((item: any) => (
+                        {results.map((item: ResultItem) => (
                           <DropdownItem
                             key={`${resourceKey}-${item.id}`}
                             href={item?.url || item?.explore_url}
                             rel="noopener noreferrer"
                           >
-                            {resourceKey === 'dashboard' ? (
-                              <Icons.NavDashboard
-                                iconSize="l"
-                                style={{ paddingRight: '2px' }}
-                              />
-                            ) : resourceKey === 'chart' ? (
-                              <Icons.NavCharts
-                                iconSize="l"
-                                style={{ paddingRight: '2px' }}
-                              />
-                            ) : (
-                              <Icons.Database
-                                iconSize="l"
-                                style={{ paddingRight: '2px' }}
-                              />
-                            )}
-
-                            {item.dashboard_title ||
-                              item.slice_name ||
-                              item.table_name}
+                            {config.icon}
+                            {config.getItemTitle(item)}
                           </DropdownItem>
                         ))}
                       </div>
-                    ) : null;
+                    );
                   },
                 )
               )}
