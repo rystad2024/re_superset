@@ -1,9 +1,10 @@
-import { styled, keyframes } from '@superset-ui/core';
+import { styled, keyframes, t } from '@superset-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 import Icons from 'src/components/Icons';
 import { useFetchAllData, useGetFavoriteStatus } from 'src/views/CRUD/hooks';
 import FavouriteComponent from './FavouriteComponent';
 import { Link } from 'react-router-dom';
+import { APIResponseStructure } from 'src/views/CRUD/types';
 
 const shimmer = keyframes`
   0% { background-position: -200px 0; }
@@ -99,15 +100,15 @@ const DropdownHeader = styled.div`
 const DropdownItem = styled.a`
   display: flex;
   align-items: center;
+ 
   padding: 6px 10px;
   gap: 6px;
   cursor: pointer;
   font-size: 14px;
-  text-decoration: none;
+ 
   color: #333;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
+  link-style: none;
+  transition: all 0.25s ease,
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -116,7 +117,9 @@ const DropdownItem = styled.a`
   &:hover {
     background: #eef4ff;
     color: #0073e6;
+     text-decoration: none;
   }
+
 `;
 
 const NoDataMessage = styled.div`
@@ -133,24 +136,17 @@ const Resources = styled.div`
   margin-top: 6px;
 `;
 
-interface ResultItem {
-  id: string | number;
-  url?: string;
-  explore_url?: string;
-  dashboard_title?: string;
-  slice_name?: string;
-  table_name?: string;
-}
-
-interface ResourceValue {
-  result?: ResultItem[];
-}
+type ResultItem =
+  | APIResponseStructure['dashboard']['result'][0]
+  | APIResponseStructure['chart']['result'][0]
+  | APIResponseStructure['dataset']['result'][0];
 
 interface ResourceMapping {
   title: string;
   icon: JSX.Element;
   link: string;
   getItemTitle: (item: ResultItem) => string | undefined;
+  fallbackUrl?: string;
 }
 
 function SearchBar() {
@@ -212,21 +208,121 @@ function SearchBar() {
       title: 'Workspaces',
       icon: <Icons.NavDashboard iconSize="l" style={{ paddingRight: '2px' }} />,
       link: '/workspaces/list/',
-      getItemTitle: (item: ResultItem) => item.dashboard_title,
+      getItemTitle: (item: ResultItem) =>
+        'dashboard_title' in item ? item.dashboard_title : undefined,
+      fallbackUrl: '/static/assets/images/dashboard-fallback.svg',
     },
     chart: {
       title: 'Widgets',
       icon: <Icons.NavCharts iconSize="l" style={{ paddingRight: '2px' }} />,
       link: '/chart/list',
-      getItemTitle: (item: ResultItem) => item.slice_name,
+      getItemTitle: (item: ResultItem) =>
+        'slice_name' in item ? item.slice_name : undefined,
+      fallbackUrl: '/static/assets/images/chart-fallback.svg',
     },
     explore: {
       title: 'Explore Data',
       icon: <Icons.Database iconSize="l" style={{ paddingRight: '2px' }} />,
       link: '/exploredata/list/',
-      getItemTitle: (item: ResultItem) => item.table_name,
+      getItemTitle: (item: ResultItem) =>
+        'table_name' in item ? item.table_name : undefined,
     },
   };
+
+  const EnhancedDropdownItem: React.FC<{
+    item: ResultItem;
+    resourceKey: string;
+    config: ResourceMapping;
+  }> = ({ item, resourceKey, config }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+      <DropdownItem
+        href={
+          'url' in item
+            ? item.url
+            : 'explore_url' in item
+              ? item.explore_url
+              : '#'
+        }
+        rel="noopener noreferrer"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div
+          style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
+        >
+          {/* Always visible content */}
+          <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            {config.icon}
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {config.getItemTitle(item)}
+            </span>
+          </div>
+
+          {/* Additional content that appears on hover */}
+          {isHovered && (
+            <div
+              style={{
+                overflow: 'hidden',
+                display: 'flex',
+                gap: '8px',
+                marginTop: '8px',
+                height: 'auto',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}
+            >
+              {config.fallbackUrl && (
+                <div
+                  style={{
+                    width: '80px',
+                    height: '40px',
+                    flexShrink: 0,
+                    borderRadius: '4px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={config.fallbackUrl}
+                    alt="Preview"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </div>
+              )}
+
+              <div style={{ overflow: 'hidden', alignSelf: 'end' }}>
+                <div
+                  style={{
+                    fontSize: '10px',
+                    color: '#666',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '2px',
+                  }}
+                >
+                  <Icons.Clock style={{ fontSize: '14px' }} />
+
+                  <div>{t('Modified %s', item.changed_on_delta_humanized)}</div>
+                  {'changed_by_name' in item && item.changed_by_name && (
+                    <div style={{ textDecoration: 'none' }}>
+                      {' '}
+                      by {item.changed_by_name}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </DropdownItem>
+    );
+  };
+
   return (
     <SearchContainer ref={searchRef}>
       <IconWrapper>
@@ -275,19 +371,18 @@ function SearchBar() {
                               fontStyle: 'italic',
                               fontWeight: 'normal',
                             }}
+                            onClick={() => setIsSearchBoxClicked(false)}
                           >
                             View all
                           </Link>
                         </DropdownHeader>
                         {results.map((item: ResultItem) => (
-                          <DropdownItem
+                          <EnhancedDropdownItem
                             key={`${resourceKey}-${item.id}`}
-                            href={item?.url || item?.explore_url}
-                            rel="noopener noreferrer"
-                          >
-                            {config.icon}
-                            {config.getItemTitle(item)}
-                          </DropdownItem>
+                            item={item}
+                            resourceKey={resourceKey}
+                            config={config}
+                          />
                         ))}
                       </div>
                     );

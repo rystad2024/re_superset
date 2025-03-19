@@ -611,7 +611,7 @@ const Header = () => {
 
     return (
       <Dropdown overlay={downloadMenu} trigger={['click']}>
-        <Button type="primary">
+        <Button buttonStyle="dark-primary">
           {t('Download')} <DownloadOutlined />
         </Button>
       </Dropdown>
@@ -699,14 +699,13 @@ const Header = () => {
             {NavExtension && <NavExtension />}
             {userCanEdit && (
               <Button
-                buttonStyle="secondary"
+                buttonStyle="dark-secondary"
                 onClick={() => {
                   toggleEditMode();
                   boundActionCreators.clearDashboardHistory?.(); // Resets the `past` as an empty array
                 }}
                 data-test="edit-dashboard-button"
                 className="action-button"
-                css={editButtonStyle}
                 aria-label={t('Edit workspace')}
               >
                 {t('Edit workspace')}

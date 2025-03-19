@@ -70,7 +70,7 @@ const FaveStar = ({
     </StyledLink>
   );
 
-  if (showTooltip) {
+  if (!showTooltip) {
     return (
       <Tooltip
         id="fave-unfave-tooltip"

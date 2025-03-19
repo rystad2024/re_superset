@@ -99,7 +99,7 @@ export const DynamicEditableTitle = memo(
     });
 
     useEffect(() => {
-      if (title) {  
+      if (title) {
         setCurrentTitle(title);
         dispatch(setWorkspaceTitle(title));
       }
@@ -202,11 +202,12 @@ export const DynamicEditableTitle = memo(
               value={currentTitle}
               css={css`
                 cursor: ${isEditing ? 'text' : 'pointer'};
+                color: black;
 
                 ${inputWidth &&
                 inputWidth > 0 &&
                 css`
-                  width: ${inputWidth + 1}px;
+                  width: ${inputWidth + 10}px;
                 `}
               `}
             />
