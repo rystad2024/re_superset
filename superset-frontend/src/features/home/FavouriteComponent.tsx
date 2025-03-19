@@ -16,7 +16,7 @@ const shimmerAnimation = `
 
 const FavouriteContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 6px;
   padding: 10px;
   background: #fff;
@@ -27,22 +27,23 @@ const FavouriteContainer = styled.div`
 `;
 
 const FavouriteHeader = styled.div`
-  text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: #444;
+  margin-left: 8px;
+  margin-bottom: 4px;
 `;
 
 const FavouriteItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 2px;
+  gap: 8px;
   padding: 4px;
   border-radius: 4px;
   background: #f9f9f9;
   border: 1px solid #e0e0e0;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 500;
   width: 100%;
   text-align: start;
@@ -62,7 +63,7 @@ const FavouriteLink = styled.a`
 
 const StarIcon = styled.span`
   color: gold;
-  font-size: 12px;
+  font-size: 16px;
 `;
 
 const ShimmerItem = styled.div`

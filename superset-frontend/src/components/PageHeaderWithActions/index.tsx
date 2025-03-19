@@ -33,18 +33,19 @@ export const menuTriggerStyles = (theme: SupersetTheme) => css`
   width: ${theme.gridUnit * 8}px;
   height: ${theme.gridUnit * 8}px;
   padding: 0;
-  border: 1px solid ${theme.colors.primary.dark2};
+  border: 1px solid white;
 
   &.antd5-btn > span.anticon {
     line-height: 0;
     transition: inherit;
+    color: white;
   }
 
   &:hover:not(:focus) > span.anticon {
-    color: ${theme.colors.primary.light1};
+    color: white;
   }
   &:focus-visible {
-    outline: 2px solid ${theme.colors.primary.dark2};
+    outline: 2px solid white;
   }
 `;
 
@@ -54,7 +55,8 @@ const headerStyles = (theme: SupersetTheme) => css`
   align-items: center;
   flex-wrap: nowrap;
   justify-content: space-between;
-  background-color: ${theme.colors.grayscale.light5};
+  background-color: ${theme.colors.primary.dark1};
+  color: white;
   height: ${theme.gridUnit * 16}px;
   padding: 0 ${theme.gridUnit * 4}px;
 
@@ -162,7 +164,7 @@ export const PageHeaderWithActions = ({
             >
               <Button
                 css={menuTriggerStyles}
-                buttonStyle="tertiary"
+                buttonStyle="dark-secondary"
                 aria-label={t('Menu actions trigger')}
                 tooltip={tooltipProps?.text}
                 placement={tooltipProps?.placement}

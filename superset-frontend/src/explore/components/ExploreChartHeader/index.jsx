@@ -247,7 +247,7 @@ export const ExploreChartHeader = ({
 
     return (
       <Dropdown overlay={downloadMenu} trigger={['click']}>
-        <Button type="primary">
+        <Button buttonStyle="dark-primary">
           {t('Download')} <DownloadOutlined />
         </Button>
       </Dropdown>
@@ -307,11 +307,10 @@ export const ExploreChartHeader = ({
               {/* needed to wrap button in a div - antd tooltip doesn't work with disabled button */}
               <div>
                 <Button
-                  buttonStyle="secondary"
+                  buttonStyle="dark-secondary"
                   onClick={showModal}
                   disabled={saveDisabled}
                   data-test="query-save-button"
-                  css={saveButtonStyles}
                 >
                   {t('Save')}
                   <Icons.SaveOutlined iconSize="l" />

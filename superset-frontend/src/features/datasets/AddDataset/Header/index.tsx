@@ -42,7 +42,7 @@ const tooltipProps: { text: string; placement: TooltipPlacement } = {
 
 const renderDisabledSaveButton = () => (
   <Button
-    buttonStyle="primary"
+    buttonStyle="dark-primary"
     tooltip={tooltipProps?.text}
     placement={tooltipProps?.placement}
     disabled

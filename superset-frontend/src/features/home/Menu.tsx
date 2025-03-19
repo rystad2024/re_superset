@@ -180,6 +180,9 @@ const SearchBarWrapper = styled.div`
     &.desktop-search {
       display: none;
     }
+    &.mobile-search {
+      padding: 4px 16px;
+    }
   }
 
   @media (min-width: 993px) {
