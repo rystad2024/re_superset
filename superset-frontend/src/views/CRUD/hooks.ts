@@ -275,68 +275,70 @@ export function useFetchAllData() {
   return { allData, filteredData, setFilteredData, loading, error, refetch: fetchAllData };
 }
 
-export function useGetFavoriteStatus(allData: APIResponseStructure) {
+export function useGetFavoriteStatus(allData: APIResponseStructure, isSearchBoxClicked: boolean) {
   const [favoriteStatus, setFavoriteStatus] = useState<FavoriteResources>(initialFavoriteResources);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [favIds, setFavIds] = useState<number[]>([]);
   const [filteredFavData, setFilteredFavData] = useState<FilteredFavouiteData[]>([]);
 
-  const fetchFavoriteStatus = async () => {
-    if (!allData) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const resources: ("chart" | "dashboard" | "tag")[] = ["chart", "dashboard", "tag"];
-      const allIdsSet:Set<number> = new Set();
-      [...allData.dashboard.ids, ...allData.chart.ids, ...allData.dataset.ids].forEach(id => allIdsSet.add(id));
-      const allIds = Array.from(allIdsSet);
-
-      const fetchPromises = resources.map(async (resource) => {
-        if (!favoriteApis[resource]) return { [resource]: [] };
-        const response = await favoriteApis[resource](allIds);
-        const favResult = response.result?.filter((element: any) => element.value === true) || [];
-        return { [resource]: favResult };
-      });
-
-      const results = await Promise.all(fetchPromises);
-      const formattedResult = Object.assign({}, ...results) as FavoriteResources;
-      setFavoriteStatus(formattedResult);
-      const onlyIds:number[] = [...formattedResult.chart.map(item=>item.id), ...formattedResult.dashboard.map(item=>item.id), ...formattedResult.tag.map(item=>item.id)];
-      setFavIds(onlyIds);
-
-      const uniqueIds = new Set<number>(); 
-      let filteredResourceFavData: any[] = [];
-      Object.values(allData).forEach(({ result }) => {
-        result.forEach((item: any) => {
-          if (onlyIds.includes(item.id) && !uniqueIds.has(item.id)) {
-            uniqueIds.add(item.id); 
-            filteredResourceFavData.push(item); 
-          }
-        });
-      });
-
-      setFilteredFavData(filteredResourceFavData);
-      // console.log("filteredResourceFavData", filteredResourceFavData);
-
-    } catch (err) {
-      setError("Failed to fetch favorite status");
-      console.error("Error fetching favorite status:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (allData) {
-      fetchFavoriteStatus();
-    }
-  }, [allData]);
+    if (!isSearchBoxClicked || !allData) return; // Prevent API call if search box is not clicked
 
-  return { favoriteStatus,favIds,filteredFavData, loading, error, refetchfav: fetchFavoriteStatus };
+    const fetchFavoriteStatus = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const resources: ("chart" | "dashboard" | "tag")[] = ["chart", "dashboard", "tag"];
+        const allIdsSet: Set<number> = new Set();
+        [...allData.dashboard.ids, ...allData.chart.ids, ...allData.dataset.ids].forEach(id => allIdsSet.add(id));
+        const allIds = Array.from(allIdsSet);
+
+        const fetchPromises = resources.map(async (resource) => {
+          if (!favoriteApis[resource]) return { [resource]: [] };
+          const response = await favoriteApis[resource](allIds);
+          const favResult = response.result?.filter((element: any) => element.value === true) || [];
+          return { [resource]: favResult };
+        });
+
+        const results = await Promise.all(fetchPromises);
+        const formattedResult = Object.assign({}, ...results) as FavoriteResources;
+        setFavoriteStatus(formattedResult);
+
+        const onlyIds: number[] = [
+          ...formattedResult.chart.map(item => item.id),
+          ...formattedResult.dashboard.map(item => item.id),
+          ...formattedResult.tag.map(item => item.id)
+        ];
+        setFavIds(onlyIds);
+
+        const uniqueIds = new Set<number>(); 
+        let filteredResourceFavData: any[] = [];
+        Object.values(allData).forEach(({ result }) => {
+          result.forEach((item: any) => {
+            if (onlyIds.includes(item.id) && !uniqueIds.has(item.id)) {
+              uniqueIds.add(item.id); 
+              filteredResourceFavData.push(item); 
+            }
+          });
+        });
+
+        setFilteredFavData(filteredResourceFavData);
+      } catch (err) {
+        setError("Failed to fetch favorite status");
+        console.error("Error fetching favorite status:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFavoriteStatus();
+  }, [isSearchBoxClicked, allData]); // Runs only when search box is clicked
+
+  return { favoriteStatus, favIds, filteredFavData, loading, error };
 }
+
 
 // In the same vein as above, a hook for viewing a single instance of a resource (given id)
 interface SingleViewResourceState<D extends object = any> {
