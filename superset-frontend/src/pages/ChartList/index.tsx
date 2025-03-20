@@ -555,7 +555,7 @@ function ChartList(props: ChartListProps) {
       key: 'favorite',
       id: 'id',
       urlDisplay: 'favorite',
-      input: 'select',
+      input: 'checkbox',
       operator: FilterOperator.ChartIsFav,
       unfilteredLabel: t('Any'),
       selects: [
@@ -656,20 +656,6 @@ function ChartList(props: ChartListProps) {
         fetchSelects: fetchDashboards,
         paginate: true,
       },
-      ...(userId ? [favoritesFilter] : []),
-      {
-        Header: t('Certified'),
-        key: 'certified',
-        id: 'id',
-        urlDisplay: 'certified',
-        input: 'select',
-        operator: FilterOperator.ChartIsCertified,
-        unfilteredLabel: t('Any'),
-        selects: [
-          { label: t('Yes'), value: true },
-          { label: t('No'), value: false },
-        ],
-      },
       {
         Header: t('Modified by'),
         key: 'changed_by',
@@ -689,6 +675,20 @@ function ChartList(props: ChartListProps) {
           props.user,
         ),
         paginate: true,
+      },
+      ...(userId ? [favoritesFilter] : []),
+      {
+        Header: t('Certified'),
+        key: 'certified',
+        id: 'id',
+        urlDisplay: 'certified',
+        input: 'checkbox',
+        operator: FilterOperator.ChartIsCertified,
+        unfilteredLabel: t('Any'),
+        selects: [
+          { label: t('Yes'), value: true },
+          { label: t('No'), value: false },
+        ],
       },
     ] as Filters;
     return filters_list;

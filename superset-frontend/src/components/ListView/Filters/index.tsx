@@ -35,6 +35,7 @@ import {
 import SearchFilter from './Search';
 import SelectFilter from './Select';
 import DateRangeFilter from './DateRange';
+import CheckboxFilter from './Checkbox';
 import { FilterHandler } from './Base';
 
 interface UIFiltersProps {
@@ -134,6 +135,30 @@ function UIFilters(
                 key={key}
                 name={id}
                 onSubmit={value => updateFilterValue(index, value)}
+              />
+            );
+          }
+          if (input === 'checkbox') {
+            return (
+              <CheckboxFilter
+                ref={filterRefs[index]}
+                Header={Header}
+                initialValue={initialValue}
+                key={key}
+                name={id}
+                onSelect={(
+                  option: SelectOption | undefined,
+                  isClear?: boolean,
+                ) => {
+                  if (onFilterUpdate) {
+                    // Filter change triggers both onChange AND onClear, only want to track onChange
+                    if (!isClear) {
+                      onFilterUpdate(option);
+                    }
+                  }
+                  updateFilterValue(index, option);
+                }}
+                selects={selects}
               />
             );
           }

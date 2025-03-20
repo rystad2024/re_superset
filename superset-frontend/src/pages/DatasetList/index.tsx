@@ -508,18 +508,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         input: 'search',
         operator: FilterOperator.Contains,
       },
-      {
-        Header: t('Type'),
-        key: 'sql',
-        id: 'sql',
-        input: 'select',
-        operator: FilterOperator.DatasetIsNullOrEmpty,
-        unfilteredLabel: 'All',
-        selects: [
-          { label: t('Virtual'), value: false },
-          { label: t('Physical'), value: true },
-        ],
-      },
+
       {
         Header: t('Database'),
         key: 'database',
@@ -573,19 +562,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         paginate: true,
       },
       {
-        Header: t('Certified'),
-        key: 'certified',
-        id: 'id',
-        urlDisplay: 'certified',
-        input: 'select',
-        operator: FilterOperator.DatasetIsCertified,
-        unfilteredLabel: t('Any'),
-        selects: [
-          { label: t('Yes'), value: true },
-          { label: t('No'), value: false },
-        ],
-      },
-      {
         Header: t('Modified by'),
         key: 'changed_by',
         id: 'changed_by',
@@ -604,6 +580,31 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           user,
         ),
         paginate: true,
+      },
+      {
+        Header: t('Certified'),
+        key: 'certified',
+        id: 'id',
+        urlDisplay: 'certified',
+        input: 'checkbox',
+        operator: FilterOperator.DatasetIsCertified,
+        unfilteredLabel: t('Any'),
+        selects: [
+          { label: t('Yes'), value: true },
+          { label: t('No'), value: false },
+        ],
+      },
+      {
+        Header: t('Type'),
+        key: 'sql',
+        id: 'sql',
+        input: 'checkbox',
+        operator: FilterOperator.DatasetIsNullOrEmpty,
+        unfilteredLabel: 'All',
+        selects: [
+          { label: t('Virtual'), value: false },
+          { label: t('Physical'), value: true },
+        ],
       },
     ],
     [user],

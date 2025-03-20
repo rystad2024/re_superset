@@ -507,7 +507,7 @@ function DashboardList(props: DashboardListProps) {
       key: 'favorite',
       id: 'id',
       urlDisplay: 'favorite',
-      input: 'select',
+      input: 'checkbox',
       operator: FilterOperator.DashboardIsFav,
       unfilteredLabel: t('Any'),
       selects: [
@@ -526,18 +526,6 @@ function DashboardList(props: DashboardListProps) {
         id: 'dashboard_title',
         input: 'search',
         operator: FilterOperator.TitleOrSlug,
-      },
-      {
-        Header: t('Status'),
-        key: 'published',
-        id: 'published',
-        input: 'select',
-        operator: FilterOperator.Equals,
-        unfilteredLabel: t('Any'),
-        selects: [
-          { label: t('Published'), value: true },
-          { label: t('Draft'), value: false },
-        ],
       },
       ...(isFeatureEnabled(FeatureFlag.TaggingSystem) && canReadTag
         ? [
@@ -574,20 +562,6 @@ function DashboardList(props: DashboardListProps) {
         ),
         paginate: true,
       },
-      ...(user?.userId ? [favoritesFilter] : []),
-      {
-        Header: t('Certified'),
-        key: 'certified',
-        id: 'id',
-        urlDisplay: 'certified',
-        input: 'select',
-        operator: FilterOperator.DashboardIsCertified,
-        unfilteredLabel: t('Any'),
-        selects: [
-          { label: t('Yes'), value: true },
-          { label: t('No'), value: false },
-        ],
-      },
       {
         Header: t('Modified by'),
         key: 'changed_by',
@@ -607,6 +581,32 @@ function DashboardList(props: DashboardListProps) {
           user,
         ),
         paginate: true,
+      },
+      ...(user?.userId ? [favoritesFilter] : []),
+      {
+        Header: t('Status'),
+        key: 'published',
+        id: 'published',
+        input: 'checkbox',
+        operator: FilterOperator.Equals,
+        unfilteredLabel: t('Any'),
+        selects: [
+          { label: t('Published'), value: true },
+          { label: t('Draft'), value: false },
+        ],
+      },
+      {
+        Header: t('Certified'),
+        key: 'certified',
+        id: 'id',
+        urlDisplay: 'certified',
+        input: 'checkbox',
+        operator: FilterOperator.DashboardIsCertified,
+        unfilteredLabel: t('Any'),
+        selects: [
+          { label: t('Yes'), value: true },
+          { label: t('No'), value: false },
+        ],
       },
     ] as Filters;
     return filters_list;
