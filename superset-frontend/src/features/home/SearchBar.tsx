@@ -156,8 +156,8 @@ function SearchBar() {
   const { allData, filteredData, setFilteredData, loading, refetch } =
     useFetchAllData();
 
-  const { favoriteStatus, favIds, filteredFavData } =
-    useGetFavoriteStatus(allData);
+    const { favoriteStatus, favIds, filteredFavData } = useGetFavoriteStatus(allData, isSearchBoxClicked);
+
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const query = event.target.value.toLowerCase();
