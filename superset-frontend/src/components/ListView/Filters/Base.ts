@@ -29,7 +29,7 @@ export const FilterContainer = styled.div`
   display: inline-flex;
   font-size: ${({ theme }) => theme.typography.sizes.s}px;
   align-items: center;
-  width: ${SELECT_WIDTH}px;
+  max-width: ${SELECT_WIDTH}px;
 `;
 
 export type FilterHandler = {

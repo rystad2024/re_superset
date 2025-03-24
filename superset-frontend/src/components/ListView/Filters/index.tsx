@@ -36,6 +36,7 @@ import SearchFilter from './Search';
 import SelectFilter from './Select';
 import DateRangeFilter from './DateRange';
 import CheckboxFilter from './Checkbox';
+import ToggleFilter from './Toggle';
 import { FilterHandler } from './Base';
 
 interface UIFiltersProps {
@@ -159,6 +160,35 @@ function UIFilters(
                   updateFilterValue(index, option);
                 }}
                 selects={selects}
+              />
+            );
+          }
+          if (input === 'toggle' || input === 'icon') {
+            return (
+              <ToggleFilter
+                ref={filterRefs[index]}
+                Header={Header}
+                initialValue={initialValue}
+                key={key}
+                name={id}
+                onSelect={(
+                  option: SelectOption | undefined,
+                  isClear?: boolean,
+                ) => {
+                  if (onFilterUpdate) {
+                    // Filter change triggers both onChange AND onClear, only want to track onChange
+                    if (!isClear) {
+                      onFilterUpdate(option);
+                    }
+                  }
+                  updateFilterValue(index, option);
+                }}
+                selects={selects}
+                filterType={
+                  filters[index].filterType ||
+                  (input === 'toggle' ? 'toggle' : 'icon')
+                }
+                iconType={filters[index].iconType}
               />
             );
           }

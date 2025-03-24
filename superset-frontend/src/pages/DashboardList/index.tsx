@@ -503,17 +503,19 @@ function DashboardList(props: DashboardListProps) {
 
   const favoritesFilter: Filter = useMemo(
     () => ({
-      Header: t('Favorite'),
-      key: 'favorite',
+      Header: t('Favorites'),
+      key: 'favourite',
       id: 'id',
-      urlDisplay: 'favorite',
-      input: 'checkbox',
+      urlDisplay: 'favourite',
+      input: 'toggle', // New input type
       operator: FilterOperator.DashboardIsFav,
       unfilteredLabel: t('Any'),
       selects: [
-        { label: t('Yes'), value: true },
-        { label: t('No'), value: false },
+        { label: t('Favorites'), value: true },
+        { label: t('Not Favorites'), value: false },
       ],
+      filterType: 'toggle',
+      iconType: 'favorite',
     }),
     [],
   );
@@ -582,31 +584,35 @@ function DashboardList(props: DashboardListProps) {
         ),
         paginate: true,
       },
-      ...(user?.userId ? [favoritesFilter] : []),
       {
         Header: t('Status'),
         key: 'published',
         id: 'published',
-        input: 'checkbox',
+        input: 'icon', // New input type
         operator: FilterOperator.Equals,
         unfilteredLabel: t('Any'),
         selects: [
           { label: t('Published'), value: true },
           { label: t('Draft'), value: false },
         ],
+        filterType: 'icon',
+        iconType: 'status',
       },
+      ...(user?.userId ? [favoritesFilter] : []),
       {
         Header: t('Certified'),
         key: 'certified',
         id: 'id',
         urlDisplay: 'certified',
-        input: 'checkbox',
+        input: 'toggle', // New input type
         operator: FilterOperator.DashboardIsCertified,
         unfilteredLabel: t('Any'),
         selects: [
-          { label: t('Yes'), value: true },
-          { label: t('No'), value: false },
+          { label: t('Certified'), value: true },
+          { label: t('Not Certified'), value: false },
         ],
+        filterType: 'toggle',
+        iconType: 'certified',
       },
     ] as Filters;
     return filters_list;

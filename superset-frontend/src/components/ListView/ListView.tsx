@@ -50,12 +50,14 @@ const ListViewStyles = styled.div`
     .header {
       display: flex;
       padding-bottom: ${({ theme }) => theme.gridUnit * 4}px;
+      align-items: center;
 
       & .controls {
         display: flex;
         flex-wrap: wrap;
         column-gap: ${({ theme }) => theme.gridUnit * 6}px;
         row-gap: ${({ theme }) => theme.gridUnit * 4}px;
+        align-items: center;
       }
     }
 
@@ -345,19 +347,19 @@ function ListView<T extends object = any>({
             <ViewModeToggle mode={viewMode} setMode={setViewMode} />
           )}
           <div className="controls" data-test="filters-select">
+            {viewMode === 'card' && cardSortSelectOptions && (
+              <CardSortSelect
+                initialSort={sortBy}
+                onChange={(value: SortColumn[]) => setSortBy(value)}
+                options={cardSortSelectOptions}
+              />
+            )}
             {filterable && (
               <FilterControls
                 ref={filterControlsRef}
                 filters={filters}
                 internalFilters={internalFilters}
                 updateFilterValue={applyFilterValue}
-              />
-            )}
-            {viewMode === 'card' && cardSortSelectOptions && (
-              <CardSortSelect
-                initialSort={sortBy}
-                onChange={(value: SortColumn[]) => setSortBy(value)}
-                options={cardSortSelectOptions}
               />
             )}
           </div>

@@ -551,17 +551,19 @@ function ChartList(props: ChartListProps) {
 
   const favoritesFilter: Filter = useMemo(
     () => ({
-      Header: t('Favorite'),
-      key: 'favorite',
+      Header: t('Favorites'),
+      key: 'favourite',
       id: 'id',
-      urlDisplay: 'favorite',
-      input: 'checkbox',
+      urlDisplay: 'favourite',
+      input: 'toggle',
       operator: FilterOperator.ChartIsFav,
       unfilteredLabel: t('Any'),
       selects: [
-        { label: t('Yes'), value: true },
-        { label: t('No'), value: false },
+        { label: t('Favorites'), value: true },
+        { label: t('Not Favorites'), value: false },
       ],
+      filterType: 'toggle',
+      iconType: 'favorite',
     }),
     [],
   );
@@ -682,13 +684,15 @@ function ChartList(props: ChartListProps) {
         key: 'certified',
         id: 'id',
         urlDisplay: 'certified',
-        input: 'checkbox',
+        input: 'toggle',
         operator: FilterOperator.ChartIsCertified,
         unfilteredLabel: t('Any'),
         selects: [
           { label: t('Yes'), value: true },
           { label: t('No'), value: false },
         ],
+        filterType: 'toggle',
+        iconType: 'certified',
       },
     ] as Filters;
     return filters_list;

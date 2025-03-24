@@ -48,7 +48,9 @@ export interface Filter {
     | 'select'
     | 'checkbox'
     | 'search'
-    | 'datetime_range';
+    | 'datetime_range'
+    | 'toggle'
+    | 'icon';
   unfilteredLabel?: string;
   selects?: SelectOption[];
   onFilterOpen?: () => void;
@@ -59,6 +61,8 @@ export interface Filter {
     pageSize: number,
   ) => Promise<{ data: SelectOption[]; totalCount: number }>;
   paginate?: boolean;
+  filterType?: 'toggle' | 'icon'  ;
+  iconType?: 'status' | 'certified' | 'favorite' | 'type';
 }
 
 export type Filters = Filter[];
