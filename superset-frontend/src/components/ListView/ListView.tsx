@@ -184,7 +184,7 @@ const ViewModeToggle = ({
       }}
       className={cx('toggle-button', { active: mode === 'card' })}
     >
-      <Icons.CardView />
+      <Icons.AppstoreOutlined iconSize="xl" />
     </div>
     <div
       role="button"
@@ -195,7 +195,7 @@ const ViewModeToggle = ({
       }}
       className={cx('toggle-button', { active: mode === 'table' })}
     >
-      <Icons.ListView />
+      <Icons.UnorderedListOutlined iconSize="xl" />
     </div>
   </ViewModeContainer>
 );

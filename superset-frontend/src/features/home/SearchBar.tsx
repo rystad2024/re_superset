@@ -156,7 +156,10 @@ function SearchBar() {
   const { allData, filteredData, setFilteredData, loading, refetch } =
     useFetchAllData();
 
-  const { favoriteStatus, favIds, filteredFavData } = useGetFavoriteStatus(allData, isSearchBoxClicked);
+  const { favoriteStatus, favIds, filteredFavData } = useGetFavoriteStatus(
+    allData,
+    isSearchBoxClicked,
+  );
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const query = event.target.value.toLowerCase();
@@ -226,100 +229,6 @@ function SearchBar() {
       getItemTitle: (item: ResultItem) =>
         'table_name' in item ? item.table_name : undefined,
     },
-  };
-
-  const EnhancedDropdownItem: React.FC<{
-    item: ResultItem;
-    resourceKey: string;
-    config: ResourceMapping;
-  }> = ({ item, resourceKey, config }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-      <DropdownItem
-        href={
-          'url' in item
-            ? item.url
-            : 'explore_url' in item
-              ? item.explore_url
-              : '#'
-        }
-        rel="noopener noreferrer"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div
-          style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
-        >
-          {/* Always visible content */}
-          <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-            {config.icon}
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {config.getItemTitle(item)}
-            </span>
-          </div>
-
-          {/* Additional content that appears on hover */}
-          {isHovered && (
-            <div
-              style={{
-                overflow: 'hidden',
-                display: 'flex',
-                gap: '8px',
-                marginTop: '8px',
-                height: 'auto',
-                width: '100%',
-                justifyContent: 'space-between',
-              }}
-            >
-              {config.fallbackUrl && (
-                <div
-                  style={{
-                    width: '80px',
-                    height: '40px',
-                    flexShrink: 0,
-                    borderRadius: '4px',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <img
-                    src={config.fallbackUrl}
-                    alt="Preview"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                </div>
-              )}
-
-              <div style={{ overflow: 'hidden', alignSelf: 'end' }}>
-                <div
-                  style={{
-                    fontSize: '10px',
-                    color: '#666',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '2px',
-                  }}
-                >
-                  <Icons.Clock style={{ fontSize: '14px' }} />
-
-                  <div>{t('Modified %s', item.changed_on_delta_humanized)}</div>
-                  {'changed_by_name' in item && item.changed_by_name && (
-                    <div style={{ textDecoration: 'none' }}>
-                      {' '}
-                      by {item.changed_by_name}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </DropdownItem>
-    );
   };
 
   return (
@@ -394,5 +303,97 @@ function SearchBar() {
     </SearchContainer>
   );
 }
+
+const EnhancedDropdownItem: React.FC<{
+  item: ResultItem;
+  resourceKey: string;
+  config: ResourceMapping;
+}> = ({ item, resourceKey, config }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <DropdownItem
+      href={
+        'url' in item
+          ? item.url
+          : 'explore_url' in item
+            ? item.explore_url
+            : '#'
+      }
+      rel="noopener noreferrer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        {/* Always visible content */}
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+          {config.icon}
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {config.getItemTitle(item)}
+          </span>
+        </div>
+
+        {/* Additional content that appears on hover */}
+        {isHovered && (
+          <div
+            style={{
+              overflow: 'hidden',
+              display: 'flex',
+              gap: '8px',
+              marginTop: '8px',
+              height: 'auto',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}
+          >
+            {config.fallbackUrl && (
+              <div
+                style={{
+                  width: '80px',
+                  height: '40px',
+                  flexShrink: 0,
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                }}
+              >
+                <img
+                  src={config.fallbackUrl}
+                  alt="Preview"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+            )}
+
+            <div style={{ overflow: 'hidden', alignSelf: 'end' }}>
+              <div
+                style={{
+                  fontSize: '10px',
+                  color: '#666',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '2px',
+                }}
+              >
+                <Icons.Clock style={{ fontSize: '14px' }} />
+
+                <div>{t('Modified %s', item.changed_on_delta_humanized)}</div>
+                {'changed_by_name' in item && item.changed_by_name && (
+                  <div style={{ textDecoration: 'none' }}>
+                    {' '}
+                    by {item.changed_by_name}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </DropdownItem>
+  );
+};
 
 export default SearchBar;

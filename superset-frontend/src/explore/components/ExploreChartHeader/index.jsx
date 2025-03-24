@@ -90,6 +90,7 @@ export const ExploreChartHeader = ({
   saveDisabled,
   metadata,
 }) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const { latestQueryFormData, sliceFormData } = chart;
   const [isPropertiesModalOpen, setIsPropertiesModalOpen] = useState(false);

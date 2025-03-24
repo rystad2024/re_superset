@@ -45,85 +45,82 @@ interface MenuProps {
 
 const StyledHeader = styled.header`
   ${({ theme }) => `
-      background-color: white;
-      margin-bottom: 2px;
-      z-index: 100000;
+    background-color: white;
+    margin-bottom: 2px;
+    z-index: 100000;
 
-      .main-nav, .navbar {
-        background-color: white;
-        font-size: 16px !important;
+    .main-nav,
+    .navbar {
+      background-color: white;
+      font-size: 16px !important;
+    }
+    &:nth-last-of-type(2) nav {
+      margin-bottom: 2px;
+    }
+    .caret {
+      display: none;
+    }
+    .navbar-brand {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      /* must be exactly the height of the Antd navbar */
+      min-height: 50px;
+      padding: ${theme.gridUnit}px ${theme.gridUnit * 2}px ${theme.gridUnit}px
+        ${theme.gridUnit * 4}px;
+      // max-width: ${theme.gridUnit * theme.brandIconMaxWidth}px;
+      img {
+        height: 100%;
+        object-fit: contain;
       }
-      &:nth-last-of-type(2) nav {
-        margin-bottom: 2px;
+      &:focus {
+        border-color: transparent;
       }
-      .caret {
+      &:focus-visible {
+        border-color: ${theme.colors.primary.dark1};
+      }
+    }
+    .navbar-brand-text {
+      border-left: 1px solid ${theme.colors.grayscale.light2};
+      border-right: 1px solid ${theme.colors.grayscale.light2};
+      height: 100%;
+      color: ${theme.colors.grayscale.dark1};
+      padding-left: ${theme.gridUnit * 4}px;
+      padding-right: ${theme.gridUnit * 4}px;
+      margin-right: ${theme.gridUnit * 6}px;
+      font-size: ${theme.gridUnit * 4}px;
+      float: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      span {
+        max-width: ${theme.gridUnit * 58}px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      @media (max-width: 1127px) {
         display: none;
       }
+    }
+    @media (max-width: 767px) {
       .navbar-brand {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        /* must be exactly the height of the Antd navbar */
-        min-height: 50px;
-        padding: ${theme.gridUnit}px
-          ${theme.gridUnit * 2}px
-          ${theme.gridUnit}px
-          ${theme.gridUnit * 4}px;
-        // max-width: ${theme.gridUnit * theme.brandIconMaxWidth}px;
-        img {
-          height: 100%;
-          object-fit: contain;
-        }
-        &:focus {
-          border-color: transparent;
-        }
-        &:focus-visible {
-          border-color: ${theme.colors.primary.dark1};
-        }
+        float: none;
       }
-      .navbar-brand-text {
-        border-left: 1px solid ${theme.colors.grayscale.light2};
-        border-right: 1px solid ${theme.colors.grayscale.light2};
+    }
+    @media (max-width: 767px) {
+      .antd5-menu-item {
         height: 100%;
-        color: ${theme.colors.grayscale.dark1};
-        padding-left: ${theme.gridUnit * 4}px;
-        padding-right: ${theme.gridUnit * 4}px;
-        margin-right: ${theme.gridUnit * 6}px;
-        font-size: ${theme.gridUnit * 4}px;
-        float: left;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        span {
-          max-width: ${theme.gridUnit * 58}px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        @media (max-width: 1127px) {
-          display: none;
-        }
+        padding: 0 ${theme.gridUnit * 6}px 0 ${theme.gridUnit * 3}px !important;
       }
-      @media (max-width: 767px) {
-        .navbar-brand {
-          float: none;
-        }
+      .antd5-menu > .antd5-menu-item > span > a {
+        padding: 0px;
       }
-      @media (max-width: 767px) {
-        .antd5-menu-item {
-          height: 100%;
-          padding: 0 ${theme.gridUnit * 6}px 0
-            ${theme.gridUnit * 3}px !important;
-        }
-        .antd5-menu > .antd5-menu-item > span > a {
-          padding: 0px;
-          
-        }
-        .main-nav .antd5-menu-submenu-title > svg:nth-of-type(1) {
-          display: none;
-        }
+      .main-nav .antd5-menu-submenu-title > svg:nth-of-type(1) {
+        display: none;
       }
+    }
   `}
 `;
 const { SubMenu } = MainNav;
@@ -342,11 +339,11 @@ export function Menu({
             )}
 
             {/* Desktop version of search bar */}
-            {user.isActive && (
+            {/* {user.isActive && (
               <SearchBarWrapper className="desktop-search">
                 <SearchBar />
               </SearchBarWrapper>
-            )}
+            )} */}
           </LogoContainer>
 
           <NavRightContainer>
@@ -388,13 +385,13 @@ export function Menu({
         </TopRow>
 
         {/* Mobile version of search bar (only shown on small screens) */}
-        {user.isActive && (
+        {/* {user.isActive && (
           <SearchRowContainer>
             <SearchBarWrapper className="mobile-search">
               <SearchBar />
             </SearchBarWrapper>
           </SearchRowContainer>
-        )}
+        )} */}
       </HeaderContainer>
     </StyledHeader>
   );

@@ -18,7 +18,6 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { SupersetClient, t } from '@superset-ui/core';
-import { filter } from 'lodash';
 import { useFavoriteStatus, useListViewResource } from 'src/views/CRUD/hooks';
 import { Dashboard, DashboardTableProps, TableTab } from 'src/views/CRUD/types';
 import handleResourceExport from 'src/utils/export';
@@ -44,6 +43,7 @@ import DashboardCard from 'src/features/dashboards/DashboardCard';
 import EmptyState from './EmptyState';
 import SubMenu from './SubMenu';
 import { WelcomeTable } from './types';
+import Icons from 'src/components/Icons';
 
 function DashboardTable({
   user,
@@ -61,10 +61,7 @@ function DashboardTable({
     TableTab.Other,
   );
 
-  const filteredOtherTabData = filter(
-    otherTabData,
-    obj => !('viz_type' in obj),
-  );
+  const filteredOtherTabData = otherTabData.filter(obj => !('viz_type' in obj));
 
   const {
     state: { loading, resourceCollection: dashboards },
@@ -192,6 +189,8 @@ function DashboardTable({
               <>
                 <i className="fa fa-plus" />
                 {t('Workspace')}
+                <Icons.PlusOutlined iconColor="primary" iconSize="m" />
+                {t('Dashboard')}
               </>
             ),
             buttonStyle: 'primary',

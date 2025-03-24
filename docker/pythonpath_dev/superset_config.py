@@ -104,7 +104,7 @@ class CeleryConfig:
 
 CELERY_CONFIG = CeleryConfig
 
-FEATURE_FLAGS = {"ALERT_REPORTS": True, "TAGGING_SYSTEM": True}
+FEATURE_FLAGS = {"ALERT_REPORTS": True, "TAGGING_SYSTEM": True, "THUMBNAILS": True}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
 WEBDRIVER_BASEURL = "http://superset:8088/"  # When using docker compose baseurl should be http://superset_app:8088/  # noqa: E501
 # The base URL for the email report hyperlinks.
@@ -135,7 +135,7 @@ try:
     from superset_config_docker import *  # noqa
 
     logger.info(
-        f"Loaded your Docker configuration at " f"[{superset_config_docker.__file__}]"
+        f"Loaded your Docker configuration at [{superset_config_docker.__file__}]"
     )
 except ImportError:
     logger.info("Using default Docker config...")
