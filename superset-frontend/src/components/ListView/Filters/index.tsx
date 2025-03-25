@@ -35,16 +35,24 @@ import {
 import SearchFilter from './Search';
 import SelectFilter from './Select';
 import DateRangeFilter from './DateRange';
+import CheckboxFilter from './Checkbox';
+import ToggleFilter from './Toggle';
 import { FilterHandler } from './Base';
 
 interface UIFiltersProps {
   filters: Filters;
   internalFilters: InternalFilter[];
   updateFilterValue: (id: number, value: FilterValue['value']) => void;
+  showAllFilters?: boolean;
 }
 
 function UIFilters(
-  { filters, internalFilters = [], updateFilterValue }: UIFiltersProps,
+  {
+    showAllFilters,
+    filters,
+    internalFilters = [],
+    updateFilterValue,
+  }: UIFiltersProps,
   ref: RefObject<{ clearFilters: () => void }>,
 ) {
   const filterRefs = useMemo(
@@ -75,67 +83,123 @@ function UIFilters(
             selects,
             toolTipDescription,
             onFilterUpdate,
+            allwaysVisible,
           },
           index,
         ) => {
           const initialValue = internalFilters?.[index]?.value;
-          if (input === 'select') {
-            return (
-              <SelectFilter
-                ref={filterRefs[index]}
-                Header={Header}
-                fetchSelects={fetchSelects}
-                initialValue={initialValue}
-                key={key}
-                name={id}
-                onSelect={(
-                  option: SelectOption | undefined,
-                  isClear?: boolean,
-                ) => {
-                  if (onFilterUpdate) {
-                    // Filter change triggers both onChange AND onClear, only want to track onChange
-                    if (!isClear) {
-                      onFilterUpdate(option);
+          if (allwaysVisible || showAllFilters) {
+            if (input === 'select') {
+              return (
+                <SelectFilter
+                  ref={filterRefs[index]}
+                  Header={Header}
+                  fetchSelects={fetchSelects}
+                  initialValue={initialValue}
+                  key={key}
+                  name={id}
+                  onSelect={(
+                    option: SelectOption | undefined,
+                    isClear?: boolean,
+                  ) => {
+                    if (onFilterUpdate) {
+                      // Filter change triggers both onChange AND onClear, only want to track onChange
+                      if (!isClear) {
+                        onFilterUpdate(option);
+                      }
                     }
-                  }
 
-                  updateFilterValue(index, option);
-                }}
-                paginate={paginate}
-                selects={selects}
-              />
-            );
-          }
-          if (input === 'search' && typeof Header === 'string') {
-            return (
-              <SearchFilter
-                ref={filterRefs[index]}
-                Header={Header}
-                initialValue={initialValue}
-                key={key}
-                name={id}
-                toolTipDescription={toolTipDescription}
-                onSubmit={(value: string) => {
-                  if (onFilterUpdate) {
-                    onFilterUpdate(value);
-                  }
+                    updateFilterValue(index, option);
+                  }}
+                  paginate={paginate}
+                  selects={selects}
+                />
+              );
+            }
+            if (input === 'search' && typeof Header === 'string') {
+              return (
+                <SearchFilter
+                  ref={filterRefs[index]}
+                  Header={Header}
+                  initialValue={initialValue}
+                  key={key}
+                  name={id}
+                  toolTipDescription={toolTipDescription}
+                  onSubmit={(value: string) => {
+                    if (onFilterUpdate) {
+                      onFilterUpdate(value);
+                    }
 
-                  updateFilterValue(index, value);
-                }}
-              />
-            );
-          }
-          if (input === 'datetime_range') {
-            return (
-              <DateRangeFilter
-                ref={filterRefs[index]}
-                Header={Header}
-                initialValue={initialValue}
-                key={key}
-                name={id}
-                onSubmit={value => updateFilterValue(index, value)}
-              />
-            );
+                    updateFilterValue(index, value);
+                  }}
+                />
+              );
+            }
+            if (input === 'datetime_range') {
+              return (
+                <DateRangeFilter
+                  ref={filterRefs[index]}
+                  Header={Header}
+                  initialValue={initialValue}
+                  key={key}
+                  name={id}
+                  onSubmit={value => updateFilterValue(index, value)}
+                />
+              );
+            }
+            if (input === 'checkbox') {
+              return (
+                <CheckboxFilter
+                  ref={filterRefs[index]}
+                  Header={Header}
+                  initialValue={initialValue}
+                  key={key}
+                  name={id}
+                  onSelect={(
+                    option: SelectOption | undefined,
+                    isClear?: boolean,
+                  ) => {
+                    if (onFilterUpdate) {
+                      // Filter change triggers both onChange AND onClear, only want to track onChange
+                      if (!isClear) {
+                        onFilterUpdate(option);
+                      }
+                    }
+                    updateFilterValue(index, option);
+                  }}
+                  selects={selects}
+                />
+              );
+            }
+            if (input === 'toggle' || input === 'icon') {
+              return (
+                <ToggleFilter
+                  ref={filterRefs[index]}
+                  Header={Header}
+                  initialValue={initialValue}
+                  key={key}
+                  name={id}
+                  onSelect={(
+                    option: SelectOption | undefined,
+                    isClear?: boolean,
+                  ) => {
+                    if (onFilterUpdate) {
+                      // Filter change triggers both onChange AND onClear, only want to track onChange
+                      if (!isClear) {
+                        onFilterUpdate(option);
+                      }
+                    }
+                    updateFilterValue(index, option);
+                  }}
+                  selects={selects}
+                  filterType={
+                    filters[index].filterType ||
+                    (input === 'toggle' ? 'toggle' : 'icon')
+                  }
+                  iconType={filters[index].iconType}
+                />
+              );
+            }
           }
           return null;
         },

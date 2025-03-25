@@ -40,7 +40,7 @@ interface SearchHeaderProps extends BaseFilter {
 }
 
 const Container = styled.div`
-  width: ${SELECT_WIDTH}px;
+  max-width: ${SELECT_WIDTH}px;
 `;
 
 const SearchIcon = styled(Icons.Search)`

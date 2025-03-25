@@ -551,17 +551,20 @@ function ChartList(props: ChartListProps) {
 
   const favoritesFilter: Filter = useMemo(
     () => ({
-      Header: t('Favorite'),
-      key: 'favorite',
+      Header: t('Favorites'),
+      key: 'favourite',
       id: 'id',
-      urlDisplay: 'favorite',
-      input: 'select',
+      urlDisplay: 'favourite',
+      input: 'toggle',
       operator: FilterOperator.ChartIsFav,
       unfilteredLabel: t('Any'),
       selects: [
-        { label: t('Yes'), value: true },
-        { label: t('No'), value: false },
+        { label: t('Favorites'), value: true },
+        { label: t('Not Favorites'), value: false },
       ],
+      filterType: 'toggle',
+      iconType: 'favorite',
+      allwaysVisible: true,
     }),
     [],
   );
@@ -574,6 +577,7 @@ function ChartList(props: ChartListProps) {
         id: 'slice_name',
         input: 'search',
         operator: FilterOperator.ChartAllText,
+        allwaysVisible: true,
       },
       {
         Header: t('Type'),
@@ -610,6 +614,7 @@ function ChartList(props: ChartListProps) {
         unfilteredLabel: t('All'),
         fetchSelects: createFetchDatasets,
         paginate: true,
+        allwaysVisible: true,
       },
       ...(isFeatureEnabled(FeatureFlag.TaggingSystem) && canReadTag
         ? [
@@ -655,20 +660,7 @@ function ChartList(props: ChartListProps) {
         unfilteredLabel: t('All'),
         fetchSelects: fetchDashboards,
         paginate: true,
-      },
-      ...(userId ? [favoritesFilter] : []),
-      {
-        Header: t('Certified'),
-        key: 'certified',
-        id: 'id',
-        urlDisplay: 'certified',
-        input: 'select',
-        operator: FilterOperator.ChartIsCertified,
-        unfilteredLabel: t('Any'),
-        selects: [
-          { label: t('Yes'), value: true },
-          { label: t('No'), value: false },
-        ],
+        allwaysVisible: true,
       },
       {
         Header: t('Modified by'),
@@ -689,6 +681,23 @@ function ChartList(props: ChartListProps) {
           props.user,
         ),
         paginate: true,
+      },
+      ...(userId ? [favoritesFilter] : []),
+      {
+        Header: t('Certified'),
+        key: 'certified',
+        id: 'id',
+        urlDisplay: 'certified',
+        input: 'toggle',
+        operator: FilterOperator.ChartIsCertified,
+        unfilteredLabel: t('Any'),
+        selects: [
+          { label: t('Yes'), value: true },
+          { label: t('No'), value: false },
+        ],
+        filterType: 'toggle',
+        iconType: 'certified',
+        allwaysVisible: true,
       },
     ] as Filters;
     return filters_list;

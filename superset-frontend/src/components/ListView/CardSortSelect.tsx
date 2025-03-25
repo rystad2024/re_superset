@@ -28,7 +28,8 @@ const SortContainer = styled.div`
   font-size: ${({ theme }) => theme.typography.sizes.s}px;
   align-items: center;
   text-align: left;
-  width: ${SELECT_WIDTH}px;
+  max-width: ${SELECT_WIDTH}px;
+  padding-top: 4px;
 `;
 
 interface CardViewSelectSortProps {
