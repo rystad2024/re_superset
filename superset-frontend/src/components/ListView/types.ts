@@ -63,6 +63,7 @@ export interface Filter {
   paginate?: boolean;
   filterType?: 'toggle' | 'icon'  ;
   iconType?: 'status' | 'certified' | 'favorite' | 'type';
+  allwaysVisible?: boolean;
 }
 
 export type Filters = Filter[];
