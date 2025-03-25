@@ -29,6 +29,7 @@ const SortContainer = styled.div`
   align-items: center;
   text-align: left;
   max-width: ${SELECT_WIDTH}px;
+  padding-top: 4px;
 `;
 
 interface CardViewSelectSortProps {

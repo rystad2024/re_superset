@@ -507,6 +507,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         id: 'table_name',
         input: 'search',
         operator: FilterOperator.Contains,
+        allwaysVisible: true,
       },
       {
         Header: t('Database'),
@@ -523,6 +524,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           ),
         ),
         paginate: true,
+        allwaysVisible: true,
       },
       {
         Header: t('Schema'),
@@ -539,6 +541,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           ),
         ),
         paginate: true,
+        allwaysVisible: true,
       },
       {
         Header: t('Owner'),
@@ -608,6 +611,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
           { label: t('Yes'), value: true },
           { label: t('No'), value: false },
         ],
+        allwaysVisible: true,
       },
     ],
     [user],

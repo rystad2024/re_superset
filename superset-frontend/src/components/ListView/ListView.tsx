@@ -38,10 +38,10 @@ import {
 } from './types';
 import { ListViewError, useListViewState } from './utils';
 import { EmptyState, EmptyStateProps } from '../EmptyState';
+import { Switch } from 'antd-v5';
 
 const ListViewStyles = styled.div`
   text-align: center;
-
   .superset-list-view {
     text-align: left;
     border-radius: 4px 0;
@@ -49,15 +49,33 @@ const ListViewStyles = styled.div`
 
     .header {
       display: flex;
+      flex-direction: column;
+      width: 100%;
       padding-bottom: ${({ theme }) => theme.gridUnit * 4}px;
-      align-items: center;
 
-      & .controls {
+      .header-row {
         display: flex;
-        flex-wrap: wrap;
-        column-gap: ${({ theme }) => theme.gridUnit * 6}px;
-        row-gap: ${({ theme }) => theme.gridUnit * 4}px;
-        align-items: center;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        .controls {
+          display: flex;
+          flex-wrap: wrap;
+          column-gap: ${({ theme }) => theme.gridUnit * 6}px;
+          row-gap: ${({ theme }) => theme.gridUnit * 4}px;
+        }
+
+        .toggle-filters {
+          display: flex;
+          gap: 6px;
+
+          margin-left: auto;
+
+          span {
+            display: flex;
+            white-space: nowrap;
+          }
+        }
       }
     }
 
@@ -141,10 +159,9 @@ const bulkSelectColumnConfig = {
 
 const ViewModeContainer = styled.div`
   padding-right: ${({ theme }) => theme.gridUnit * 4}px;
-  margin-top: ${({ theme }) => theme.gridUnit * 5 + 1}px;
   white-space: nowrap;
   display: inline-block;
-
+  margin-top: 24px;
   .toggle-button {
     display: inline-block;
     border-radius: ${({ theme }) => theme.gridUnit / 2}px;
@@ -316,6 +333,7 @@ function ListView<T extends object = any>({
 
   const cardViewEnabled = Boolean(renderCard);
   const [showBulkTagModal, setShowBulkTagModal] = useState<boolean>(false);
+  const [showAllFilters, setShowAllFilters] = useState<boolean>(true);
 
   useEffect(() => {
     // discard selections if bulk select is disabled
@@ -327,7 +345,7 @@ function ListView<T extends object = any>({
       gotoPage(0);
     }
   }, [gotoPage, loading, pageCount, pageIndex]);
-
+  console.log(showAllFilters);
   return (
     <ListViewStyles>
       {allowBulkTagActions && (
@@ -343,25 +361,39 @@ function ListView<T extends object = any>({
       )}
       <div data-test={className} className={`superset-list-view ${className}`}>
         <div className="header">
-          {cardViewEnabled && (
-            <ViewModeToggle mode={viewMode} setMode={setViewMode} />
-          )}
-          <div className="controls" data-test="filters-select">
-            {viewMode === 'card' && cardSortSelectOptions && (
-              <CardSortSelect
-                initialSort={sortBy}
-                onChange={(value: SortColumn[]) => setSortBy(value)}
-                options={cardSortSelectOptions}
-              />
+          <div className="header-row">
+            {cardViewEnabled && (
+              <ViewModeToggle mode={viewMode} setMode={setViewMode} />
             )}
-            {filterable && (
-              <FilterControls
-                ref={filterControlsRef}
-                filters={filters}
-                internalFilters={internalFilters}
-                updateFilterValue={applyFilterValue}
+            <div className="controls" data-test="filters-select">
+              {cardSortSelectOptions && (
+                <CardSortSelect
+                  initialSort={sortBy}
+                  onChange={(value: SortColumn[]) => setSortBy(value)}
+                  options={cardSortSelectOptions}
+                />
+              )}
+              {filterable && (
+                <FilterControls
+                  ref={filterControlsRef}
+                  filters={filters}
+                  internalFilters={internalFilters}
+                  updateFilterValue={applyFilterValue}
+                  showAllFilters={showAllFilters}
+                />
+              )}
+            </div>
+            <div className="toggle-filters">
+              <Switch
+                checked={showAllFilters}
+                onChange={setShowAllFilters}
+                id="show-all-filters"
+                title="Show all filters"
               />
-            )}
+              <span>
+                {showAllFilters ? 'Hide filters' : 'Show more filters'}
+              </span>
+            </div>
           </div>
         </div>
         <div className={`body ${rows.length === 0 ? 'empty' : ''}`}>

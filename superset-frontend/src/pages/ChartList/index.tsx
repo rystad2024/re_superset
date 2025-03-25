@@ -564,6 +564,7 @@ function ChartList(props: ChartListProps) {
       ],
       filterType: 'toggle',
       iconType: 'favorite',
+      allwaysVisible: true,
     }),
     [],
   );
@@ -576,6 +577,7 @@ function ChartList(props: ChartListProps) {
         id: 'slice_name',
         input: 'search',
         operator: FilterOperator.ChartAllText,
+        allwaysVisible: true,
       },
       {
         Header: t('Type'),
@@ -612,6 +614,7 @@ function ChartList(props: ChartListProps) {
         unfilteredLabel: t('All'),
         fetchSelects: createFetchDatasets,
         paginate: true,
+        allwaysVisible: true,
       },
       ...(isFeatureEnabled(FeatureFlag.TaggingSystem) && canReadTag
         ? [
@@ -657,6 +660,7 @@ function ChartList(props: ChartListProps) {
         unfilteredLabel: t('All'),
         fetchSelects: fetchDashboards,
         paginate: true,
+        allwaysVisible: true,
       },
       {
         Header: t('Modified by'),
@@ -693,6 +697,7 @@ function ChartList(props: ChartListProps) {
         ],
         filterType: 'toggle',
         iconType: 'certified',
+        allwaysVisible: true,
       },
     ] as Filters;
     return filters_list;

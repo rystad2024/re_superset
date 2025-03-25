@@ -516,6 +516,7 @@ function DashboardList(props: DashboardListProps) {
       ],
       filterType: 'toggle',
       iconType: 'favorite',
+      allwaysVisible: true,
     }),
     [],
   );
@@ -528,6 +529,7 @@ function DashboardList(props: DashboardListProps) {
         id: 'dashboard_title',
         input: 'search',
         operator: FilterOperator.TitleOrSlug,
+        allwaysVisible: true,
       },
       ...(isFeatureEnabled(FeatureFlag.TaggingSystem) && canReadTag
         ? [
@@ -563,6 +565,7 @@ function DashboardList(props: DashboardListProps) {
           props.user,
         ),
         paginate: true,
+        allwaysVisible: false,
       },
       {
         Header: t('Modified by'),
@@ -583,6 +586,7 @@ function DashboardList(props: DashboardListProps) {
           user,
         ),
         paginate: true,
+        allwaysVisible: false,
       },
       {
         Header: t('Status'),
@@ -597,6 +601,7 @@ function DashboardList(props: DashboardListProps) {
         ],
         filterType: 'icon',
         iconType: 'status',
+        allwaysVisible: false,
       },
       ...(user?.userId ? [favoritesFilter] : []),
       {
@@ -613,6 +618,7 @@ function DashboardList(props: DashboardListProps) {
         ],
         filterType: 'toggle',
         iconType: 'certified',
+        allwaysVisible: true,
       },
     ] as Filters;
     return filters_list;
