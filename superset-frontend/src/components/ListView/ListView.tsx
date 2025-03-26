@@ -38,7 +38,13 @@ import {
 } from './types';
 import { ListViewError, useListViewState } from './utils';
 import { EmptyState, EmptyStateProps } from '../EmptyState';
-import { Switch } from 'antd-v5';
+import { Tooltip } from 'antd-v5';
+import { FormLabel } from '../Form';
+// import {
+//   dangerouslyGetItemDoNotUse,
+//   dangerouslySetItemDoNotUse,
+// } from 'src/utils/localStorageHelpers';
+// import { useSelector } from 'react-redux';
 
 const ListViewStyles = styled.div`
   text-align: center;
@@ -49,14 +55,8 @@ const ListViewStyles = styled.div`
 
     .header {
       display: flex;
-      flex-direction: column;
       width: 100%;
       padding-bottom: ${({ theme }) => theme.gridUnit * 4}px;
-
-      .header-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
 
         .controls {
           display: flex;
@@ -186,6 +186,19 @@ const EmptyWrapper = styled.div`
   }
 `;
 
+const StyledIcon = styled(Button)`
+  border: none;
+  display: flex;
+  background-color: transparent;
+  font-size: 24px;
+  padding: 0;
+  color: #b2b2b2;
+  &.active {
+    border-color: ${({ theme }) => theme.colors.grayscale.light2};
+    color: ${({ theme }) => theme.colors.primary.base};
+  }
+`;
+
 const ViewModeToggle = ({
   mode,
   setMode,
@@ -307,6 +320,17 @@ function ListView<T extends object = any>({
     renderCard: Boolean(renderCard),
     defaultViewMode,
   });
+  // const user = useSelector((state: any) => state.user);
+  // const userid = user.userId;
+  // const id = userid!.toString();
+  // const userKey = dangerouslyGetItemDoNotUse(user.userId, null);
+  // let defaultChecked = false;
+  // const isThumbnailsEnabled = isFeatureEnabled(FeatureFlag.Thumbnails);
+  // if (isThumbnailsEnabled) {
+  //   defaultChecked =
+  //     userKey?.thumbnails === undefined ? true : userKey?.thumbnails;
+  // }
+  // const [checked, setChecked] = useState(defaultChecked);
   const allowBulkTagActions = bulkTagResourceName && enableBulkTag;
   const filterable = Boolean(filters.length);
   if (filterable) {
@@ -322,7 +346,16 @@ function ListView<T extends object = any>({
       }
     });
   }
+  // const [updateThumbnails, setUpdateThumbnails] = useState(defaultChecked);
 
+  // useEffect(() => {
+  //   setUpdateThumbnails(checked);
+  // }, [checked]);
+
+  // const handleToggle = () => {
+  //   setChecked(!checked);
+  //   dangerouslySetItemDoNotUse(id, { thumbnails: !checked });
+  // };
   const filterControlsRef = useRef<{ clearFilters: () => void }>(null);
 
   const handleClearFilterControls = useCallback(() => {
@@ -333,7 +366,7 @@ function ListView<T extends object = any>({
 
   const cardViewEnabled = Boolean(renderCard);
   const [showBulkTagModal, setShowBulkTagModal] = useState<boolean>(false);
-  const [showAllFilters, setShowAllFilters] = useState<boolean>(true);
+  const [showAllFilters, setShowAllFilters] = useState<boolean>(false);
 
   useEffect(() => {
     // discard selections if bulk select is disabled
@@ -345,7 +378,6 @@ function ListView<T extends object = any>({
       gotoPage(0);
     }
   }, [gotoPage, loading, pageCount, pageIndex]);
-  console.log(showAllFilters);
   return (
     <ListViewStyles>
       {allowBulkTagActions && (
@@ -361,40 +393,52 @@ function ListView<T extends object = any>({
       )}
       <div data-test={className} className={`superset-list-view ${className}`}>
         <div className="header">
-          <div className="header-row">
-            {cardViewEnabled && (
-              <ViewModeToggle mode={viewMode} setMode={setViewMode} />
-            )}
-            <div className="controls" data-test="filters-select">
-              {cardSortSelectOptions && (
-                <CardSortSelect
-                  initialSort={sortBy}
-                  onChange={(value: SortColumn[]) => setSortBy(value)}
-                  options={cardSortSelectOptions}
-                />
-              )}
-              {filterable && (
-                <FilterControls
-                  ref={filterControlsRef}
-                  filters={filters}
-                  internalFilters={internalFilters}
-                  updateFilterValue={applyFilterValue}
-                  showAllFilters={showAllFilters}
-                />
-              )}
-            </div>
-            <div className="toggle-filters">
-              <Switch
-                checked={showAllFilters}
-                onChange={setShowAllFilters}
-                id="show-all-filters"
-                title="Show all filters"
+          {cardViewEnabled && (
+            <ViewModeToggle mode={viewMode} setMode={setViewMode} />
+          )}
+          <div className="controls" data-test="filters-select">
+            {cardSortSelectOptions && (
+              <CardSortSelect
+                initialSort={sortBy}
+                onChange={(value: SortColumn[]) => setSortBy(value)}
+                options={cardSortSelectOptions}
               />
-              <span>
-                {showAllFilters ? 'Hide filters' : 'Show more filters'}
-              </span>
+            )}
+            {filterable && (
+              <FilterControls
+                ref={filterControlsRef}
+                filters={filters}
+                internalFilters={internalFilters}
+                updateFilterValue={applyFilterValue}
+                showAllFilters={showAllFilters}
+              />
+            )}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0px',
+                justifyContent: 'center',
+              }}
+            >
+              <FormLabel>
+                {showAllFilters ? 'Hide filters' : 'More filters'}
+              </FormLabel>
+              <Tooltip
+                title={showAllFilters ? 'Hide filters' : 'Show more filters'}
+              >
+                <StyledIcon
+                  className={showAllFilters ? 'active' : ''}
+                  icon={<Icons.Filter />}
+                  onClick={() => setShowAllFilters(!showAllFilters)}
+                />
+              </Tooltip>
             </div>
           </div>
+          {/* <div className="toggle-filters">
+              <Switch checked={checked} onClick={handleToggle} />
+              <span style={{ marginLeft: '6px' }}>{t('Thumbnails')}</span>
+            </div> */}
         </div>
         <div className={`body ${rows.length === 0 ? 'empty' : ''}`}>
           {bulkSelectEnabled && (
