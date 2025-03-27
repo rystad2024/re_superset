@@ -34,9 +34,7 @@ import { AsyncSelect } from 'src/components';
 import { Steps } from 'src/components/Steps';
 import withToasts from 'src/components/MessageToasts/withToasts';
 
-import VizTypeGallery, {
-  MAX_ADVISABLE_VIZ_GALLERY_WIDTH,
-} from 'src/explore/components/controls/VizTypeControl/VizTypeGallery';
+import VizTypeGallery from 'src/explore/components/controls/VizTypeControl/VizTypeGallery';
 import { findPermission } from 'src/utils/findPermission';
 import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 import getBootstrapData from 'src/utils/getBootstrapData';
@@ -72,10 +70,8 @@ const StyledContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    max-width: ${MAX_ADVISABLE_VIZ_GALLERY_WIDTH}px;
-    max-height: calc(100vh - ${ESTIMATED_NAV_HEIGHT}px);
     border-radius: ${theme.gridUnit}px;
-    background-color: ${theme.colors.grayscale.light5};
+    background-color: ${theme.colors.secondary.light5}
     margin-left: auto;
     margin-right: auto;
     padding-left: ${theme.gridUnit * 4}px;
@@ -166,6 +162,16 @@ const StyledContainer = styled.div`
       padding-left: ${theme.gridUnit * 3}px;
     }
   `}
+`;
+
+const StyledTitleContainer = styled.div`
+  ${({ theme }) => `
+  background-color: ${theme.colors.primary.dark1};
+  color: white;
+   padding: ${theme.gridUnit * 2}px;
+  padding-left: ${theme.gridUnit * 4}px;
+  margin-bottom:  ${theme.gridUnit * 4}px;
+`}
 `;
 
 const StyledStepTitle = styled.span`
@@ -298,7 +304,7 @@ export class ChartCreation extends PureComponent<
         <Link to="/dataset/add/" data-test="add-chart-new-dataset">
           {t('Add a dataset')}{' '}
         </Link>
-        {t('or')}{' '}
+        {/* {t('or')}{' '}
         <a
           href="https://superset.apache.org/docs/creating-charts-dashboards/creating-your-first-dashboard/#registering-a-new-table"
           rel="noopener noreferrer"
@@ -308,7 +314,7 @@ export class ChartCreation extends PureComponent<
           {`${VIEW_INSTRUCTIONS_TEXT} `}
           <i className="fa fa-external-link" />
         </a>
-        .
+        . */}
       </span>
     ) : (
       <span data-test="no-dataset-write">
@@ -325,60 +331,66 @@ export class ChartCreation extends PureComponent<
     );
 
     return (
-      <StyledContainer>
-        <h3>{t('Create a new widget')}</h3>
-        <Steps direction="vertical" size="small">
-          <Steps.Step
-            title={<StyledStepTitle>{t('Choose a dataset')}</StyledStepTitle>}
-            status={this.state.datasource?.value ? 'finish' : 'process'}
-            description={
-              <StyledStepDescription className="dataset">
-                <AsyncSelect
-                  autoFocus
-                  ariaLabel={t('Dataset')}
-                  name="select-datasource"
-                  onChange={this.changeDatasource}
-                  options={this.loadDatasources}
-                  optionFilterProps={['id', 'label']}
-                  placeholder={t('Choose a dataset')}
-                  showSearch
-                  value={this.state.datasource}
-                />
-                {datasetHelpText}
-              </StyledStepDescription>
-            }
-          />
-          <Steps.Step
-            title={<StyledStepTitle>{t('Choose widget type')}</StyledStepTitle>}
-            status={this.state.vizType ? 'finish' : 'process'}
-            description={
-              <StyledStepDescription>
-                <VizTypeGallery
-                  denyList={denyList}
-                  className="viz-gallery"
-                  onChange={this.changeVizType}
-                  onDoubleClick={this.onVizTypeDoubleClick}
-                  selectedViz={this.state.vizType}
-                />
-              </StyledStepDescription>
-            }
-          />
-        </Steps>
-        <div className="footer">
-          {isButtonDisabled && (
-            <span>
-              {t('Please select both a Dataset and a Widget type to proceed')}
-            </span>
-          )}
-          <Button
-            buttonStyle="primary"
-            disabled={isButtonDisabled}
-            onClick={this.gotoSlice}
-          >
-            {t('Create new widget')}
-          </Button>
-        </div>
-      </StyledContainer>
+      <>
+        <StyledTitleContainer>
+          <h4>{t('Create a new widget')}</h4>
+        </StyledTitleContainer>
+        <StyledContainer>
+          <Steps direction="vertical" size="small">
+            <Steps.Step
+              title={<StyledStepTitle>{t('Choose a dataset')}</StyledStepTitle>}
+              status={this.state.datasource?.value ? 'finish' : 'process'}
+              description={
+                <StyledStepDescription className="dataset">
+                  <AsyncSelect
+                    autoFocus
+                    ariaLabel={t('Dataset')}
+                    name="select-datasource"
+                    onChange={this.changeDatasource}
+                    options={this.loadDatasources}
+                    optionFilterProps={['id', 'label']}
+                    placeholder={t('Choose a dataset')}
+                    showSearch
+                    value={this.state.datasource}
+                  />
+                  {datasetHelpText}
+                </StyledStepDescription>
+              }
+            />
+            <Steps.Step
+              title={
+                <StyledStepTitle>{t('Choose widget type')}</StyledStepTitle>
+              }
+              status={this.state.vizType ? 'finish' : 'process'}
+              description={
+                <StyledStepDescription>
+                  <VizTypeGallery
+                    denyList={denyList}
+                    className="viz-gallery"
+                    onChange={this.changeVizType}
+                    onDoubleClick={this.onVizTypeDoubleClick}
+                    selectedViz={this.state.vizType}
+                  />
+                </StyledStepDescription>
+              }
+            />
+          </Steps>
+          <div className="footer">
+            {isButtonDisabled && (
+              <span>
+                {t('Please select both a Dataset and a Widget type to proceed')}
+              </span>
+            )}
+            <Button
+              buttonStyle="primary"
+              disabled={isButtonDisabled}
+              onClick={this.gotoSlice}
+            >
+              {t('Create new widget')}
+            </Button>
+          </div>
+        </StyledContainer>
+      </>
     );
   }
 }

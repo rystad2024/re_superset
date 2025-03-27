@@ -19,7 +19,7 @@
 
 import { styled } from '@superset-ui/core';
 import cls from 'classnames';
-import Loader from 'src/assets/images/loading.gif';
+import Loader from 'src/assets/images/re-loader.gif';
 
 export type PositionOption =
   | 'floating'

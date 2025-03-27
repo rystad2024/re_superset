@@ -21,7 +21,7 @@ import Icons from 'src/components/Icons';
 import Alert from 'src/components/Alert';
 import Table, { ColumnsType, TableSize } from 'src/components/Table';
 // @ts-ignore
-import LOADING_GIF from 'src/assets/images/loading.gif';
+import LOADING_GIF from 'src/assets/images/re-loader.gif';
 import { DatasetObject } from 'src/features/datasets/AddDataset/types';
 import { ITableColumn } from './types';
 import MessageContent from './MessageContent';

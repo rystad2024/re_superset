@@ -68,8 +68,6 @@ enum Sections {
   Tags = 'TAGS',
 }
 
-const THUMBNAIL_GRID_UNITS = 24;
-
 export const MAX_ADVISABLE_VIZ_GALLERY_WIDTH = 1090;
 
 const OTHER_CATEGORY = t('Other');
@@ -85,25 +83,33 @@ export const VIZ_TYPE_CONTROL_TEST_ID = 'viz-type-control';
 const VizPickerLayout = styled.div<{ isSelectedVizMetadata: boolean }>`
   ${({ isSelectedVizMetadata }) => `
     display: grid;
-    grid-template-rows: ${
-      isSelectedVizMetadata
-        ? `auto minmax(100px, 1fr) minmax(200px, 35%)`
-        : 'auto minmax(100px, 1fr)'
-    };
-    // em is used here because the sidebar should be sized to fit the longest standard tag
-    grid-template-columns: minmax(14em, auto) 5fr;
-    grid-template-areas:
-      'sidebar search'
-      'sidebar main'
-      'details details';
     height: 70vh;
     overflow: auto;
+    background-color: white;
+    
+    ${
+      isSelectedVizMetadata
+        ? `
+      grid-template-rows: auto minmax(100px, 1fr) minmax(200px, 35%);
+      grid-template-columns: minmax(14em, auto) 5fr 2fr;
+      grid-template-areas:
+        "sidebar search details"
+        "sidebar main details"
+        "sidebar main details";
+    `
+        : `
+      grid-template-rows: auto minmax(100px, 1fr);
+      grid-template-columns: minmax(14em, auto) 1fr;
+      grid-template-areas:
+        "sidebar search"
+        "sidebar main";
+    `
+    }
   `}
 `;
 
 const SectionTitle = styled.h3`
-  margin-top: 0;
-  margin-bottom: ${({ theme }) => theme.gridUnit * 2}px;
+  margin-top: 10px;
   font-size: ${({ theme }) => theme.typography.sizes.l}px;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   line-height: ${({ theme }) => theme.gridUnit * 6}px;
@@ -139,6 +145,8 @@ const RightPane = styled.div`
 const SearchWrapper = styled.div`
   ${({ theme }) => `
     grid-area: search;
+    width: 300px;
+   
     margin-top: ${theme.gridUnit * 3}px;
     margin-bottom: ${theme.gridUnit}px;
     margin-left: ${theme.gridUnit * 3}px;
@@ -202,34 +210,22 @@ const SelectorLabel = styled.button`
 `;
 
 const IconsPane = styled.div`
-  overflow: auto;
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    ${({ theme }) => theme.gridUnit * THUMBNAIL_GRID_UNITS}px
-  );
-  grid-auto-rows: max-content;
-  justify-content: space-evenly;
-  grid-gap: ${({ theme }) => theme.gridUnit * 2}px;
+  display: flex;
   justify-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
   // for some reason this padding doesn't seem to apply at the bottom of the container. Why is a mystery.
   padding: ${({ theme }) => theme.gridUnit * 2}px;
 `;
 
 const DetailsPane = (theme: SupersetTheme) => css`
   grid-area: details;
-  border-top: 1px solid ${theme.colors.grayscale.light2};
 `;
 
 const DetailsPopulated = (theme: SupersetTheme) => css`
+  gap: ${theme.gridUnit * 3}px;
   padding: ${theme.gridUnit * 4}px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto 1fr;
-  grid-template-areas:
-    'viz-name examples-header'
-    'viz-tags examples'
-    'description examples';
+  border-left: 1px solid ${theme.colors.grayscale.light2};
 `;
 
 // overflow hidden on the details pane and overflow auto on the description
@@ -237,56 +233,82 @@ const DetailsPopulated = (theme: SupersetTheme) => css`
 const TagsWrapper = styled.div`
   grid-area: viz-tags;
   width: ${({ theme }) => theme.gridUnit * 120}px;
-  padding-right: ${({ theme }) => theme.gridUnit * 14}px;
   padding-bottom: ${({ theme }) => theme.gridUnit * 2}px;
 `;
 
 const Description = styled.p`
   grid-area: description;
   overflow: auto;
-  padding-right: ${({ theme }) => theme.gridUnit * 14}px;
   margin: 0;
 `;
 
 const Examples = styled.div`
-  grid-area: examples;
+  grid-area: description;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   overflow: auto;
   gap: ${({ theme }) => theme.gridUnit * 4}px;
 
-  img {
-    height: 100%;
-    border-radius: ${({ theme }) => theme.gridUnit}px;
-    border: 1px solid ${({ theme }) => theme.colors.grayscale.light2};
-  }
+  justify-content: flex-start; // Ensures items start from the left
+  align-items: center; // Centers items vertically
+`;
+
+const ExampleImageContainer = styled.div`
+  display: flex;
+  flex-direction: column; // Changed to column to center image
+  justify-content: center;
+  align-items: center;
+  width: 200px; // Fixed width instead of max-width
+  height: 200px; // Fixed height
+  border: 1px solid ${({ theme }) => theme.colors.grayscale.light2};
+  border-radius: ${({ theme }) => theme.gridUnit}px;
+  margin: ${({ theme }) => theme.gridUnit}px; // Add margin for spacing
+`;
+
+const ExampleImage = styled.img`
+  object-fit: contain;
+  max-width: 180px; // Slightly less than container width
+  max-height: 180px; // Slightly less than container height
 `;
 
 const thumbnailContainerCss = (theme: SupersetTheme) => css`
   cursor: pointer;
-  width: ${theme.gridUnit * THUMBNAIL_GRID_UNITS}px;
+  border: 1px solid ${theme.colors.grayscale.light1};
   position: relative;
+  border-radius: ${theme.gridUnit * 3}px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 260px; // Fixed height to ensure consistent layout
+  margin-left: 5px;
 
   img {
-    min-width: ${theme.gridUnit * THUMBNAIL_GRID_UNITS}px;
-    min-height: ${theme.gridUnit * THUMBNAIL_GRID_UNITS}px;
-    border: 1px solid ${theme.colors.grayscale.light2};
-    border-radius: ${theme.gridUnit}px;
+    flex: 0 0 240px; // Fixed height for image container
+    max-width: 220px;
+    max-height: 220px;
+    object-fit: contain;
+
     transition: border-color ${theme.transitionTiming};
+    border-bottom: 1px solid ${theme.colors.grayscale.light1};
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  &.selected img {
+  &.selected {
     border: 2px solid ${theme.colors.primary.light2};
   }
 
-  &:hover:not(.selected) img {
-    border: 1px solid ${theme.colors.grayscale.light1};
+  &:hover:not(.selected) {
+    border: 2px solid ${theme.colors.grayscale.light1};
   }
 
   .viztype-label {
     margin-top: ${theme.gridUnit * 2}px;
-    text-align: center;
+    padding-left: 8px;
   }
 `;
 
@@ -728,6 +750,7 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
 
       <SearchWrapper>
         <Input
+          style={{ borderRadius: '12px' }}
           type="text"
           ref={searchInputRef as any /* cast required because emotion */}
           value={searchInputValue}
@@ -793,7 +816,9 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
             </SectionTitle>
             <TagsWrapper>
               {selectedVizMetadata?.tags.map(tag => (
-                <Label key={tag}>{tag}</Label>
+                <Label key={tag} style={{ marginBottom: '6px' }}>
+                  {tag}
+                </Label>
               ))}
             </TagsWrapper>
             <Description>
@@ -817,12 +842,14 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
                     },
                   ]
               ).map(example => (
-                <img
-                  key={example.url}
-                  src={example.url}
-                  alt={example.caption}
-                  title={example.caption}
-                />
+                <ExampleImageContainer key={example.url}>
+                  <ExampleImage
+                    key={example.url}
+                    src={example.url}
+                    alt={example.caption}
+                    title={example.caption}
+                  />
+                </ExampleImageContainer>
               ))}
             </Examples>
           </>

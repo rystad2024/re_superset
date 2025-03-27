@@ -315,7 +315,7 @@ function DatabaseList({
             <i className="fa fa-plus" /> {t('Database')}{' '}
           </>
         ),
-        buttonStyle: 'primary',
+        buttonStyle: 'dark-primary',
         onClick: () => {
           // Ensure modal will be opened in add mode
           handleDatabaseEditModal({ modalOpen: true });
