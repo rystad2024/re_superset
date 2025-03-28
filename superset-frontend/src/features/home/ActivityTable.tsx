@@ -33,7 +33,7 @@ import { Chart } from 'src/types/Chart';
 import Icons from 'src/components/Icons';
 import EmptyState from './EmptyState';
 import { WelcomeTable } from './types';
-
+import { getChartMetadataRegistry } from '@superset-ui/core';
 /**
  * Return result from /api/v1/log/recent_activity/
  */
@@ -234,13 +234,26 @@ export default function ActivityTable({
       const url = getEntityUrl(entity);
       const lastActionOn = getEntityLastActionOn(entity);
 
+      const registry = getChartMetadataRegistry();
+
+      const getThumbnail = (item: ActivityObject) => {
+        if ('viz_type' in item) {
+          const chartMetadata = registry.get(item.viz_type);
+          return (
+            chartMetadata?.thumbnail ||
+            '/static/assets/images/chart-fallback.svg'
+          );
+        }
+        return '/static/assets/images/chart-fallback.svg';
+      };
+
       // When showThumbnails is false, we show empty cover
       // When true, we don't pass cover prop and let imgFallbackURL handle it
       const cardProps = showThumbnails
         ? {
             imgFallbackURL: url?.includes('dashboard')
               ? '/static/assets/images/dashboard-fallback.svg'
-              : '/static/assets/images/chart-fallback.svg',
+              : getThumbnail(entity), // Use viz-type thumbnail
           }
         : {
             cover: <></>, // Empty cover when thumbnails are disabled

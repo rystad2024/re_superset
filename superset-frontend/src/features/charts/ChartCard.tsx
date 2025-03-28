@@ -30,6 +30,7 @@ import FaveStar from 'src/components/FaveStar';
 import FacePile from 'src/components/FacePile';
 import { handleChartDelete, CardStyles } from 'src/views/CRUD/utils';
 import Button from 'src/components/Button';
+import { getChartMetadataRegistry } from '@superset-ui/core';
 
 interface ChartCardProps {
   chart: Chart;
@@ -69,6 +70,15 @@ export default function ChartCard({
   const canDelete = hasPerm('can_write');
   const canExport = hasPerm('can_export');
   const theme = useTheme();
+
+  const registry = getChartMetadataRegistry();
+
+  // Retrieve chart metadata using the viz_type
+  const chartMetadata = registry.get(chart.viz_type);
+
+  // Fallback to chart-type image if no thumbnail is found
+  const imgFallbackURL =
+    chartMetadata?.thumbnail || '/static/assets/images/chart-fallback.svg';
 
   const menu = (
     <Menu>
@@ -152,7 +162,7 @@ export default function ChartCard({
         }
         url={bulkSelectEnabled ? undefined : chart.url}
         imgURL={chart.thumbnail_url || ''}
-        imgFallbackURL="/static/assets/images/chart-fallback.svg"
+        imgFallbackURL={imgFallbackURL}
         description={t('Modified %s', chart.changed_on_delta_humanized)}
         coverLeft={<FacePile users={chart.owners || []} />}
         coverRight={
