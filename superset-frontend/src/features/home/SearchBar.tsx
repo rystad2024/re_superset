@@ -1,4 +1,9 @@
-import { styled, keyframes, t } from '@superset-ui/core';
+import {
+  styled,
+  keyframes,
+  t,
+  getChartMetadataRegistry,
+} from '@superset-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 import Icons from 'src/components/Icons';
 import { useFetchAllData, useGetFavoriteStatus } from 'src/views/CRUD/hooks';
@@ -146,7 +151,7 @@ interface ResourceMapping {
   icon: JSX.Element;
   link: string;
   getItemTitle: (item: ResultItem) => string | undefined;
-  fallbackUrl?: string;
+  fallbackUrl?: string | ((item: ResultItem) => string | undefined);
 }
 
 function SearchBar() {
@@ -156,7 +161,10 @@ function SearchBar() {
   const { allData, filteredData, setFilteredData, loading, refetch } =
     useFetchAllData();
 
-  const { favoriteStatus, favIds, filteredFavData } = useGetFavoriteStatus(allData, isSearchBoxClicked);
+  const { favoriteStatus, favIds, filteredFavData } = useGetFavoriteStatus(
+    allData,
+    isSearchBoxClicked,
+  );
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const query = event.target.value.toLowerCase();
@@ -202,6 +210,18 @@ function SearchBar() {
     };
   }, []);
 
+  const registry = getChartMetadataRegistry();
+
+  const getThumbnail = (item: ResultItem) => {
+    if ('viz_type' in item) {
+      const chartMetadata = registry.get(item.viz_type);
+      return (
+        chartMetadata?.thumbnail || '/static/assets/images/chart-fallback.svg'
+      );
+    }
+    return '/static/assets/images/chart-fallback.svg';
+  };
+
   const resourceMappings: Record<string, ResourceMapping> = {
     dashboard: {
       title: 'Workspaces',
@@ -217,7 +237,7 @@ function SearchBar() {
       link: '/chart/list',
       getItemTitle: (item: ResultItem) =>
         'slice_name' in item ? item.slice_name : undefined,
-      fallbackUrl: '/static/assets/images/chart-fallback.svg',
+      fallbackUrl: getThumbnail,
     },
     explore: {
       title: 'Explore Data',
@@ -283,7 +303,11 @@ function SearchBar() {
                   }}
                 >
                   <img
-                    src={config.fallbackUrl}
+                    src={
+                      typeof config.fallbackUrl === 'function'
+                        ? config.fallbackUrl(item)
+                        : config.fallbackUrl
+                    }
                     alt="Preview"
                     style={{
                       width: '100%',
