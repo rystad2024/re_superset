@@ -505,7 +505,7 @@ function Welcome({ user, addDangerToast }: WelcomeProps) {
                   <h1>Cube Browser</h1>
                   <p style={{ fontSize: '16px' }}>
                     Here you can find our data visualization tools, create
-                    workspaces, export data and visual elemets.
+                    workspaces, export data and visual elements.
                   </p>
                 </div>
               </div>

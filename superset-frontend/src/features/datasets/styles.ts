@@ -63,10 +63,9 @@ export const FooterRow = styled(Row)`
 
 export const StyledLayoutHeader = styled.div`
   ${({ theme }) => `
-  flex: 0 0 auto;
-  height: ${theme.gridUnit * 16}px;
-  border-bottom: 2px solid ${theme.colors.grayscale.light2};
-
+   background-color: ${theme.colors.primary.dark1};
+  color: white;
+ 
   .header-with-actions {
     height: ${theme.gridUnit * 15.5}px;
   }
@@ -118,6 +117,9 @@ export const StyledLayoutFooter = styled.div`
 `;
 
 export const HeaderComponentStyles = styled.div`
+${({ theme }) => `
+ background-color: ${theme.colors.primary.dark1};
+  color: white;
   .antd5-btn {
     span {
       margin-right: 0;
@@ -125,11 +127,11 @@ export const HeaderComponentStyles = styled.div`
 
     &:disabled {
       svg {
-        color: ${({ theme }) => theme.colors.grayscale.light1};
+        color: ${theme.colors.grayscale.light1};
       }
     }
-  }
-`;
+}
+`}`;
 
 export const disabledSaveBtnStyles = (theme: SupersetTheme) => css`
   width: ${theme.gridUnit * 21.5}px;

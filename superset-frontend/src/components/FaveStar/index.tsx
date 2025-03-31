@@ -70,9 +70,10 @@ const FaveStar = ({
     </StyledLink>
   );
 
-  if (!showTooltip) {
+  if (showTooltip) {
     return (
       <Tooltip
+        placement="bottom"
         id="fave-unfave-tooltip"
         title={t('Click to favorite/unfavorite')}
       >
