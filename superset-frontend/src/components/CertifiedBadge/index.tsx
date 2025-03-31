@@ -36,6 +36,7 @@ function CertifiedBadge({
   return (
     <Tooltip
       id="certified-details-tooltip"
+      placement="bottom"
       title={
         <>
           {certifiedBy && (
@@ -47,7 +48,10 @@ function CertifiedBadge({
         </>
       }
     >
-      <Icons.Certified iconColor={theme.colors.primary.base} iconSize={size} />
+      <Icons.Certified
+        iconColor={theme.colors.primary.light1}
+        iconSize={size}
+      />
     </Tooltip>
   );
 }

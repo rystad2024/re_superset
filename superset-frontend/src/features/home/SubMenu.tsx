@@ -141,6 +141,12 @@ export interface ButtonProps {
     | 'dark-primary'
     | 'dark-secondary'
     | 'dark-link';
+  dropdownItems?: Array<{
+    label: string;
+    url?: string;
+    onClick?: OnClickHandler;
+    key?: string;
+  }>;
 }
 
 export interface SubMenuProps {
