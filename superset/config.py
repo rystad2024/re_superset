@@ -109,7 +109,7 @@ PACKAGE_JSON_FILE = str(files("superset") / "static/assets/package.json")
 #     "type": "image/png"
 #     "rel": "icon"
 # },
-FAVICONS = [{"href": "/static/assets/images/favicon.png"}]
+FAVICONS = [{"href": "/static/assets/images/favicon.png", "sizes": "16x16",}]
 
 
 def _try_json_readversion(filepath: str) -> str | None:

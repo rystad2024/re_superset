@@ -671,7 +671,7 @@ const Header = () => {
                   css={discardBtnStyle}
                   buttonSize="small"
                   onClick={discardChanges}
-                  buttonStyle="default"
+                  buttonStyle="dark-secondary"
                   data-test="discard-changes-button"
                   aria-label={t('Discard')}
                 >
@@ -681,7 +681,7 @@ const Header = () => {
                   css={saveBtnStyle}
                   buttonSize="small"
                   disabled={!hasUnsavedChanges}
-                  buttonStyle="primary"
+                  buttonStyle="dark-primary"
                   onClick={overwriteDashboard}
                   data-test="header-save-button"
                   aria-label={t('Save')}

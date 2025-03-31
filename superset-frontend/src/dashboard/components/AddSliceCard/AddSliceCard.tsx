@@ -35,8 +35,7 @@ import { usePluginContext } from 'src/components/DynamicPlugins';
 import { Tooltip } from 'src/components/Tooltip';
 import { GenericLink } from 'src/components/GenericLink/GenericLink';
 import { Theme } from '@emotion/react';
-
-const FALLBACK_THUMBNAIL_URL = '/static/assets/images/chart-fallback.svg';
+import { getChartMetadataRegistry } from '@superset-ui/core';
 
 const TruncatedTextWithTooltip = ({
   children,
@@ -195,6 +194,15 @@ const AddSliceCard: FC<{
     [mountedPluginMetadata, visType],
   );
 
+  const registry = getChartMetadataRegistry();
+
+  // Retrieve chart metadata using the viz_type
+  const chartMetadata = registry.get(visType);
+
+  // Fallback to chart-type image if no thumbnail is found
+  const imgFallbackURL =
+    chartMetadata?.thumbnail || '/static/assets/images/chart-fallback.svg';
+
   return (
     <div ref={innerRef} style={style}>
       <div
@@ -237,7 +245,7 @@ const AddSliceCard: FC<{
             >
               <ImageLoader
                 src={thumbnailUrl || ''}
-                fallback={FALLBACK_THUMBNAIL_URL}
+                fallback={imgFallbackURL}
                 position="top"
               />
               {isSelected && showThumbnails ? (

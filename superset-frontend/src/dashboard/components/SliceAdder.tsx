@@ -49,6 +49,7 @@ import { Slice } from 'src/dashboard/types';
 import AddSliceCard from './AddSliceCard';
 import AddSliceDragPreview from './dnd/AddSliceDragPreview';
 import { DragDroppable } from './dnd/DragDroppable';
+import { getChartMetadataRegistry } from '@superset-ui/core';
 
 export type SliceAdderProps = {
   fetchSlices: (
@@ -289,6 +290,16 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
       chartId: cellData.slice_id,
       sliceName: cellData.slice_name,
     };
+
+    const registry = getChartMetadataRegistry();
+
+    // Retrieve chart metadata using the viz_type
+    const chartMetadata = registry.get(cellData.viz_type);
+
+    // Fallback to chart-type image if no thumbnail is found
+    const imgFallbackURL =
+      chartMetadata?.thumbnail || '/static/assets/images/chart-fallback.svg';
+
     return (
       <DragDroppable
         key={cellData.slice_id}
@@ -317,7 +328,7 @@ class SliceAdder extends Component<SliceAdderProps, SliceAdderState> {
             visType={cellData.viz_type}
             datasourceUrl={cellData.datasource_url}
             datasourceName={cellData.datasource_name}
-            thumbnailUrl={cellData.thumbnail_url}
+            thumbnailUrl={imgFallbackURL}
             isSelected={isSelected}
           />
         )}
