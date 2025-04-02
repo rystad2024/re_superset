@@ -629,6 +629,7 @@ const Header = () => {
                   <Tooltip
                     id="dashboard-undo-tooltip"
                     title={t('Undo the action')}
+                    placement="bottom"
                   >
                     <StyledUndoRedoButton
                       buttonStyle="link"
@@ -649,6 +650,7 @@ const Header = () => {
                   <Tooltip
                     id="dashboard-redo-tooltip"
                     title={t('Redo the action')}
+                    placement="bottom"
                   >
                     <StyledUndoRedoButton
                       buttonStyle="link"
