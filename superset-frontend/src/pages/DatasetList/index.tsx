@@ -641,7 +641,6 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         </span>
       ),
       buttonStyle: 'dark-primary',
-      // Use the dropdownItems property that's already defined in your interface
       dropdownItems: [
         {
           label: t('Physical Dataset'),
