@@ -28,6 +28,7 @@ import { Menu, MenuMode, MainNav } from 'src/components/Menu';
 import Button, { OnClickHandler } from 'src/components/Button';
 import Icons from 'src/components/Icons';
 import { MenuObjectProps } from 'src/types/bootstrapTypes';
+import { Dropdown } from 'antd-v5';
 
 const StyledHeader = styled.div`
   margin-bottom: ${({ theme }) => theme.gridUnit * 4}px;
@@ -144,7 +145,7 @@ export interface ButtonProps {
   dropdownItems?: Array<{
     label: string;
     url?: string;
-    onClick?: OnClickHandler;
+    onClick?: () => void;
     key?: string;
   }>;
 }
@@ -281,16 +282,42 @@ const SubMenuComponent: FunctionComponent<SubMenuProps> = props => {
               </SubMenu>
             ))}
           </Menu>
-          {props.buttons?.map((btn, i) => (
-            <Button
-              key={i}
-              buttonStyle={btn.buttonStyle}
-              onClick={btn.onClick}
-              data-test={btn['data-test']}
-            >
-              {btn.name}
-            </Button>
-          ))}
+          {props.buttons?.map((btn, i) =>
+            btn.dropdownItems ? (
+              // If dropdownItems exists, render a Dropdown
+              <Dropdown
+                key={i}
+                overlay={
+                  <Menu style={{ marginTop: '5px' }}>
+                    {btn.dropdownItems.map(item => (
+                      <Menu.Item key={item.key} onClick={item.onClick}>
+                        {item.label}
+                      </Menu.Item>
+                    ))}
+                  </Menu>
+                }
+                trigger={['click']}
+                placement="bottomCenter"
+              >
+                <Button
+                  buttonStyle={btn.buttonStyle}
+                  data-test={btn['data-test']}
+                >
+                  {btn.name}
+                </Button>
+              </Dropdown>
+            ) : (
+              // Otherwise render a regular Button
+              <Button
+                key={i}
+                buttonStyle={btn.buttonStyle}
+                onClick={btn.onClick}
+                data-test={btn['data-test']}
+              >
+                {btn.name}
+              </Button>
+            ),
+          )}
         </div>
       </Row>
       {props.children}

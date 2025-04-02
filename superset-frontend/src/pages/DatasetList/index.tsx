@@ -68,7 +68,6 @@ import { useSelector } from 'react-redux';
 import { ModifiedInfo } from 'src/components/AuditInfo';
 import { QueryObjectColumns } from 'src/views/CRUD/types';
 import DatasetCard from 'src/features/datasets/DatasetCard';
-import { Dropdown, Menu } from 'antd-v5';
 
 const extensionsRegistry = getExtensionsRegistry();
 const DatasetDeleteRelatedExtension = extensionsRegistry.get(
@@ -634,31 +633,26 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
   }
 
   if (canCreate) {
-    const menu = (
-      <Menu style={{ marginTop: '5px' }}>
-        <Menu.Item key="physical" onClick={() => history.push('/dataset/add/')}>
-          {t('Physical Dataset')}
-        </Menu.Item>
-        <Menu.Item key="virtual" onClick={() => history.push('/sqllab')}>
-          {t('Virtual Dataset')}
-        </Menu.Item>
-      </Menu>
-    );
-
     buttonArr.push({
       name: (
-        <Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
-          <span className="dropdown-trigger">
-            <i className="fa fa-plus" style={{ marginRight: '4px' }} />{' '}
-            {t('Dataset')}
-          </span>
-        </Dropdown>
+        <span>
+          <i className="fa fa-plus" style={{ marginRight: '4px' }} />{' '}
+          {t('Dataset')}
+        </span>
       ),
       buttonStyle: 'dark-primary',
-      onClick: e => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      dropdownItems: [
+        {
+          label: t('Physical Dataset'),
+          onClick: () => history.push('/dataset/add/'),
+          key: 'physical',
+        },
+        {
+          label: t('Virtual Dataset'),
+          onClick: () => history.push('/sqllab'),
+          key: 'virtual',
+        },
+      ],
     });
 
     buttonArr.push({
