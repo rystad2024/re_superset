@@ -161,7 +161,7 @@ function SearchBar() {
   const { allData, filteredData, setFilteredData, loading, refetch } =
     useFetchAllData();
 
-  const { favoriteStatus, favIds, filteredFavData } = useGetFavoriteStatus(
+  const { favoriteStatus, favIds, filteredFavData, isFilteredDataEmpty } = useGetFavoriteStatus(
     allData,
     isSearchBoxClicked,
   );
@@ -364,6 +364,7 @@ function SearchBar() {
               filteredFavData={filteredFavData}
               favoriteStatus={favoriteStatus}
               favIds={favIds}
+              isFilteredDataEmpty={isFilteredDataEmpty}
             />
             <Resources>
               {loading ? (
