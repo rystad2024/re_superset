@@ -80,6 +80,7 @@ interface FavouriteComponentProps {
   filteredFavData: FilteredFavouiteData[];
   favoriteStatus: FavoriteResources;
   favIds: number[];
+  isFilteredDataEmpty: boolean;
 }
 
 function isDashboard(item: FilteredFavouiteData): item is DashboardResult {
@@ -94,15 +95,16 @@ const FavouriteComponent: React.FC<FavouriteComponentProps> = ({
   filteredFavData,
   favoriteStatus,
   favIds,
+  isFilteredDataEmpty,
 }) => {
   return (
     <div>
       <FavouriteHeader>Favourite Items</FavouriteHeader>
       <FavouriteContainer>
         {filteredFavData.length === 0
-          ? Array.from({ length: 5 }).map((_, index) => (
+          ? !isFilteredDataEmpty ? Array.from({ length: 5 }).map((_, index) => (
               <ShimmerItem key={index} />
-            ))
+            )) : <div>No Favorite Items</div>
           : filteredFavData.map(item => (
               <FavouriteItem key={item.id}>
                 <StarIcon>&#9733;</StarIcon>

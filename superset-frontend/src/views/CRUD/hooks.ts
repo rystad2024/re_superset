@@ -281,6 +281,7 @@ export function useGetFavoriteStatus(allData: APIResponseStructure, isSearchBoxC
   const [error, setError] = useState<string | null>(null);
   const [favIds, setFavIds] = useState<number[]>([]);
   const [filteredFavData, setFilteredFavData] = useState<FilteredFavouiteData[]>([]);
+  const [isFilteredDataEmpty, setIsFilteredDataEmpty] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isSearchBoxClicked || !allData) return; // Prevent API call if search box is not clicked
@@ -324,6 +325,10 @@ export function useGetFavoriteStatus(allData: APIResponseStructure, isSearchBoxC
           });
         });
 
+        if(filteredResourceFavData.length ===0){
+          setIsFilteredDataEmpty(true);
+        }
+
         setFilteredFavData(filteredResourceFavData);
       } catch (err) {
         setError("Failed to fetch favorite status");
@@ -336,7 +341,7 @@ export function useGetFavoriteStatus(allData: APIResponseStructure, isSearchBoxC
     fetchFavoriteStatus();
   }, [isSearchBoxClicked, allData]); // Runs only when search box is clicked
 
-  return { favoriteStatus, favIds, filteredFavData, loading, error };
+  return { favoriteStatus, favIds, filteredFavData, isFilteredDataEmpty, loading, error };
 }
 
 
