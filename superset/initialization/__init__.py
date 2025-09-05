@@ -183,7 +183,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         from superset.views.sqllab import SqllabView
         from superset.views.tags import TagModelView, TagView
         from superset.views.users.api import CurrentUserRestApi, UserRestApi
-
+        from superset_plugins.chatbot.chatbot_api import ChatbotApi
         set_app_error_handlers(self.superset_app)
 
         #
@@ -221,6 +221,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         appbuilder.add_api(TagRestApi)
         appbuilder.add_api(SqlLabRestApi)
         appbuilder.add_api(SqlLabPermalinkRestApi)
+        appbuilder.add_api(ChatbotApi)
         #
         # Setup regular views
         #

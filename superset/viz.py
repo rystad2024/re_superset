@@ -2359,6 +2359,119 @@ class PartitionViz(NVD3TimeSeriesViz):
             levels = self.levels_for("agg_sum", [DTTM_ALIAS] + groups, df)
         return self.nest_values(levels)
 
+# class ChatbotViz(BaseViz):
+#     """Custom visualization for chatbot widget"""
+    
+#     viz_type = "chatbot"
+#     verbose_name = "Chatbot"
+#     is_timeseries = False
+#     show_in_gallery = True  # Make sure it appears in the gallery
+    
+#     def query_obj(self):
+#         """Return minimal query object to satisfy Superset's requirements"""
+#         query_obj = {
+#             "metrics": [],
+#             "groupby": [],
+#             "columns": [],
+#             "filters": [],
+#             "extras": {},
+#             "row_limit": 1,   # needs to be > 0
+#             "is_prequery": False,
+#         }
+#         logger.info(f"ChatbotViz query_obj (dummy): {query_obj}")
+#         return query_obj
+
+#     def get_df_payload(self, query_obj=None, **kwargs):
+    
+#         try:
+#             df = pd.DataFrame({
+#                 'chatbot_ready': [True],
+#                 'widget_type': ['chatbot'],
+#                 'timestamp': [pd.Timestamp.now()]
+#             })
+#             return {
+#                 'df': df,
+#                 'query': 'SELECT 1 as chatbot_ready',
+#                 'status': 'success',
+#                 'duration': 0.001,
+#                 'applied_filters': [],
+#                 'rejected_filters': [],
+#                 'cache_key': None,
+#                 'cached_dttm': None,
+#                 'cache_timeout': None,
+#             }
+#         except Exception as e:
+#             return {'df': pd.DataFrame(), 'query': '', 'status': 'error', 'error': str(e)}
+
+#     def get_data(self, df):
+#         """Process the DataFrame and return data for frontend"""
+#         try:
+#             if df is None or df.empty:
+#                 logger.warning("DataFrame is empty in get_data")
+#                 # Still return valid data structure
+#                 return {
+#                     'data': [{'chatbot_ready': True}],
+#                     "config": {"widget_type": "chatbot"},
+#                 }
+            
+#             # Convert DataFrame to records
+#             data = df.to_dict('records')
+            
+#             result = {
+#                 'data': data,
+#                 'config': {
+#                     'api_url': 'http://mojan.rystadenergy.com:8004',
+#                     'api_key_configured': True,
+#                     'widget_type': 'chatbot'
+#                 },
+#                 'rowcount': len(data)
+#             }
+            
+#             logger.info(f"ChatbotViz returning data with {len(data)} records")
+#             return result
+            
+#         except Exception as e:
+#             logger.error(f"Error in get_data: {str(e)}")
+#             return {
+#                 'data': [{'error': str(e)}],
+#                 'config': {'widget_type': 'chatbot'}
+#             }
+
+#     def get_json_data(self, force=False, **kwargs):
+#         """Override to ensure proper JSON response structure"""
+#         try:
+#             # Get the standard payload
+#             payload = self.get_df_payload()
+            
+#             if payload.get('status') == 'error':
+#                 return payload
+            
+#             # Process the data
+#             data = self.get_data(payload['df'])
+            
+#             # Return in Superset's expected format
+#             return {
+#                 'data': data.get('data', []),
+#                 'query': payload.get('query', ''),
+#                 'status': 'success',
+#                 'rowcount': len(data.get('data', [])),
+#                 'config': data.get('config', {}),
+#                 'applied_filters': [],
+#                 'rejected_filters': [],
+#                 'cache_key': None,
+#                 'cached_dttm': None,
+#                 'cache_timeout': None,
+#             }
+            
+#         except Exception as e:
+#             logger.error(f"Error in get_json_data: {str(e)}")
+#             return {
+#                 'data': [],
+#                 'query': '',
+#                 'status': 'error',
+#                 'error': str(e)
+#             }
+
 
 @deprecated(deprecated_in="3.0")
 def get_subclasses(cls: type[BaseViz]) -> set[type[BaseViz]]:

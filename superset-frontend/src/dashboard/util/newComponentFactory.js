@@ -29,6 +29,7 @@ import {
   TABS_TYPE,
   TAB_TYPE,
   DYNAMIC_TYPE,
+  CHATBOT_WIDGET_TYPE,
 } from './componentTypes';
 
 import {
@@ -37,6 +38,8 @@ import {
   GRID_DEFAULT_CHART_WIDTH,
   GRID_COLUMN_COUNT,
 } from './constants';
+
+import ChatbotWidget from 'plugins/plugin-chart-chatbot/src/ChatbotWidget';
 
 const typeToDefaultMetaData = {
   [CHART_TYPE]: { width: GRID_DEFAULT_CHART_WIDTH, height: 50 },
@@ -62,6 +65,8 @@ const typeToDefaultMetaData = {
     width: GRID_COLUMN_COUNT,
     background: BACKGROUND_TRANSPARENT,
   },
+
+  [CHATBOT_WIDGET_TYPE]: { width: 20, height: 50 },
 };
 
 function uuid(type) {

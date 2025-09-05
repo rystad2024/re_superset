@@ -101,9 +101,10 @@ class CeleryConfig:
         },
     }
 
+print("=== LOADING CUSTOM SUPERSET CONFIG ===")
 
 CELERY_CONFIG = CeleryConfig
-
+CHATBOT_API_URL = http://mojan.rystadenergy.com:8500/documents/chatbot
 FEATURE_FLAGS = {"ALERT_REPORTS": True, "TAGGING_SYSTEM": True}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
 WEBDRIVER_BASEURL = "http://superset:8088/"  # When using docker compose baseurl should be http://superset_app:8088/  # noqa: E501
@@ -113,6 +114,10 @@ SQLLAB_CTAS_NO_LIMIT = True
 
 log_level_text = os.getenv("SUPERSET_LOG_LEVEL", "INFO")
 LOG_LEVEL = getattr(logging, log_level_text.upper(), logging.INFO)
+
+EXTRA_PLUGINS = [
+    "superset_plugins.chatbot"
+]
 
 if os.getenv("CYPRESS_CONFIG") == "true":
     # When running the service as a cypress backend, we need to import the config

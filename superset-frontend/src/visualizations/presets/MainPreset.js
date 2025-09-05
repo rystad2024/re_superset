@@ -34,6 +34,7 @@ import RoseChartPlugin from '@superset-ui/legacy-plugin-chart-rose';
 import TableChartPlugin from '@superset-ui/plugin-chart-table';
 import { WordCloudChartPlugin } from '@superset-ui/plugin-chart-word-cloud';
 import WorldMapChartPlugin from '@superset-ui/legacy-plugin-chart-world-map';
+import ChatbotPlugin from 'plugins/plugin-chart-chatbot/src';
 import {
   BubbleChartPlugin,
   BulletChartPlugin,
@@ -87,10 +88,10 @@ export default class MainPreset extends Preset {
       FeatureFlag.ChartPluginsExperimental,
     )
       ? [
-          new BigNumberPeriodOverPeriodChartPlugin().configure({
-            key: VizType.BigNumberPeriodOverPeriod,
-          }),
-        ]
+        new BigNumberPeriodOverPeriodChartPlugin().configure({
+          key: VizType.BigNumberPeriodOverPeriod,
+        }),
+      ]
       : [];
 
     super({
@@ -171,6 +172,7 @@ export default class MainPreset extends Preset {
         new EchartsSunburstChartPlugin().configure({ key: VizType.Sunburst }),
         new HandlebarsChartPlugin().configure({ key: VizType.Handlebars }),
         new EchartsBubbleChartPlugin().configure({ key: VizType.Bubble }),
+        new ChatbotPlugin().configure({ key: 'chatbot' }),
         new CartodiagramPlugin({
           defaultLayers: [
             {

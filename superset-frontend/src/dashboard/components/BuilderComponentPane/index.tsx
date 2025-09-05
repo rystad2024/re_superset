@@ -29,6 +29,7 @@ import NewRow from '../gridComponents/new/NewRow';
 import NewTabs from '../gridComponents/new/NewTabs';
 import NewMarkdown from '../gridComponents/new/NewMarkdown';
 import NewDynamicComponent from '../gridComponents/new/NewDynamicComponent';
+import NewChatBot from '../gridComponents/new/NewChatbot';
 
 const BUILDER_PANE_WIDTH = 374;
 
@@ -78,6 +79,7 @@ const BuilderComponentPane = ({ topOffset = 0 }) => (
           <SliceAdder />
         </Tabs.TabPane>
         <Tabs.TabPane key={2} tab={t('Layout elements')}>
+          <NewChatBot />
           <NewTabs />
           <NewRow />
           <NewColumn />

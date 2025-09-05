@@ -128,14 +128,25 @@ class ChartRenderer extends Component {
     // TODO: queriesResponse comes from Redux store but it's being edited by
     // the plugins, hence we need to clone it to avoid state mutation
     // until we change the reducers to use Redux Toolkit with Immer
-    this.mutableQueriesResponse = cloneDeep(this.props.queriesResponse);
+
+    //overwriting queriesResponse for chatbot
+    this.mutableQueriesResponse =
+      props.formData.viz_type === 'chatbot'
+        ? [
+            {
+              data: props.queriesResponse?.[0]?.data || [],
+              config: props.queriesResponse?.[0]?.config || {},
+            },
+          ]
+        : cloneDeep(props.queriesResponse);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const resultsReady =
-      nextProps.queriesResponse &&
-      ['success', 'rendered'].indexOf(nextProps.chartStatus) > -1 &&
-      !nextProps.queriesResponse?.[0]?.error;
+      nextProps.formData.viz_type === 'chatbot' ||
+      (nextProps.queriesResponse &&
+        ['success', 'rendered'].includes(nextProps.chartStatus) &&
+        !nextProps.queriesResponse?.[0]?.error);
 
     if (resultsReady) {
       if (!isEqual(this.state, nextState)) {

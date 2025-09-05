@@ -76,6 +76,8 @@ const ALL_CHARTS = t('All widgets');
 
 const FEATURED = t('Featured');
 
+const CHATBOT = t('Chatbot');
+
 const RECOMMENDED_TAGS = [FEATURED, t('ECharts'), t('Advanced-Analytics')];
 
 export const VIZ_TYPE_CONTROL_TEST_ID = 'viz-type-control';
@@ -87,9 +89,8 @@ const VizPickerLayout = styled.div<{ isSelectedVizMetadata: boolean }>`
     overflow: auto;
     background-color: white;
     
-    ${
-      isSelectedVizMetadata
-        ? `
+    ${isSelectedVizMetadata
+      ? `
       grid-template-rows: auto minmax(100px, 1fr) minmax(200px, 35%);
       grid-template-columns: minmax(14em, auto) 5fr 2fr;
       grid-template-areas:
@@ -97,7 +98,7 @@ const VizPickerLayout = styled.div<{ isSelectedVizMetadata: boolean }>`
         "sidebar main details"
         "sidebar main details";
     `
-        : `
+      : `
       grid-template-rows: auto minmax(100px, 1fr);
       grid-template-columns: minmax(14em, auto) 1fr;
       grid-template-areas:
@@ -655,6 +656,13 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
       return sortedMetadata;
     }
     if (
+      activeSelector === CHATBOT &&
+      activeSection === Sections.Featured &&
+      mountedPluginMetadata['chatbot']
+    ) {
+      return [{ key: 'chatbot', value: mountedPluginMetadata['chatbot'] }];
+    }
+    if (
       activeSelector === FEATURED &&
       activeSection === Sections.Featured &&
       chartsByTags[FEATURED]
@@ -707,7 +715,7 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
           }
           sectionId={Sections.Featured}
           selector={FEATURED}
-          icon={<Icons.FireOutlined iconSize="m" />}
+          icon={<Icons.FireOutlined iconSize="xl" />}
           isSelected={
             !isActivelySearching &&
             FEATURED === activeSelector &&
@@ -715,6 +723,25 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
           }
           onClick={clickSelector}
         />
+        <Selector
+          css={({ gridUnit }) =>
+            // adjust style for not being inside a collapse
+            css`
+              margin: ${gridUnit * 2}px;
+              margin-bottom: 0;
+            `
+          }
+          sectionId={Sections.Featured}
+          selector={CHATBOT}
+          icon={<Icons.FireOutlined iconSize="xl" />}
+          isSelected={
+            !isActivelySearching &&
+            CHATBOT === activeSelector &&
+            Sections.Featured === activeSection
+          }
+          onClick={clickSelector}
+        />
+
         <AntdCollapse
           expandIconPosition="right"
           ghost
@@ -836,11 +863,11 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
               {(selectedVizMetadata?.exampleGallery?.length
                 ? selectedVizMetadata.exampleGallery
                 : [
-                    {
-                      url: selectedVizMetadata?.thumbnail,
-                      caption: selectedVizMetadata?.name,
-                    },
-                  ]
+                  {
+                    url: selectedVizMetadata?.thumbnail,
+                    caption: selectedVizMetadata?.name,
+                  },
+                ]
               ).map(example => (
                 <ExampleImageContainer key={example.url}>
                   <ExampleImage
